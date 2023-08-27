@@ -1,16 +1,14 @@
 import PostsList from "@/components/turistaPosts/PostsList";
-import Link from "next/link";
+import SubNavigation from "@/components/navigation/SubNavigation";
 import { getFromDatabase } from "./api/getFromDatabase";
+import MainLayout from "@/components/layout/MainLayout";
 
 const Home = (props) => {
   return (
-    <div>
-      Home
-      <div className="py-1.5 px-5 text-sm rounded bg-indigo-700 w-max my-2">
-        <Link href="/new-post">Create new post</Link>
-      </div>
+    <MainLayout>
+      <SubNavigation />
       <PostsList posts={props.posts} />
-    </div>
+    </MainLayout>
   );
 };
 

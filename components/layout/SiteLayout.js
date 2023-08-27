@@ -5,7 +5,7 @@ const SiteLayout = (props) => {
   return (
     <Fragment>
       <MainNavigation />
-      <div className="px-3 pt-5 md:px-20">{props.children}</div>
+      <div className="pt-5">{props.children}</div>
     </Fragment>
   );
 };

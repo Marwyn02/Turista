@@ -1,3 +1,4 @@
+import MainLayout from "@/components/layout/MainLayout";
 import NewPostsForm from "@/components/turistaPosts/NewPostsForm";
 import { useRouter } from "next/router";
 const NewPost = () => {
@@ -14,7 +15,11 @@ const NewPost = () => {
       console.log(error, "Error in new-post");
     }
   };
-  return <NewPostsForm onAddPost={addDataHandler} />;
+  return (
+    <MainLayout>
+      <NewPostsForm onAddPost={addDataHandler} />
+    </MainLayout>
+  );
 };
 
 export default NewPost;

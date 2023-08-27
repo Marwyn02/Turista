@@ -196,14 +196,14 @@ const NewPostsForm = (props) => {
           </div>
           <div className="flex gap-x-1.5">
             <div>
-              <button className="bg-gray-200 text-sm py-1 px-1.5 rounded text-gray-900">
+              <button className="bg-gray-200 text-sm py-1 px-1.5 w-max rounded text-gray-900">
                 <Link href="/">Cancel</Link>
               </button>
             </div>
             <div>
               <button
                 type="submit"
-                className="bg-indigo-500 text-sm py-1 px-1.5 rounded text-gray-100"
+                className="bg-indigo-500 text-sm py-1 px-1.5 w-max rounded text-gray-100"
               >
                 Create a post
               </button>
