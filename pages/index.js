@@ -1,6 +1,6 @@
 import PostsList from "@/components/turistaPosts/PostsList";
 import SubNavigation from "@/components/navigation/SubNavigation";
-import { getFromDatabase } from "./api/getFromDatabase";
+import { getAllFromDatabase } from "./api/getAllFromDatabase";
 import MainLayout from "@/components/layout/MainLayout";
 
 const Home = (props) => {
@@ -15,7 +15,7 @@ const Home = (props) => {
 export async function getStaticProps() {
   try {
     const collectionName = "post_collection";
-    const posts = await getFromDatabase(collectionName);
+    const posts = await getAllFromDatabase(collectionName);
 
     return {
       props: {

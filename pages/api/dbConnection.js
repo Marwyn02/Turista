@@ -1,6 +1,5 @@
 import Post from "@/models/Post";
 import { insertToDatabase } from "./insertToDatabase";
-import { getFromDatabase } from "./getFromDatabase";
 
 const dbConnection = async (req, res) => {
   if (req.method === "POST") {

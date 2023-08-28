@@ -7,6 +7,7 @@ const PostsList = (props) => {
       {props.posts.map((item) => (
         <PostsItem
           key={item.id}
+          id={item.id}
           image={item.image}
           title={item.title}
           location={item.location}

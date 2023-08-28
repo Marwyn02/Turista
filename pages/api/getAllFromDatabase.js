@@ -1,6 +1,6 @@
 import { connectToDatabase } from "./connectToDatabase";
 
-const getFromDatabase = async (collectionName) => {
+const getAllFromDatabase = async (collectionName) => {
   try {
     const { client, db } = await connectToDatabase();
     const dbCollection = db.collection(collectionName);
@@ -12,4 +12,4 @@ const getFromDatabase = async (collectionName) => {
   }
 };
 
-export { getFromDatabase };
+export { getAllFromDatabase };

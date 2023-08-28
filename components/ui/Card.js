@@ -1,10 +1,17 @@
-import React from "react";
+import { useRouter } from "next/router";
 
 const Card = (props) => {
+  const router = useRouter();
+
+  const showDetailsHandler = () => {
+    router.push("/" + props.id);
+  };
+
   return (
     <section
       key={props.id}
       className="bg-neutral-800 mb-7 drop-shadow-lg shadow-white/20"
+      onClick={showDetailsHandler}
     >
       <div className="p-2.5">
         <h1 className="text-zinc-50 font-bold">{props.title}</h1>
