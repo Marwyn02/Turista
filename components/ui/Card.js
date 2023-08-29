@@ -10,11 +10,11 @@ const Card = (props) => {
   return (
     <section
       key={props.id}
-      className="bg-neutral-800 mb-7 drop-shadow-lg shadow-white/20"
+      className="bg-neutral-800 mb-7 drop-shadow-lg shadow-white/20 hover:bg-white/20 duration-300 rounded"
       onClick={showDetailsHandler}
     >
-      <div className="p-2.5">
-        <h1 className="text-zinc-50 font-bold">{props.title}</h1>
+      <div className="p-4">
+        <h1 className="text-zinc-50 font-semibold">{props.title}</h1>
         <p className="text-xs -mt-1 text-zinc-50/30 font-light">
           {props.location}
         </p>
@@ -22,7 +22,7 @@ const Card = (props) => {
           {props.description}
         </p>
       </div>
-      <img src={props.image} alt="Yew" />
+      <img src={props.image} alt={props.title} />
     </section>
   );
 };

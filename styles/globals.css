@@ -25,3 +25,16 @@ body {
     )
     rgb(var(--background-start-rgb));
 }
+
+@keyframes slide {
+  0% {
+    opacity: 0.3;
+  }
+  100% {
+    opacity: 1;
+  }
+}
+
+.animated-slide {
+  animation: forwards 0.5s ease-in-out slide;
+}

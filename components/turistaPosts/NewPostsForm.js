@@ -22,9 +22,12 @@ const NewPostsForm = (props) => {
     const enteredLocation = locationInputRef.current.value;
     const enteredImage = imageInputRef.current.value;
     const enteredDescription = descriptionInputRef.current.value;
-    const checkboxData = checkboxRef.current.filter((checkbox) => checkbox);
+    const checkboxData = checkboxRef.current.filter(
+      (checkbox) => checkbox.checked
+    );
 
     const postData = {
+      type: "POSTS",
       title: enteredTitle,
       location: enteredLocation,
       image: enteredImage,
@@ -36,7 +39,7 @@ const NewPostsForm = (props) => {
 
   return (
     <form onSubmit={submitInputHandler}>
-      <div className="space-y-12 px-2 my-6 sm:my-10">
+      <div className="space-y-12 px-5 my-6 sm:my-10 border-l-2 border-white/70">
         <h2 className="text-4xl font-semibold leading-7 text-blue-200">
           Make a post
         </h2>
