@@ -1,6 +1,7 @@
 import Post from "@/models/Post";
 import User from "@/models/User";
 import { insertToDatabase } from "./insertToDatabase";
+import deleteOneFromDatabase from "./deleteOneFromDatabase";
 
 const dbConnection = async (req, res) => {
   if (req.body.type === "POSTS") {
@@ -26,6 +27,26 @@ const dbConnection = async (req, res) => {
       res
         .status(500)
         .json({ success: false, message: "Account creation error" });
+    }
+  } else if (req.method === "DELETE") {
+    // Deleting post from the database block
+    try {
+      const postId = req.body.postId;
+      const collectionName = "post_collection";
+
+      console.log(" ");
+      console.log("Post Id: ", postId);
+      console.log("Collection Name: ", collectionName);
+      console.log(" ");
+
+      const deletedPost = await deleteOneFromDatabase(collectionName, postId);
+      console.log("DELETE:", deletedPost);
+      res
+        .status(200)
+        .json({ success: true, message: "Post deleted", deletedPost });
+    } catch (err) {
+      res.status(500).json({ success: false, message: "Deleting error" });
+      console.log("Error message: ", err);
     }
   } else {
     // Error block

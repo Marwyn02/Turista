@@ -2,8 +2,22 @@ import getOneFromDatabase from "../api/getOneFromDatabase";
 import { connectToDatabase } from "../api/connectToDatabase";
 import PostsDetail from "@/components/turistaPosts/PostsDetail";
 import { Fragment } from "react";
+import { useRouter } from "next/router";
 
 const index = (props) => {
+  const router = useRouter();
+  const deletePostHandler = async (postId) => {
+    try {
+      const response = await fetch(`/api/dbConnection`, {
+        method: "DELETE",
+        body: JSON.stringify({ postId }),
+        headers: { "Content-Type": "application/json" },
+      });
+      router.push("/");
+    } catch (e) {
+      console.log(e, "Error in delete-post");
+    }
+  };
   return (
     <Fragment>
       <PostsDetail
@@ -12,6 +26,7 @@ const index = (props) => {
         location={props.postData.location}
         image={props.postData.image}
         description={props.postData.description}
+        onDeletePost={deletePostHandler}
       />
     </Fragment>
   );

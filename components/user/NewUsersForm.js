@@ -22,10 +22,6 @@ const NewUsersForm = (props) => {
     props.onAddUser(UserData);
   };
 
-  function click() {
-    console.log("Clicked");
-  }
-
   return (
     <form onSubmit={submitUserHandler}>
       <div className="space-y-12 px-5 my-6 sm:my-1">

@@ -1,6 +1,12 @@
 import Link from "next/link";
 
 const PostsDetail = (props) => {
+  const deleteHandler = (event) => {
+    event.preventDefault();
+    const postId = props.id;
+
+    props.onDeletePost(postId);
+  };
   return (
     <section
       key={props.id}
@@ -14,7 +20,7 @@ const PostsDetail = (props) => {
         <p className="mt-2 text-zinc-100 text-base font-light">
           {props.description}
         </p>
-        <button className="bg-white text-black py-1 my-4 absolute bottom-0 w-full">
+        <button className="bg-white text-black py-1 my-4 absolute bottom-0 w-full hidden lg:block">
           <Link href="/">Back</Link>
         </button>
       </div>
@@ -23,6 +29,12 @@ const PostsDetail = (props) => {
         src={props.image}
         alt={props.title}
       />
+      <button
+        className="bg-red-900 text-black px-2 py-1 lg:hidden"
+        onClick={deleteHandler}
+      >
+        Delete
+      </button>
       <button className="bg-white text-black px-2 py-1 lg:hidden">
         <Link href="/">Back</Link>
       </button>
