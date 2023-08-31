@@ -15,7 +15,7 @@ const index = () => {
       console.log(e, "Error in new-user");
     }
   };
-  return <NewUsersForm onAddUser={addUserHandler} />;
+  return <NewUsersForm method="post" onAddUser={addUserHandler} />;
 };
 
 export default index;

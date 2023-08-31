@@ -7,6 +7,7 @@ const PostsDetail = (props) => {
 
     props.onDeletePost(postId);
   };
+
   return (
     <section
       key={props.id}
@@ -34,6 +35,9 @@ const PostsDetail = (props) => {
         onClick={deleteHandler}
       >
         Delete
+      </button>
+      <button className="bg-blue-900 text-white px-2 py-1 lg:hidden">
+        <Link href={`/update-post/${props.id}`}>Edit</Link>
       </button>
       <button className="bg-white text-black px-2 py-1 lg:hidden">
         <Link href="/">Back</Link>

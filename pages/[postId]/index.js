@@ -1,5 +1,5 @@
-import getOneFromDatabase from "../api/getOneFromDatabase";
-import { connectToDatabase } from "../api/connectToDatabase";
+import getOne from "../api/getOne";
+import { connectMongoDB } from "../api/connectMongoDB";
 import PostsDetail from "@/components/turistaPosts/PostsDetail";
 import { Fragment } from "react";
 import { useRouter } from "next/router";
@@ -18,6 +18,11 @@ const index = (props) => {
       console.log(e, "Error in delete-post");
     }
   };
+  const editPostHandler = (postId) => {
+    const id = postId;
+    // console.log(id);
+    // return props.onEditPost(id);
+  };
   return (
     <Fragment>
       <PostsDetail
@@ -27,13 +32,14 @@ const index = (props) => {
         image={props.postData.image}
         description={props.postData.description}
         onDeletePost={deletePostHandler}
+        onEditPost={editPostHandler}
       />
     </Fragment>
   );
 };
 
 export async function getStaticPaths() {
-  const { client, db } = await connectToDatabase();
+  const { client, db } = await connectMongoDB();
   const collectionName = "post_collection";
   const postsCollection = db.collection(collectionName);
   const posts = await postsCollection.find({}).toArray();
@@ -49,8 +55,7 @@ export async function getStaticPaths() {
 
 export async function getStaticProps(context) {
   const postId = context.params.postId;
-  const collectionName = "post_collection";
-  const selectedResult = await getOneFromDatabase(collectionName, postId);
+  const selectedResult = await getOne(postId);
   if (!selectedResult) {
     return {
       notFound: true, // Return a 404 page

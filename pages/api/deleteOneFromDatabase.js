@@ -1,16 +1,13 @@
 import { ObjectId } from "mongodb";
-// import mongoose from "mongoose";
-import { connectToDatabase } from "./connectToDatabase";
+import { connectMongoDB } from "./connectMongoDB";
 
 const deleteOneFromDatabase = async (collectionName, id) => {
   try {
-    const { client, db } = await connectToDatabase();
+    const { client, db } = await connectMongoDB();
     const dbCollection = db.collection(collectionName);
-    console.log("Delete this: ", id);
     const deletedPost = await dbCollection.findOneAndDelete({
       _id: new ObjectId(id),
     });
-    console.log(deletedPost);
     await client.close();
     return deletedPost;
   } catch (err) {

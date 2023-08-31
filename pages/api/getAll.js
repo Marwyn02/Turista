@@ -1,8 +1,8 @@
-import { connectToDatabase } from "./connectToDatabase";
+import { connectMongoDB } from "./connectMongoDB";
 
-const getAllFromDatabase = async (collectionName) => {
+const getAll = async (collectionName) => {
   try {
-    const { client, db } = await connectToDatabase();
+    const { client, db } = await connectMongoDB();
     const dbCollection = db.collection(collectionName);
     const result = await dbCollection.find().toArray();
     client.close();
@@ -12,4 +12,4 @@ const getAllFromDatabase = async (collectionName) => {
   }
 };
 
-export { getAllFromDatabase };
+export { getAll };

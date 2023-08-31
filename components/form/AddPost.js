@@ -1,7 +1,9 @@
 import Link from "next/link";
-import React, { useRef } from "react";
+import { useRouter } from "next/router";
+import { useRef } from "react";
 
-const NewPostsForm = (props) => {
+const NewPostsForm = () => {
+  const router = useRouter();
   const titleInputRef = useRef();
   const locationInputRef = useRef();
   const descriptionInputRef = useRef();
@@ -15,7 +17,7 @@ const NewPostsForm = (props) => {
     };
   };
 
-  const submitInputHandler = (event) => {
+  const submitInputHandler = async (event) => {
     event.preventDefault();
 
     const enteredTitle = titleInputRef.current.value;
@@ -34,7 +36,24 @@ const NewPostsForm = (props) => {
       description: enteredDescription,
       amenities: checkboxData,
     };
-    props.onAddPost(postData);
+
+    try {
+      const response = await fetch("/api/dbConnection", {
+        method: "POST",
+        headers: {
+          "Content-type": "application/json",
+        },
+        body: JSON.stringify(postData),
+      });
+
+      if (!response.ok) {
+        throw new Error("Failed to create a post");
+      } else {
+        router.push("/");
+      }
+    } catch (error) {
+      console.log(error);
+    }
   };
 
   return (
