@@ -1,18 +1,23 @@
-import { connectToDatabase } from "./connectToDatabase";
-import getOne from "./getOne";
+import { connectMongoDB } from "./connectMongoDB";
+import { ObjectId } from "mongodb";
 
-const updateFromDatabase = async (collectionName, postId, data) => {
+const updateFromDatabase = async (updatedPost) => {
   try {
-    const { client, db } = await connectToDatabase();
-    const response = await getOne(collectionName, postId); // we get the object from the database
-    const dbCollection = db.collection(collectionName);
+    const { client, db } = await connectMongoDB();
+    const { id, title, location, description } = updatedPost;
 
-    const result = await dbCollection.updateOne(
-      { _id: postId },
-      { $set: data }
-    );
+    const result = await db
+      .collection("post_collection")
+      .updateOne(
+        { _id: new ObjectId(id) },
+        { $set: { title: title, location: location, description: description } }
+      );
     await client.close();
-  } catch (error) {}
+
+    return result;
+  } catch (error) {
+    throw new Error("Update failed: " + error.message);
+  }
 };
 
 export default updateFromDatabase;

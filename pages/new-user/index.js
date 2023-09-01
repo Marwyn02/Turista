@@ -12,7 +12,7 @@ const index = () => {
       });
       router.push("/");
     } catch (e) {
-      console.log(e, "Error in new-user");
+      throw new Error("Error in new-user: ", e);
     }
   };
   return <NewUsersForm method="post" onAddUser={addUserHandler} />;

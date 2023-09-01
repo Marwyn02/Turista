@@ -47,12 +47,12 @@ const NewPostsForm = () => {
       });
 
       if (!response.ok) {
-        throw new Error("Failed to create a post");
+        throw new Error("Failed to create post");
       } else {
         router.push("/");
       }
     } catch (error) {
-      console.log(error);
+      throw new Error("Error in create post: ", error);
     }
   };
 

@@ -1,8 +1,7 @@
-import EditPost from "@/components/form/EditPost";
-import { useRouter } from "next/router";
 import { connectMongoDB } from "@/pages/api/connectMongoDB";
+import EditPost from "@/components/form/EditPost";
+import { Fragment } from "react";
 import getOne from "@/pages/api/getOne";
-import Link from "next/link";
 
 export async function getStaticPaths() {
   try {
@@ -19,7 +18,7 @@ export async function getStaticPaths() {
       })),
     };
   } catch (error) {
-    console.log("ERROR:", error);
+    throw new Error("Error in update-post getStaticPaths: ", error);
   }
 }
 
@@ -27,6 +26,7 @@ export async function getStaticProps(context) {
   try {
     const postId = context.params.id;
     const selectedResult = await getOne(postId);
+
     if (!selectedResult) {
       return { notFound: true }; // Return a 404 page
     }
@@ -40,44 +40,34 @@ export async function getStaticProps(context) {
           description: selectedResult.description,
         },
       },
+      revalidate: 1,
     };
   } catch (error) {
-    console.log("ERROR:", error);
+    return {
+      props: {
+        postData: [],
+      },
+      revalidate: 1,
+    };
   }
 }
 
-export default function editPost(props) {
-  const router = useRouter();
-  const { id } = router.query;
-  console.log(id);
+const editPost = (props) => {
+  try {
+    return (
+      <Fragment>
+        <EditPost
+          id={props.postData.id}
+          title={props.postData.title}
+          location={props.postData.location}
+          image={props.postData.image}
+          description={props.postData.description}
+        />
+      </Fragment>
+    );
+  } catch (error) {
+    throw new Error("Error fetching edit post data: ", error);
+  }
+};
 
-  return (
-    <>
-      <p>{props.postData.id}</p>
-      <div className="text-white">{props.postData.title}</div>
-      <Link href="/">Back</Link>
-    </>
-  );
-  // return <>{id && <EditPostContainer id={id} />}</>;
-}
-
-// async function EditPostContainer({ id }) {
-//   //   console.log("Hello");
-//   try {
-//     const data = await getEditPost({ id });
-//     const { title, location, image, description } = data;
-
-//     return (
-//       <EditPost
-//         id={id}
-//         title={title}
-//         location={location}
-//         image={image}
-//         description={description}
-//       />
-//     );
-//   } catch (error) {
-//     console.error("Error fetching edit post data:", error);
-//     return <p>Error loading post data.</p>;
-//   }
-// }
+export default editPost;

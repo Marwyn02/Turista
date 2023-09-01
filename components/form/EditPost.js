@@ -1,35 +1,43 @@
 import Link from "next/link";
+import { useState } from "react";
 import { useRouter } from "next/router";
 
-const EditPost = ({ id, title, location, image, description }) => {
+const EditPost = (props) => {
+  const router = useRouter();
+  const { id, title, location, image, description } = props;
+
   const [newTitle, setNewTitle] = useState(title);
   const [newDescription, setNewDescription] = useState(description);
-  const [newImage, setNewImage] = useState(image);
   const [newLocation, setNewLocation] = useState(location);
-  const router = useRouter();
 
   const handleSubmit = async (e) => {
     e.preventDefault();
 
+    const updatedPost = {
+      id: id,
+      title: newTitle,
+      location: newLocation,
+      description: newDescription,
+    };
     try {
-      const res = await fetch(`/api/dbConnection/${id}`, {
+      const response = await fetch(`/api/dbConnection`, {
         method: "PUT",
         headers: {
           "Content-type": "application/json",
         },
-        // body: JSON.stringify({ newTitle, newDescription }),
+        body: JSON.stringify(updatedPost),
       });
 
-      if (!res.ok) {
-        throw new Error("Failed to update topic");
+      if (!response.ok) {
+        throw new Error("Failed to update post");
+      } else {
+        router.push(`/${id}`);
       }
-
-      router.refresh();
-      router.push("/");
     } catch (error) {
-      console.log(error);
+      throw new Error("Error in Edit Post: ", error);
     }
   };
+
   return (
     <form onSubmit={handleSubmit}>
       <div className="space-y-12 px-5 my-6 sm:my-10 border-l-2 border-white/70">
@@ -55,12 +63,12 @@ const EditPost = ({ id, title, location, image, description }) => {
                   type="text"
                   name="title"
                   id="title"
-                  autoComplete="title"
                   className="block flex-1 border-0 bg-transparent py-1.5 pl-2 text-gray-200 placeholder:text-gray-600 focus:ring-0 sm:text-sm sm:leading-6"
                   placeholder="My travel post title"
+                  onChange={(e) => setNewTitle(e.target.value)}
                   value={newTitle}
                   required
-                />
+                ></input>
               </div>
             </div>
           </div>
@@ -79,52 +87,21 @@ const EditPost = ({ id, title, location, image, description }) => {
                   type="text"
                   name="location"
                   id="location"
-                  autoComplete="location"
                   className="block flex-1 border-0 bg-transparent py-1.5 pl-2 text-gray-200 placeholder:text-gray-600 focus:ring-0 sm:text-sm sm:leading-6"
                   placeholder="Where it was street, country name"
+                  onChange={(e) => setNewLocation(e.target.value)}
                   value={newLocation}
                   required
-                />
+                ></input>
               </div>
             </div>
           </div>
 
           {/* Image Input  */}
-          <div className="sm:col-span-3">
-            <label
-              className="text-sm font-medium leading-6 text-gray-100"
-              htmlFor="image"
-            >
-              Image
-            </label>
-            <div className="mt-2 flex justify-center rounded-lg border border-dashed border-gray-100/25 px-6 py-10">
-              <div className="text-center mb-4">
-                <div className="mt-4 flex text-sm leading-6 text-gray-600">
-                  <label
-                    htmlFor="image"
-                    className="relative cursor-pointer rounded-md font-semibold text-indigo-600 focus:ring-0"
-                  >
-                    <span>Upload a file</span>
-                    <input
-                      id="image"
-                      name="image"
-                      type="file"
-                      className="sr-only"
-                      accept="image/*"
-                      value={newImage}
-                    />
-                  </label>
-                  <p className="pl-1">or drag and drop</p>
-                </div>
-                <p className="text-xs leading-5 text-gray-600">
-                  PNG, JPG, GIF up to 10MB
-                </p>
-              </div>
-            </div>
-          </div>
+          <img src={image} alt={title} className="h-20" />
 
           {/* Amenities Input  */}
-          <div className="sm:col-span-4">
+          {/* <div className="sm:col-span-4">
             <div className="relative flex gap-x-3">
               <div className="flex h-6 items-center">
                 <input
@@ -165,7 +142,7 @@ const EditPost = ({ id, title, location, image, description }) => {
                 <p className="text-gray-500">No more road side parking. Yay!</p>
               </div>
             </div>
-          </div>
+          </div> */}
 
           {/* Description Input  */}
           <div className="sm:col-span-full">
@@ -180,11 +157,11 @@ const EditPost = ({ id, title, location, image, description }) => {
                 <textarea
                   cols="30"
                   rows="5"
-                  type="text"
                   name="description"
                   id="description"
                   className="block flex-1 border-0 bg-transparent py-1.5 pl-2 text-gray-200 placeholder:text-gray-600 focus:ring-0 sm:text-sm sm:leading-6"
                   placeholder="Is it fun? Maybe not"
+                  onChange={(e) => setNewDescription(e.target.value)}
                   value={newDescription}
                 ></textarea>
               </div>
@@ -193,7 +170,7 @@ const EditPost = ({ id, title, location, image, description }) => {
           <div className="flex gap-x-1.5">
             <div>
               <button className="bg-gray-200 text-sm py-1 px-1.5 w-max rounded text-gray-900">
-                <Link href="/">Cancel</Link>
+                <Link href={`/${id}`}>Cancel</Link>
               </button>
             </div>
             <div>

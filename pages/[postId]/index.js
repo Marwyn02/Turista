@@ -1,7 +1,7 @@
-import getOne from "../api/getOne";
-import { connectMongoDB } from "../api/connectMongoDB";
-import PostsDetail from "@/components/turistaPosts/PostsDetail";
 import { Fragment } from "react";
+import { connectMongoDB } from "../api/connectMongoDB";
+import getOne from "../api/getOne";
+import PostsDetail from "@/components/turistaPosts/PostsDetail";
 import { useRouter } from "next/router";
 
 const index = (props) => {
@@ -15,13 +15,8 @@ const index = (props) => {
       });
       router.push("/");
     } catch (e) {
-      console.log(e, "Error in delete-post");
+      throw new Error("Error in delete-post: ", e);
     }
-  };
-  const editPostHandler = (postId) => {
-    const id = postId;
-    // console.log(id);
-    // return props.onEditPost(id);
   };
   return (
     <Fragment>
@@ -32,7 +27,6 @@ const index = (props) => {
         image={props.postData.image}
         description={props.postData.description}
         onDeletePost={deletePostHandler}
-        onEditPost={editPostHandler}
       />
     </Fragment>
   );
@@ -54,24 +48,34 @@ export async function getStaticPaths() {
 }
 
 export async function getStaticProps(context) {
-  const postId = context.params.postId;
-  const selectedResult = await getOne(postId);
-  if (!selectedResult) {
+  try {
+    const postId = context.params.postId;
+    const selectedResult = await getOne(postId);
+    if (!selectedResult) {
+      return {
+        notFound: true, // Return a 404 page
+      };
+    }
     return {
-      notFound: true, // Return a 404 page
+      props: {
+        postData: {
+          id: selectedResult._id.toString(),
+          title: selectedResult.title,
+          location: selectedResult.location,
+          image: selectedResult.image,
+          description: selectedResult.description,
+        },
+      },
+      revalidate: 1,
+    };
+  } catch (error) {
+    return {
+      props: {
+        postData: [],
+      },
+      revalidate: 1,
     };
   }
-  return {
-    props: {
-      postData: {
-        id: selectedResult._id.toString(),
-        title: selectedResult.title,
-        location: selectedResult.location,
-        image: selectedResult.image,
-        description: selectedResult.description,
-      },
-    },
-  };
 }
 
 export default index;

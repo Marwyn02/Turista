@@ -8,7 +8,7 @@ const getAll = async (collectionName) => {
     client.close();
     return result;
   } catch (err) {
-    console.log("Error in getFromDatabase", err);
+    throw new Error("Error in getFromDatabase: ", err);
   }
 };
 

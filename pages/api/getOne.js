@@ -10,8 +10,7 @@ const getOne = async (postId) => {
     client.close();
     return selectedResult;
   } catch (err) {
-    console.log(err, " Error in getOne");
-    return null;
+    throw new Error("ERROR in GETONE: " + err);
   }
 };
 

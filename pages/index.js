@@ -1,7 +1,7 @@
-import PostsList from "@/components/turistaPosts/PostsList";
-import SubNavigation from "@/components/navigation/SubNavigation";
 import { getAll } from "./api/getAll";
 import MainLayout from "@/components/layout/MainLayout";
+import PostsList from "@/components/turistaPosts/PostsList";
+import SubNavigation from "@/components/navigation/SubNavigation";
 
 const Home = (props) => {
   return (
