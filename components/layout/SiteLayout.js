@@ -4,8 +4,10 @@ import MainNavigation from "../navigation/MainNavigation";
 const SiteLayout = (props) => {
   return (
     <Fragment>
-      <MainNavigation />
-      <div className="pt-5 lg:pt-0">{props.children}</div>
+      <section className="relative">
+        <MainNavigation />
+        <section className="pt-10 lg:pt-0">{props.children}</section>
+      </section>
     </Fragment>
   );
 };

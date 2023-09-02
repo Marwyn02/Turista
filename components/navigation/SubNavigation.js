@@ -1,17 +1,27 @@
-import Link from "next/link";
+import { useRouter } from "next/router";
 
 const SubNavigation = () => {
-  const thisClassName =
-    "hover:opacity-80 duration-300 bg-indigo-200 py-1.5 px-5 rounded text-neutral-950 text-sm";
+  const router = useRouter();
+  const createPostHandler = () => {
+    router.push("/new-post");
+  };
   return (
-    <nav className="grid grid-cols-2 gap-2 my-2 mb-5">
-      <button className={thisClassName}>
-        <Link href="/new-post">Create new post</Link>
-      </button>
-      <button className={thisClassName}>
-        <Link href="/new-user">Create new account</Link>
-      </button>
-    </nav>
+    <section className="bg-gray-100 my-4 rounded-lg border hover:bg-gray-200 duration-200">
+      <nav
+        className="flex mx-5 md:w-1/2 md:mx-auto py-5 "
+        onClick={createPostHandler}
+      >
+        <input
+          type="text"
+          id="website-admin"
+          class="rounded-lg bg-gray-50 border text-gray-900 focus:ring-blue-500 focus:border-blue-500 
+        block flex-1 min-w-0 w-full text-sm border-gray-300 p-2.5 py-1.5  
+        dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500
+        hover:border-blue-500 hover:bg-gray-100 duration-300"
+          placeholder="Create your post here"
+        />
+      </nav>
+    </section>
   );
 };
 

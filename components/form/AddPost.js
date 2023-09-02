@@ -57,12 +57,15 @@ const NewPostsForm = () => {
   };
 
   return (
-    <form onSubmit={submitInputHandler}>
-      <div className="space-y-12 px-5 my-6 sm:my-10 border-l-2 border-white/70">
-        <h2 className="text-4xl font-semibold leading-7 text-blue-200">
+    <form
+      className="bg-white sm:my-4 py-10 md:rounded-lg"
+      onSubmit={submitInputHandler}
+    >
+      <div className="space-y-12 px-5">
+        <h2 className="text-4xl font-semibold leading-7 text-blue-400 underline">
           Make a post
         </h2>
-        <p className="text-sm leading-6 text-gray-600">
+        <p className="text-sm leading-6 text-gray-400">
           This information will be displayed publicly so be careful what you
           share.
         </p>
@@ -70,7 +73,7 @@ const NewPostsForm = () => {
           {/* Title Input  */}
           <div className="sm:col-span-4">
             <label
-              className="text-sm font-medium leading-6 text-gray-100"
+              className="text-sm font-medium leading-6 text-gray-600"
               htmlFor="title"
             >
               Title
@@ -82,7 +85,7 @@ const NewPostsForm = () => {
                   name="title"
                   id="title"
                   autoComplete="title"
-                  className="block flex-1 border-0 bg-transparent py-1.5 pl-2 text-gray-200 placeholder:text-gray-600 focus:ring-0 sm:text-sm sm:leading-6"
+                  className="block flex-1 border-0 bg-transparent py-1.5 pl-2 text-gray-200 placeholder:text-gray-300 focus:ring-0 sm:text-sm sm:leading-6"
                   placeholder="My travel post title"
                   ref={titleInputRef}
                   required
@@ -94,7 +97,7 @@ const NewPostsForm = () => {
           {/* Location Input  */}
           <div className="sm:col-span-4">
             <label
-              className="text-sm font-medium leading-6 text-gray-100"
+              className="text-sm font-medium leading-6 text-gray-600"
               htmlFor="location"
             >
               Location
@@ -106,7 +109,7 @@ const NewPostsForm = () => {
                   name="location"
                   id="location"
                   autoComplete="location"
-                  className="block flex-1 border-0 bg-transparent py-1.5 pl-2 text-gray-200 placeholder:text-gray-600 focus:ring-0 sm:text-sm sm:leading-6"
+                  className="block flex-1 border-0 bg-transparent py-1.5 pl-2 text-gray-200 placeholder:text-gray-300 focus:ring-0 sm:text-sm sm:leading-6"
                   placeholder="Where it was street, country name"
                   ref={locationInputRef}
                   required
@@ -118,12 +121,12 @@ const NewPostsForm = () => {
           {/* Image Input  */}
           <div className="sm:col-span-3">
             <label
-              className="text-sm font-medium leading-6 text-gray-100"
+              className="text-sm font-medium leading-6 text-gray-600"
               htmlFor="image"
             >
               Image
             </label>
-            <div className="mt-2 flex justify-center rounded-lg border border-dashed border-gray-100/25 px-6 py-10">
+            <div className="mt-2 flex justify-center rounded-lg border border-dashed border-gray-600/50 px-6 py-10">
               <div className="text-center mb-4">
                 <div className="mt-4 flex text-sm leading-6 text-gray-600">
                   <label
@@ -196,7 +199,7 @@ const NewPostsForm = () => {
           {/* Description Input  */}
           <div className="sm:col-span-full">
             <label
-              className="text-sm font-medium leading-6 text-gray-100"
+              className="text-sm font-medium leading-6 text-gray-600"
               htmlFor="description"
             >
               Description
@@ -209,7 +212,7 @@ const NewPostsForm = () => {
                   type="text"
                   name="description"
                   id="description"
-                  className="block flex-1 border-0 bg-transparent py-1.5 pl-2 text-gray-200 placeholder:text-gray-600 focus:ring-0 sm:text-sm sm:leading-6"
+                  className="block flex-1 border-0 bg-transparent py-1.5 pl-2 text-gray-200 placeholder:text-gray-300 focus:ring-0 sm:text-sm sm:leading-6"
                   placeholder="Is it fun? Maybe not"
                   ref={descriptionInputRef}
                 ></textarea>
