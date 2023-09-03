@@ -65,7 +65,7 @@ const NewPostsForm = () => {
         <h2 className="text-4xl font-semibold leading-7 text-blue-400 underline">
           Make a post
         </h2>
-        <p className="text-sm leading-6 text-gray-400">
+        <p className="text-sm leading-6 text-gray-600">
           This information will be displayed publicly so be careful what you
           share.
         </p>
@@ -221,9 +221,11 @@ const NewPostsForm = () => {
           </div>
           <div className="flex gap-x-1.5">
             <div>
-              <button className="bg-gray-200 text-sm py-1 px-1.5 w-max rounded text-gray-900">
-                <Link href="/">Cancel</Link>
-              </button>
+              <Link href="/">
+                <button className="bg-gray-200 text-sm py-1 px-1.5 w-max rounded text-gray-900">
+                  Cancel
+                </button>
+              </Link>
             </div>
             <div>
               <button

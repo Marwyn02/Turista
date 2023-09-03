@@ -1,6 +1,6 @@
 import { connectMongoDB } from "@/pages/api/connectMongoDB";
 import EditPost from "@/components/form/EditPost";
-import { Fragment } from "react";
+import MainLayout from "@/components/layout/MainLayout";
 import getOne from "@/pages/api/getOne";
 
 export async function getStaticPaths() {
@@ -55,7 +55,7 @@ export async function getStaticProps(context) {
 const editPost = (props) => {
   try {
     return (
-      <Fragment>
+      <MainLayout>
         <EditPost
           id={props.postData.id}
           title={props.postData.title}
@@ -63,7 +63,7 @@ const editPost = (props) => {
           image={props.postData.image}
           description={props.postData.description}
         />
-      </Fragment>
+      </MainLayout>
     );
   } catch (error) {
     throw new Error("Error fetching edit post data: ", error);

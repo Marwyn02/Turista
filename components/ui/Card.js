@@ -19,7 +19,11 @@ const Card = (props) => {
   return (
     <section
       key={props.id}
-      className="bg-gray-100 mb-5 rounded-lg drop-shadow-sm"
+      className={
+        !hasImage
+          ? "bg-gray-100 mb-5 rounded-lg drop-shadow-sm cursor-pointer"
+          : "bg-gray-100 mb-5 rounded-lg drop-shadow-sm"
+      }
       onClick={!hasImage ? showDetailsHandler : undefined}
     >
       <div className="p-4">

@@ -39,9 +39,12 @@ const EditPost = (props) => {
   };
 
   return (
-    <form onSubmit={handleSubmit}>
-      <div className="space-y-12 px-5 my-6 sm:my-10 border-l-2 border-white/70">
-        <h2 className="text-4xl font-semibold leading-7 text-blue-200">
+    <form
+      onSubmit={handleSubmit}
+      className="bg-white sm:my-4 py-10 md:rounded-lg md:border-2 md:border-blue-200"
+    >
+      <div className="space-y-12 px-5">
+        <h2 className="text-4xl font-semibold leading-7 text-blue-400 underline">
           Edit your post
         </h2>
         <p className="text-sm leading-6 text-gray-600">
@@ -52,7 +55,7 @@ const EditPost = (props) => {
           {/* Title Input  */}
           <div className="sm:col-span-4">
             <label
-              className="text-sm font-medium leading-6 text-gray-100"
+              className="text-sm font-medium leading-6 text-gray-600"
               htmlFor="title"
             >
               Title
@@ -63,7 +66,7 @@ const EditPost = (props) => {
                   type="text"
                   name="title"
                   id="title"
-                  className="block flex-1 border-0 bg-transparent py-1.5 pl-2 text-gray-200 placeholder:text-gray-600 focus:ring-0 sm:text-sm sm:leading-6"
+                  className="block flex-1 border-0 bg-transparent py-1.5 pl-2 text-gray-500 placeholder:text-gray-300 focus:ring-0 sm:text-sm sm:leading-6"
                   placeholder="My travel post title"
                   onChange={(e) => setNewTitle(e.target.value)}
                   value={newTitle}
@@ -76,7 +79,7 @@ const EditPost = (props) => {
           {/* Location Input  */}
           <div className="sm:col-span-4">
             <label
-              className="text-sm font-medium leading-6 text-gray-100"
+              className="text-sm font-medium leading-6 text-gray-600"
               htmlFor="location"
             >
               Location
@@ -87,7 +90,7 @@ const EditPost = (props) => {
                   type="text"
                   name="location"
                   id="location"
-                  className="block flex-1 border-0 bg-transparent py-1.5 pl-2 text-gray-200 placeholder:text-gray-600 focus:ring-0 sm:text-sm sm:leading-6"
+                  className="block flex-1 border-0 bg-transparent py-1.5 pl-2 text-gray-500 placeholder:text-gray-300 focus:ring-0 sm:text-sm sm:leading-6"
                   placeholder="Where it was street, country name"
                   onChange={(e) => setNewLocation(e.target.value)}
                   value={newLocation}
@@ -98,7 +101,21 @@ const EditPost = (props) => {
           </div>
 
           {/* Image Input  */}
-          <img src={image} alt={title} className="h-20" />
+          <div className="sm:col-span-4">
+            <label
+              htmlFor="image"
+              className="text-sm font-medium leading-6 text-gray-600"
+            >
+              Image
+            </label>
+            <img
+              src={image}
+              alt={title}
+              name="image"
+              id="image"
+              className="h-20"
+            />
+          </div>
 
           {/* Amenities Input  */}
           {/* <div className="sm:col-span-4">
@@ -147,7 +164,7 @@ const EditPost = (props) => {
           {/* Description Input  */}
           <div className="sm:col-span-full">
             <label
-              className="text-sm font-medium leading-6 text-gray-100"
+              className="text-sm font-medium leading-6 text-gray-600"
               htmlFor="description"
             >
               Description
@@ -159,7 +176,7 @@ const EditPost = (props) => {
                   rows="5"
                   name="description"
                   id="description"
-                  className="block flex-1 border-0 bg-transparent py-1.5 pl-2 text-gray-200 placeholder:text-gray-600 focus:ring-0 sm:text-sm sm:leading-6"
+                  className="block flex-1 border-0 bg-transparent py-1.5 pl-2 text-gray-500 placeholder:text-gray-400 focus:ring-0 sm:text-sm sm:leading-6"
                   placeholder="Is it fun? Maybe not"
                   onChange={(e) => setNewDescription(e.target.value)}
                   value={newDescription}
@@ -169,14 +186,16 @@ const EditPost = (props) => {
           </div>
           <div className="flex gap-x-1.5">
             <div>
-              <button className="bg-gray-200 text-sm py-1 px-1.5 w-max rounded text-gray-900">
-                <Link href={`/${id}`}>Cancel</Link>
-              </button>
+              <Link href={`/${id}`}>
+                <button className="bg-gray-200 text-sm py-1 px-5 w-max rounded text-gray-900">
+                  Cancel
+                </button>
+              </Link>
             </div>
             <div>
               <button
                 type="submit"
-                className="bg-indigo-500 text-sm py-1 px-1.5 w-max rounded text-gray-100"
+                className="bg-indigo-500 text-sm py-1 px-5 w-max rounded text-gray-100"
               >
                 Save
               </button>
