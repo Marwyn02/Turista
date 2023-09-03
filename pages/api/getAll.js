@@ -1,4 +1,4 @@
-import { connectMongoDB } from "./connectMongoDB";
+import { connectMongoDB } from "../../lib/connectMongoDB";
 
 const getAll = async (collectionName) => {
   try {

@@ -1,4 +1,4 @@
-import { connectMongoDB } from "@/pages/api/connectMongoDB";
+import { connectMongoDB } from "@/lib/connectMongoDB";
 import EditPost from "@/components/form/EditPost";
 import MainLayout from "@/components/layout/MainLayout";
 import getOne from "@/pages/api/getOne";

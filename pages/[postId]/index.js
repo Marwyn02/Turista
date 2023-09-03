@@ -1,5 +1,5 @@
 import { Fragment } from "react";
-import { connectMongoDB } from "../api/connectMongoDB";
+import { connectMongoDB } from "../../lib/connectMongoDB";
 import getOne from "../api/getOne";
 import PostsDetail from "@/components/turistaPosts/PostsDetail";
 import { useRouter } from "next/router";

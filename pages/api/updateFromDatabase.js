@@ -1,4 +1,4 @@
-import { connectMongoDB } from "./connectMongoDB";
+import { connectMongoDB } from "../../lib/connectMongoDB";
 import { ObjectId } from "mongodb";
 
 const updateFromDatabase = async (updatedPost) => {

@@ -1,5 +1,5 @@
 import { ObjectId } from "mongodb";
-import { connectMongoDB } from "./connectMongoDB";
+import { connectMongoDB } from "../../lib/connectMongoDB";
 
 const deleteOneFromDatabase = async (collectionName, id) => {
   try {

@@ -1,5 +1,5 @@
 import { ObjectId } from "mongodb";
-import { connectMongoDB } from "./connectMongoDB";
+import { connectMongoDB } from "../../lib/connectMongoDB";
 
 const getOne = async (postId) => {
   try {
