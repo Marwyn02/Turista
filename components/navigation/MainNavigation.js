@@ -9,7 +9,7 @@ const MainNavigation = () => {
           <Link href="/">Turista</Link>
         </h1>
         <h1 className="mr-2 self-center py-1.5 px-2 text-sm text-indigo-400 hover:text-indigo-600 duration-300">
-          {/* <Link href="/new-user">Log in</Link> */}
+          <Link href="/new-user">Log in</Link>
         </h1>
       </div>
     </nav>

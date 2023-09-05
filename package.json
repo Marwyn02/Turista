@@ -12,6 +12,7 @@
     "@auth/mongodb-adapter": "^1.0.0",
     "autoprefixer": "10.4.15",
     "bcrypt": "^5.1.1",
+    "bcryptjs": "^2.4.3",
     "mongodb": "^5.8.1",
     "mongoose": "^7.4.4",
     "next": "13.4.19",

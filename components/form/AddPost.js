@@ -29,7 +29,6 @@ const NewPostsForm = () => {
     );
 
     const postData = {
-      type: "POSTS",
       title: enteredTitle,
       location: enteredLocation,
       image: enteredImage,
@@ -38,7 +37,7 @@ const NewPostsForm = () => {
     };
 
     try {
-      const response = await fetch("/api/dbConnection", {
+      const response = await fetch("/api/post/create", {
         method: "POST",
         headers: {
           "Content-type": "application/json",
@@ -52,7 +51,7 @@ const NewPostsForm = () => {
         router.push("/");
       }
     } catch (error) {
-      throw new Error("Error in create post: ", error);
+      throw new Error("Error in create post: " + error);
     }
   };
 
@@ -85,7 +84,7 @@ const NewPostsForm = () => {
                   name="title"
                   id="title"
                   autoComplete="title"
-                  className="block flex-1 border-0 bg-transparent py-1.5 pl-2 text-gray-200 placeholder:text-gray-300 focus:ring-0 sm:text-sm sm:leading-6"
+                  className="block flex-1 border-0 bg-transparent py-1.5 pl-2 text-gray-500 placeholder:text-gray-300 focus:ring-0 sm:text-sm sm:leading-6"
                   placeholder="My travel post title"
                   ref={titleInputRef}
                   required
@@ -109,7 +108,7 @@ const NewPostsForm = () => {
                   name="location"
                   id="location"
                   autoComplete="location"
-                  className="block flex-1 border-0 bg-transparent py-1.5 pl-2 text-gray-200 placeholder:text-gray-300 focus:ring-0 sm:text-sm sm:leading-6"
+                  className="block flex-1 border-0 bg-transparent py-1.5 pl-2 text-gray-500 placeholder:text-gray-300 focus:ring-0 sm:text-sm sm:leading-6"
                   placeholder="Where it was street, country name"
                   ref={locationInputRef}
                   required
@@ -212,7 +211,7 @@ const NewPostsForm = () => {
                   type="text"
                   name="description"
                   id="description"
-                  className="block flex-1 border-0 bg-transparent py-1.5 pl-2 text-gray-200 placeholder:text-gray-300 focus:ring-0 sm:text-sm sm:leading-6"
+                  className="block flex-1 border-0 bg-transparent py-1.5 pl-2 text-gray-500 placeholder:text-gray-300 focus:ring-0 sm:text-sm sm:leading-6"
                   placeholder="Is it fun? Maybe not"
                   ref={descriptionInputRef}
                 ></textarea>

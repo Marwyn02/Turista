@@ -12,7 +12,6 @@ const Card = (props) => {
   }, [props.image]);
 
   const showDetailsHandler = () => {
-    console.log(props.image);
     router.push("/" + props.id);
   };
 

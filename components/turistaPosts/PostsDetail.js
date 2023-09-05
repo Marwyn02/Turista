@@ -1,7 +1,9 @@
 import Link from "next/link";
 import { useState, useEffect } from "react";
+import { useRouter } from "next/router";
 
 const PostsDetail = (props) => {
+  const router = useRouter();
   const [hasImage, setHasImage] = useState(true);
 
   useEffect(() => {
@@ -10,11 +12,27 @@ const PostsDetail = (props) => {
     }
   }, [props.image]);
 
-  const deleteHandler = (event) => {
+  const deleteHandler = async (event) => {
     event.preventDefault();
     const postId = props.id;
 
-    props.onDeletePost(postId);
+    try {
+      const response = await fetch(`/api/post/delete`, {
+        method: "DELETE",
+        headers: {
+          "Content-type": "application/json",
+        },
+        body: JSON.stringify({ postId }),
+      });
+
+      if (!response.ok) {
+        throw new Error("Failed to delete post");
+      } else {
+        router.push("/");
+      }
+    } catch (error) {
+      throw new Error("Error in delete Post: " + error);
+    }
   };
 
   return (

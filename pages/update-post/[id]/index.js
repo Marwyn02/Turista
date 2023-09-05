@@ -1,16 +1,14 @@
 import { connectMongoDB } from "@/lib/connectMongoDB";
 import EditPost from "@/components/form/EditPost";
 import MainLayout from "@/components/layout/MainLayout";
-import getOne from "@/pages/api/getOne";
+import FindOne from "@/pages/api/post/findOne";
+import mongoose from "mongoose";
 
 export async function getStaticPaths() {
   try {
-    const { client, db } = await connectMongoDB();
-    const collectionName = "post_collection";
-    const postsCollection = db.collection(collectionName);
+    await connectMongoDB();
+    const postsCollection = mongoose.connection.db.collection("posts");
     const posts = await postsCollection.find({}).toArray();
-    client.close();
-
     return {
       fallback: "blocking",
       paths: posts.map((post) => ({
@@ -18,14 +16,15 @@ export async function getStaticPaths() {
       })),
     };
   } catch (error) {
-    throw new Error("Error in update-post getStaticPaths: ", error);
+    // throw new Error("Error in update-post getStaticPaths: ", error);
+    console.log("Getting error here: ", error);
   }
 }
 
 export async function getStaticProps(context) {
   try {
     const postId = context.params.id;
-    const selectedResult = await getOne(postId);
+    const selectedResult = await FindOne(postId);
 
     if (!selectedResult) {
       return { notFound: true }; // Return a 404 page

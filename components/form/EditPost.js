@@ -20,7 +20,7 @@ const EditPost = (props) => {
       description: newDescription,
     };
     try {
-      const response = await fetch(`/api/dbConnection`, {
+      const response = await fetch(`/api/post/edit`, {
         method: "PUT",
         headers: {
           "Content-type": "application/json",
@@ -34,7 +34,7 @@ const EditPost = (props) => {
         router.push(`/${id}`);
       }
     } catch (error) {
-      throw new Error("Error in Edit Post: ", error);
+      throw new Error("Error in Edit Post: " + error);
     }
   };
 
