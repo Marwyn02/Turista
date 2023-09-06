@@ -53,6 +53,17 @@ const PostsDetail = (props) => {
           <p className="text-xs -mt-1 text-zinc-900/50 font-light">
             {props.location}
           </p>
+          <div className="flex gap-x-2 mt-2">
+            {props.amenities.map((item) => (
+              <div
+                key={item.id}
+                className="text-gray-600 text-xs border-blue-300 bg-gray-50 border rounded-xl px-1.5 py-0.5"
+              >
+                {item.name}
+              </div>
+            ))}
+          </div>
+          <hr className="mt-3"></hr>
           <p className="mt-2 text-zinc-600 text-base font-light">
             {props.description}
           </p>

@@ -13,6 +13,7 @@ const index = (props) => {
         location={props.postData.location}
         image={props.postData.image}
         description={props.postData.description}
+        amenities={props.postData.amenities}
       />
     </Fragment>
   );
@@ -47,6 +48,11 @@ export async function getStaticProps(context) {
           location: selectedResult.location,
           image: selectedResult.image,
           description: selectedResult.description,
+          amenities: selectedResult.amenities.map((amenity) => ({
+            name: amenity.name,
+            checked: amenity.checked,
+            id: amenity.id,
+          })),
         },
       },
       revalidate: 1,

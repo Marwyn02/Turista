@@ -1,8 +1,9 @@
 import Link from "next/link";
 import { useRouter } from "next/router";
-import { useRef } from "react";
+import { useRef, useState } from "react";
 
 const NewPostsForm = () => {
+  const [selectedImage, setSelectedImage] = useState();
   const router = useRouter();
   const titleInputRef = useRef();
   const locationInputRef = useRef();
@@ -17,12 +18,21 @@ const NewPostsForm = () => {
     };
   };
 
+  const handleFileChange = () => {
+    const enteredImage = imageInputRef.current;
+
+    if (enteredImage.files.length > 0) {
+      const file = enteredImage.files[0];
+      const url = URL.createObjectURL(file);
+      setSelectedImage(url);
+    }
+  };
+
   const submitInputHandler = async (event) => {
     event.preventDefault();
 
     const enteredTitle = titleInputRef.current.value;
     const enteredLocation = locationInputRef.current.value;
-    const enteredImage = imageInputRef.current.value;
     const enteredDescription = descriptionInputRef.current.value;
     const checkboxData = checkboxRef.current.filter(
       (checkbox) => checkbox.checked
@@ -31,7 +41,7 @@ const NewPostsForm = () => {
     const postData = {
       title: enteredTitle,
       location: enteredLocation,
-      image: enteredImage,
+      image: selectedImage,
       description: enteredDescription,
       amenities: checkboxData,
     };
@@ -139,6 +149,7 @@ const NewPostsForm = () => {
                       type="file"
                       className="sr-only"
                       accept="image/*"
+                      onChange={handleFileChange}
                       ref={imageInputRef}
                     />
                   </label>
@@ -157,7 +168,7 @@ const NewPostsForm = () => {
               <div className="flex h-6 items-center">
                 <input
                   id="freeWifiCheckbox"
-                  name="freeWifiCheckbox"
+                  name="Free Wifi"
                   type="checkbox"
                   onChange={(e) => handleCheckboxChange(e, 0)}
                   className="h-4 w-4 rounded border-gray-300 text-indigo-600 focus:ring-indigo-600"
@@ -177,7 +188,7 @@ const NewPostsForm = () => {
               <div className="flex h-6 items-center">
                 <input
                   id="parkingCheckbox"
-                  name="parkingCheckbox"
+                  name="With Parking"
                   type="checkbox"
                   onChange={(e) => handleCheckboxChange(e, 1)}
                   className="h-4 w-4 rounded border-gray-300 text-indigo-600 focus:ring-indigo-600"
@@ -212,7 +223,7 @@ const NewPostsForm = () => {
                   name="description"
                   id="description"
                   className="block flex-1 border-0 bg-transparent py-1.5 pl-2 text-gray-500 placeholder:text-gray-300 focus:ring-0 sm:text-sm sm:leading-6"
-                  placeholder="Is it fun? Maybe not"
+                  placeholder="Is it fun? Maybe not..."
                   ref={descriptionInputRef}
                 ></textarea>
               </div>

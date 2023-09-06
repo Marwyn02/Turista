@@ -16,8 +16,8 @@ export async function getStaticPaths() {
       })),
     };
   } catch (error) {
-    // throw new Error("Error in update-post getStaticPaths: ", error);
-    console.log("Getting error here: ", error);
+    throw new Error("Error in update-post getStaticPaths: ", error);
+    // console.log("Getting error here: ", error);
   }
 }
 
