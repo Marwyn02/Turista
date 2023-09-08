@@ -1,12 +1,13 @@
-import { useEffect } from "react";
-import Router from "next/router";
-import { getProviders, getSession, signIn } from "next-auth/react";
+import { getProviders, getSession, signIn, useSession } from "next-auth/react";
+import { useRouter } from "next/router";
 
 const login = ({ provider, session }) => {
-  console.log({ provider, session });
-  useEffect(() => {
-    if (session) return Router.push("/");
-  }, [session]);
+  const router = useRouter();
+  const { data: account } = useSession();
+
+  if (account) {
+    router.push("/");
+  }
   return (
     <div className="grid place-items-center h-screen">
       <div className="text-center">

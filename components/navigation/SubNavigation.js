@@ -1,12 +1,22 @@
+import { useSession } from "next-auth/react";
 import { useRouter } from "next/router";
 
 const SubNavigation = () => {
   const router = useRouter();
+  const { data: session } = useSession();
   const createPostHandler = () => {
     router.push("/new-post");
   };
   return (
     <section className="bg-gray-100 my-4 rounded-lg border hover:bg-gray-200 duration-200">
+      {session && (
+        <div className="flex pl-5 pt-2">
+          <img src={session.user.image} alt="" className="w-10 rounded-2xl" />
+          <span className="pl-3 text-sm place-self-center font-bold">
+            {session.user.name}
+          </span>
+        </div>
+      )}
       <nav
         className="flex mx-5 md:w-1/2 md:mx-auto py-5 "
         onClick={createPostHandler}
