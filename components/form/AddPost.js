@@ -1,8 +1,10 @@
 import Link from "next/link";
 import { useRouter } from "next/router";
 import { useRef, useState } from "react";
+import { useSession } from "next-auth/react";
 
 const NewPostsForm = () => {
+  const { data: session } = useSession();
   const [selectedImage, setSelectedImage] = useState();
   const router = useRouter();
   const titleInputRef = useRef();
@@ -44,6 +46,7 @@ const NewPostsForm = () => {
       image: selectedImage,
       description: enteredDescription,
       amenities: checkboxData,
+      user: session.user._id,
     };
 
     try {

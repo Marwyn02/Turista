@@ -1,4 +1,3 @@
-import { connectMongoDB } from "@/lib/connectMongoDB";
 import NextAuth from "next-auth/next";
 import FacebookProvider from "next-auth/providers/facebook";
 import User from "@/models/User";
@@ -36,11 +35,14 @@ export default NextAuth({
       if (account) {
         token.accessToken = account.access_token;
       }
+
+      const user = await getUserByEmail({ email: token.email });
+      token.user = user;
       return token;
     },
     async session({ session, token, user }) {
-      session.accessToken = token.accessToken;
-      // console.log("TOKEN: ", token);
+      // session.accessToken = token.accessToken;
+      session.user = token.user;
       return session;
     },
   },
@@ -57,11 +59,16 @@ async function signInWithOAuth({ account, profile }) {
   const newUser = new User({
     name: profile.name,
     email: profile.email,
-    image: profile.picture,
-    providers: account.provider,
+    image: profile.picture.data.url,
+    provider: account.provider,
   });
-
-  console.log({ newUser });
-
+  const saveUser = await newUser.save();
   return true;
+}
+
+async function getUserByEmail({ email }) {
+  const user = await User.findOne({ email }).select("-password");
+  if (!user) throw new Error("Email does not exist");
+
+  return { ...user._doc, _id: user._id.toString() };
 }

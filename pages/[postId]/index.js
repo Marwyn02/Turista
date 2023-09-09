@@ -14,6 +14,7 @@ const index = (props) => {
         image={props.postData.image}
         description={props.postData.description}
         amenities={props.postData.amenities}
+        user={props.postData.user}
       />
     </Fragment>
   );
@@ -35,6 +36,7 @@ export async function getStaticProps(context) {
   try {
     const postId = context.params.postId;
     const selectedResult = await FindOne(postId);
+    // console.log("RESULT: ", selectedResult);
     if (!selectedResult) {
       return {
         notFound: true, // Return a 404 page
@@ -53,6 +55,7 @@ export async function getStaticProps(context) {
             checked: amenity.checked,
             id: amenity.id,
           })),
+          user: selectedResult.user.toString(),
         },
       },
       revalidate: 1,

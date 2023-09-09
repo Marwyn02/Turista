@@ -4,8 +4,13 @@ import { useRouter } from "next/router";
 const SubNavigation = () => {
   const router = useRouter();
   const { data: session } = useSession();
+  // console.log({ session });
   const createPostHandler = () => {
-    router.push("/new-post");
+    if (session) {
+      router.push("/new-post");
+    } else {
+      router.push("/account/login");
+    }
   };
   return (
     <section className="bg-gray-100 my-4 rounded-lg border hover:bg-gray-200 duration-200">

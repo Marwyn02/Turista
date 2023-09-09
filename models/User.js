@@ -10,10 +10,6 @@ const UserSchema = new mongoose.Schema(
       type: String,
       trim: true,
     },
-    emailVerified: {
-      type: Date,
-      trim: true,
-    },
     image: {
       type: String,
       trim: true,
