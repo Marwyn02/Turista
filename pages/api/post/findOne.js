@@ -5,12 +5,12 @@ import User from "@/models/User";
 const FindOne = async (postId) => {
   const Id = postId;
   await connectMongoDB();
-  const selectedResult = await Post.findById(Id);
+  const selectedResult = await Post.findById(Id); // Get the post data
 
-  const user = selectedResult.user.toString();
-  const selectedUser = await User.findById(user);
-  console.log(selectedUser);
-  return selectedResult;
+  const user = selectedResult.user.toString(); // Get the user id from the post data
+  const selectedUser = await User.findById(user); // Get the user data
+
+  return { selectedResult, selectedUser };
 };
 
 export default FindOne;

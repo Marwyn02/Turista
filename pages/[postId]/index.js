@@ -35,9 +35,9 @@ export async function getStaticPaths() {
 export async function getStaticProps(context) {
   try {
     const postId = context.params.postId;
-    const selectedResult = await FindOne(postId);
-    // console.log("RESULT: ", selectedResult);
-    if (!selectedResult) {
+    const { selectedResult, selectedUser } = await FindOne(postId);
+
+    if (!selectedResult && !selectedUser) {
       return {
         notFound: true, // Return a 404 page
       };
@@ -55,7 +55,7 @@ export async function getStaticProps(context) {
             checked: amenity.checked,
             id: amenity.id,
           })),
-          user: selectedResult.user.toString(),
+          user: selectedUser.name,
         },
       },
       revalidate: 1,

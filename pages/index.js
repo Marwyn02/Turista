@@ -17,7 +17,10 @@ export async function getStaticProps() {
   try {
     await connectMongoDB();
     const postsCollection = mongoose.connection.db.collection("posts");
-    const posts = await postsCollection.find().toArray();
+    const posts = await postsCollection
+      .find()
+      .sort({ createdAt: -1 })
+      .toArray();
     return {
       props: {
         posts: posts.map((post) => ({

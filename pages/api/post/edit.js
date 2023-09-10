@@ -3,10 +3,15 @@ import Post from "@/models/Post";
 
 const Edit = async (req, res) => {
   try {
-    const { id, title, location, description } = req.body;
+    const { id, title, location, description, amenities } = req.body;
     await connectMongoDB();
     const result = await Post.findByIdAndUpdate(id, {
-      $set: { title: title, location: location, description: description },
+      $set: {
+        title: title,
+        location: location,
+        description: description,
+        amenities: amenities,
+      },
     });
     await result.save();
     return res.status(201).json({ success: true, message: "Post updated" });

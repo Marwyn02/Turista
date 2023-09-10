@@ -5,7 +5,6 @@ import MainLayout from "@/components/layout/MainLayout";
 const login = ({ provider, session }) => {
   const router = useRouter();
   const { data: account } = useSession();
-
   if (account) {
     router.push("/");
   }
@@ -29,12 +28,18 @@ const login = ({ provider, session }) => {
             </button>
           </div>
           <div className="flex justify-center">
-            <button className="w-5/6 rounded-full border py-3 text-sm mt-5 font-semibold tracking-wide text-gray-700 hover:bg-blue-500 hover:text-gray-50 hover:border-blue-500 duration-300">
+            <button
+              className="w-5/6 rounded-full border py-3 text-sm mt-5 font-semibold tracking-wide text-gray-700 hover:bg-blue-500 hover:text-gray-50 hover:border-blue-500 duration-300"
+              disabled
+            >
               Google
             </button>
           </div>
           <div className="flex justify-center">
-            <button className="w-5/6 rounded-full border py-3 text-sm mt-5 font-semibold tracking-wide text-gray-700 hover:bg-blue-500 hover:text-gray-50 hover:border-blue-500 duration-300">
+            <button
+              className="w-5/6 rounded-full border py-3 text-sm mt-5 font-semibold tracking-wide text-gray-700 hover:bg-blue-500 hover:text-gray-50 hover:border-blue-500 duration-300"
+              disabled
+            >
               Github
             </button>
           </div>

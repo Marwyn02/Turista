@@ -4,7 +4,6 @@ import { useRouter } from "next/router";
 const SubNavigation = () => {
   const router = useRouter();
   const { data: session } = useSession();
-  // console.log({ session });
   const createPostHandler = () => {
     if (session) {
       router.push("/new-post");

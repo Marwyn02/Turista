@@ -24,9 +24,9 @@ export async function getStaticPaths() {
 export async function getStaticProps(context) {
   try {
     const postId = context.params.id;
-    const selectedResult = await FindOne(postId);
+    const { selectedResult, selectedUser } = await FindOne(postId);
 
-    if (!selectedResult) {
+    if (!selectedResult && !selectedUser) {
       return { notFound: true }; // Return a 404 page
     }
     return {
@@ -37,6 +37,10 @@ export async function getStaticProps(context) {
           location: selectedResult.location,
           image: selectedResult.image,
           description: selectedResult.description,
+          amenities: selectedResult.amenities.map((item) => ({
+            name: item.name,
+            checked: item.checked,
+          })),
         },
       },
       revalidate: 1,
@@ -61,6 +65,7 @@ const editPost = (props) => {
           location={props.postData.location}
           image={props.postData.image}
           description={props.postData.description}
+          amenities={props.postData.amenities}
         />
       </MainLayout>
     );

@@ -4,11 +4,22 @@ import { useRouter } from "next/router";
 
 const EditPost = (props) => {
   const router = useRouter();
-  const { id, title, location, image, description } = props;
+  const { id, title, location, image, description, amenities } = props;
 
   const [newTitle, setNewTitle] = useState(title);
   const [newDescription, setNewDescription] = useState(description);
   const [newLocation, setNewLocation] = useState(location);
+  const [newAmenities, setNewAmenities] = useState(amenities);
+
+  const handleCheckboxChange = (event, index) => {
+    const updatedAmenities = [...newAmenities];
+    updatedAmenities[index].checked = event.target.checked;
+    setNewAmenities(updatedAmenities);
+    // checkboxRef.current[index] = {
+    //   name: event.target.name,
+    //   checked: event.target.checked,
+    // };
+  };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -18,6 +29,7 @@ const EditPost = (props) => {
       title: newTitle,
       location: newLocation,
       description: newDescription,
+      amenities: newAmenities,
     };
     try {
       const response = await fetch(`/api/post/edit`, {
@@ -66,7 +78,7 @@ const EditPost = (props) => {
                   type="text"
                   name="title"
                   id="title"
-                  className="block flex-1 border-0 bg-transparent py-1.5 pl-2 text-gray-500 placeholder:text-gray-300 focus:ring-0 sm:text-sm sm:leading-6"
+                  className="block flex-1 border-0 bg-transparent py-1.5 pl-2 text-gray-600 placeholder:text-gray-300 focus:ring-0 sm:text-sm sm:leading-6"
                   placeholder="My travel post title"
                   onChange={(e) => setNewTitle(e.target.value)}
                   value={newTitle}
@@ -90,7 +102,7 @@ const EditPost = (props) => {
                   type="text"
                   name="location"
                   id="location"
-                  className="block flex-1 border-0 bg-transparent py-1.5 pl-2 text-gray-500 placeholder:text-gray-300 focus:ring-0 sm:text-sm sm:leading-6"
+                  className="block flex-1 border-0 bg-transparent py-1.5 pl-2 text-gray-600 placeholder:text-gray-300 focus:ring-0 sm:text-sm sm:leading-6"
                   placeholder="Where it was street, country name"
                   onChange={(e) => setNewLocation(e.target.value)}
                   value={newLocation}
@@ -118,11 +130,33 @@ const EditPost = (props) => {
           </div>
 
           {/* Amenities Input  */}
+          {newAmenities.map((amenity, index) => (
+            <div>
+              <div>
+                <input
+                  id={`amenityCheckbox-${index}`}
+                  name={`amenityCheckbox-${index}`}
+                  type="checkbox"
+                  checked={amenity.checked}
+                  onChange={(e) => handleCheckboxChange(e, index)}
+                  className="h-4 w-4 rounded border-gray-300 text-indigo-600 focus:ring-indigo-600"
+                />
+              </div>
+              <div className="text-sm leading-6">
+                <label
+                  htmlFor={`amenityCheckbox-${index}`}
+                  className="font-medium text-indigo-400"
+                >
+                  {amenity.name}
+                </label>
+              </div>
+            </div>
+          ))}
           {/* <div className="sm:col-span-4">
             <div className="relative flex gap-x-3">
               <div className="flex h-6 items-center">
                 <input
-                  id="freeWifiCheckbox"
+                  id={}
                   name="freeWifiCheckbox"
                   type="checkbox"
                   onChange={(e) => handleCheckboxChange(e, 0)}
@@ -176,7 +210,7 @@ const EditPost = (props) => {
                   rows="5"
                   name="description"
                   id="description"
-                  className="block flex-1 border-0 bg-transparent py-1.5 pl-2 text-gray-500 placeholder:text-gray-400 focus:ring-0 sm:text-sm sm:leading-6"
+                  className="block flex-1 border-0 bg-transparent py-1.5 pl-2 text-gray-600 placeholder:text-gray-400 focus:ring-0 sm:text-sm sm:leading-6"
                   placeholder="Is it fun? Maybe not"
                   onChange={(e) => setNewDescription(e.target.value)}
                   value={newDescription}
