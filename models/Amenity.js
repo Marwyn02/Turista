@@ -7,6 +7,9 @@ const AmenitySchema = new mongoose.Schema({
   checked: {
     type: Boolean,
   },
+  description: {
+    type: String,
+  },
 });
 
 export default mongoose.models.Amenity ||

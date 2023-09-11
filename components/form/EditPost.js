@@ -15,10 +15,6 @@ const EditPost = (props) => {
     const updatedAmenities = [...newAmenities];
     updatedAmenities[index].checked = event.target.checked;
     setNewAmenities(updatedAmenities);
-    // checkboxRef.current[index] = {
-    //   name: event.target.name,
-    //   checked: event.target.checked,
-    // };
   };
 
   const handleSubmit = async (e) => {
@@ -63,7 +59,7 @@ const EditPost = (props) => {
           This information will be displayed publicly so be careful what you
           share.
         </p>
-        <div className="mt-10 grid grid-cols-1 gap-x-6 gap-y-8 sm:grid-cols-6">
+        <div className="mt-10 grid grid-cols-1 gap-x-6 gap-y-5 md:gap-y-8 sm:grid-cols-6">
           {/* Title Input  */}
           <div className="sm:col-span-4">
             <label
@@ -130,70 +126,30 @@ const EditPost = (props) => {
           </div>
 
           {/* Amenities Input  */}
-          {newAmenities.map((amenity, index) => (
-            <div>
-              <div>
-                <input
-                  id={`amenityCheckbox-${index}`}
-                  name={`amenityCheckbox-${index}`}
-                  type="checkbox"
-                  checked={amenity.checked}
-                  onChange={(e) => handleCheckboxChange(e, index)}
-                  className="h-4 w-4 rounded border-gray-300 text-indigo-600 focus:ring-indigo-600"
-                />
+          <div className="sm:col-span-4 border border-gray-300 p-4 rounded-lg">
+            {newAmenities.map((amenity, index) => (
+              <div className="relative flex gap-x-3" key={amenity.name}>
+                <div className="flex h-6 items-center">
+                  <input
+                    id={amenity.name}
+                    name={amenity.name}
+                    type="checkbox"
+                    onChange={(e) => handleCheckboxChange(e, index)}
+                    checked={amenity.checked}
+                    className="h-4 w-4 rounded border-gray-300 text-indigo-600 focus:ring-indigo-600"
+                  />
+                </div>
+                <div className="text-sm leading-6">
+                  <label
+                    htmlFor={amenity.name}
+                    className="font-medium text-indigo-400"
+                  >
+                    {amenity.name}
+                  </label>
+                </div>
               </div>
-              <div className="text-sm leading-6">
-                <label
-                  htmlFor={`amenityCheckbox-${index}`}
-                  className="font-medium text-indigo-400"
-                >
-                  {amenity.name}
-                </label>
-              </div>
-            </div>
-          ))}
-          {/* <div className="sm:col-span-4">
-            <div className="relative flex gap-x-3">
-              <div className="flex h-6 items-center">
-                <input
-                  id={}
-                  name="freeWifiCheckbox"
-                  type="checkbox"
-                  onChange={(e) => handleCheckboxChange(e, 0)}
-                  className="h-4 w-4 rounded border-gray-300 text-indigo-600 focus:ring-indigo-600"
-                />
-              </div>
-              <div className="text-sm leading-6">
-                <label
-                  htmlFor="comments"
-                  className="font-medium text-indigo-400"
-                >
-                  Free wifi
-                </label>
-                <p className="text-gray-500">Who doesn't want a free wifi?</p>
-              </div>
-            </div>
-            <div className="relative flex gap-x-3">
-              <div className="flex h-6 items-center">
-                <input
-                  id="parkingCheckbox"
-                  name="parkingCheckbox"
-                  type="checkbox"
-                  onChange={(e) => handleCheckboxChange(e, 1)}
-                  className="h-4 w-4 rounded border-gray-300 text-indigo-600 focus:ring-indigo-600"
-                />
-              </div>
-              <div className="text-sm leading-6">
-                <label
-                  htmlFor="comments"
-                  className="font-medium text-indigo-400"
-                >
-                  Parking
-                </label>
-                <p className="text-gray-500">No more road side parking. Yay!</p>
-              </div>
-            </div>
-          </div> */}
+            ))}
+          </div>
 
           {/* Description Input  */}
           <div className="sm:col-span-full">
@@ -218,6 +174,7 @@ const EditPost = (props) => {
               </div>
             </div>
           </div>
+
           <div className="flex gap-x-1.5">
             <div>
               <Link href={`/${id}`}>

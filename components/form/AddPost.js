@@ -16,7 +16,7 @@ const NewPostsForm = () => {
   const handleCheckboxChange = (event, index) => {
     checkboxRef.current[index] = {
       name: event.target.name,
-      checked: event.target.checked,
+      checked: !event.target.checked ? false : event.target.checked,
     };
   };
 
@@ -36,9 +36,10 @@ const NewPostsForm = () => {
     const enteredTitle = titleInputRef.current.value;
     const enteredLocation = locationInputRef.current.value;
     const enteredDescription = descriptionInputRef.current.value;
-    const checkboxData = checkboxRef.current.filter(
-      (checkbox) => checkbox.checked
-    );
+    const checkboxData = checkboxRef.current.map((check) => ({
+      name: check.name,
+      checked: check.checked,
+    }));
 
     const postData = {
       title: enteredTitle,
@@ -174,12 +175,13 @@ const NewPostsForm = () => {
                   name="Free Wifi"
                   type="checkbox"
                   onChange={(e) => handleCheckboxChange(e, 0)}
+                  ref={(el) => (checkboxRef.current[0] = el)}
                   className="h-4 w-4 rounded border-gray-300 text-indigo-600 focus:ring-indigo-600"
                 />
               </div>
               <div className="text-sm leading-6">
                 <label
-                  htmlFor="comments"
+                  htmlFor="freeWifiCheckbox"
                   className="font-medium text-indigo-400"
                 >
                   Free wifi
@@ -194,12 +196,13 @@ const NewPostsForm = () => {
                   name="With Parking"
                   type="checkbox"
                   onChange={(e) => handleCheckboxChange(e, 1)}
+                  ref={(el) => (checkboxRef.current[1] = el)}
                   className="h-4 w-4 rounded border-gray-300 text-indigo-600 focus:ring-indigo-600"
                 />
               </div>
               <div className="text-sm leading-6">
                 <label
-                  htmlFor="comments"
+                  htmlFor="parkingCheckbox"
                   className="font-medium text-indigo-400"
                 >
                   Parking
@@ -232,6 +235,7 @@ const NewPostsForm = () => {
               </div>
             </div>
           </div>
+
           <div className="flex gap-x-1.5">
             <div>
               <Link href="/">

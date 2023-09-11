@@ -1,6 +1,3 @@
-import Link from "next/link";
-import React from "react";
-
 const MainLayout = (props) => {
   return (
     <section className="grid grid-cols-1 md:grid-cols-4 lg:pt-12">
