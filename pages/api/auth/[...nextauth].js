@@ -31,6 +31,16 @@ export default NextAuth({
       }
       return true;
     },
+
+    async signOut({ token, session }) {
+      // Delete auth cookie on signout so it doesn't persist past log out
+      res.setHeader("Set-Cookie", "");
+
+      // Set token/session to {}, that would update the cilentside token/session as well
+      token = {};
+      session = {};
+    },
+
     async jwt({ token, account }) {
       if (account) {
         token.accessToken = account.access_token;
@@ -40,9 +50,11 @@ export default NextAuth({
       token.user = user;
       return token;
     },
+
     async session({ session, token, user }) {
       // session.accessToken = token.accessToken;
       session.user = token.user;
+      // console.log("SES: ", session);
       return session;
     },
   },

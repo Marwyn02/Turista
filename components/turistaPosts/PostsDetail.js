@@ -1,16 +1,25 @@
 import Link from "next/link";
 import { useState, useEffect } from "react";
 import { useRouter } from "next/router";
+import { useSession } from "next-auth/react";
+
+import PostReview from "./PostReview";
 
 const PostsDetail = (props) => {
+  const { data: session } = useSession();
   const router = useRouter();
   const [hasImage, setHasImage] = useState(true);
+  const [activeSession, setActiveSession] = useState(false);
 
   useEffect(() => {
     if (props.image === "") {
       setHasImage(false);
     }
-  }, [props.image]);
+
+    if (session && session.user._id === props.userId) {
+      setActiveSession(true);
+    }
+  }, [props.image, session, props.userId]);
 
   const deleteHandler = async (event) => {
     event.preventDefault();
@@ -74,37 +83,38 @@ const PostsDetail = (props) => {
             {props.description}
           </p>
         </div>
-        <div className="mt-5 pb-3 px-2 flex justify-start gap-x-1.5">
-          <Link href="/">
-            <button className="bg-gray-200 text-black px-2 md:px-6 py-1 rounded-lg text-sm">
-              Back
-            </button>
-          </Link>
-          <button
-            className="bg-red-900 text-gray-100 px-2 md:px-6 py-1 rounded-lg text-sm"
-            onClick={deleteHandler}
-          >
-            Delete post
-          </button>
+        {activeSession ? (
+          <div className="mt-5 pb-3 px-2 flex justify-start gap-x-1.5">
+            <Link href="/">
+              <button className="bg-gray-200 text-black px-2 md:px-6 py-1 rounded-lg text-sm">
+                Back
+              </button>
+            </Link>
 
-          <Link href={`/update-post/${props.id}`}>
-            <button className="bg-blue-900 text-white px-2 md:px-6 py-1 rounded-lg text-sm">
-              Edit post
+            <button
+              className="bg-red-900 text-gray-100 px-2 md:px-6 py-1 rounded-lg text-sm"
+              onClick={deleteHandler}
+            >
+              Delete post
             </button>
-          </Link>
-        </div>
+
+            <Link href={`/update-post/${props.id}`}>
+              <button className="bg-blue-900 text-white px-2 md:px-6 py-1 rounded-lg text-sm">
+                Edit post
+              </button>
+            </Link>
+          </div>
+        ) : (
+          <div className="mt-5 pb-3 px-2">
+            <Link href="/">
+              <button className="bg-gray-200 text-black px-2 md:px-6 py-1 rounded-lg text-sm">
+                Back
+              </button>
+            </Link>
+          </div>
+        )}
       </div>
-      <aside className="md:col-span-3 bg-white p-3 rounded-b-xl md:rounded-none">
-        <h2 className="font-bold">Review:</h2>
-        <textarea
-          type="text"
-          rows="1"
-          cols="30"
-          className="border border-gray-300 mb-5 p-2 text-sm"
-          placeholder="Write your review here..."
-        ></textarea>
-        <hr></hr>
-      </aside>
+      <PostReview postId={props.id} />
     </section>
   );
 };

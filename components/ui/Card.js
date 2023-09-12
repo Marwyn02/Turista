@@ -20,8 +20,8 @@ const Card = (props) => {
       key={props.id}
       className={
         !hasImage
-          ? "bg-gray-100 mb-5 rounded-lg drop-shadow-sm cursor-pointer"
-          : "bg-gray-100 mb-5 rounded-lg drop-shadow-sm"
+          ? "bg-gray-100 mb-5 rounded-lg drop-shadow-lg cursor-pointer"
+          : "bg-gray-100 mb-5 rounded-lg drop-shadow-lg"
       }
       onClick={!hasImage ? showDetailsHandler : undefined}
     >
@@ -39,7 +39,7 @@ const Card = (props) => {
           src={props.image}
           alt={props.title}
           onClick={showDetailsHandler}
-          className="rounded-b-lg cursor-pointer"
+          className="rounded-b-lg cursor-pointer drop-shadow-lg"
         />
       )}
     </section>

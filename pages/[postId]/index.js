@@ -15,6 +15,7 @@ const index = (props) => {
         description={props.postData.description}
         amenities={props.postData.amenities}
         user={props.postData.user}
+        userId={props.postData.userId}
       />
     </Fragment>
   );
@@ -56,6 +57,7 @@ export async function getStaticProps(context) {
             id: amenity.id,
           })),
           user: selectedUser.name,
+          userId: selectedUser._id.toString(),
         },
       },
       revalidate: 1,

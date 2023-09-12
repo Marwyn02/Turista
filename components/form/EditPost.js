@@ -49,7 +49,7 @@ const EditPost = (props) => {
   return (
     <form
       onSubmit={handleSubmit}
-      className="bg-white sm:my-4 py-10 md:rounded-lg md:border-2 md:border-blue-200"
+      className="bg-white sm:my-4 py-10 md:rounded-lg"
     >
       <div className="space-y-12 px-5">
         <h2 className="text-4xl font-semibold leading-7 text-blue-400 underline">

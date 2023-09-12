@@ -28,7 +28,8 @@ body {
     rgb(214, 219, 220);
 } */
 body {
-  background-color: rgb(219, 224, 224);
+  /* background-color: rgb(219, 224, 224); */
+  background: linear-gradient(to bottom, rgb(230, 235, 235), transparent);
 }
 
 @keyframes slide {
