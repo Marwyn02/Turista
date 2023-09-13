@@ -4,6 +4,7 @@ import { useRouter } from "next/router";
 import { useSession } from "next-auth/react";
 
 import PostReview from "./PostReview";
+import ReviewList from "./ReviewList";
 
 const PostsDetail = (props) => {
   const { data: session } = useSession();
@@ -114,7 +115,10 @@ const PostsDetail = (props) => {
           </div>
         )}
       </div>
-      <PostReview postId={props.id} />
+      <aside className="md:col-span-3 bg-white p-3 rounded-b-xl md:rounded-none">
+        <PostReview postId={props.id} />
+        <ReviewList reviewData={props.reviews} />
+      </aside>
     </section>
   );
 };

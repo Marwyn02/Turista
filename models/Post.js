@@ -1,5 +1,6 @@
 import mongoose from "mongoose";
 import Amenity from "./Amenity";
+import Review from "./Review";
 
 const PostSchema = new mongoose.Schema(
   {
@@ -25,6 +26,7 @@ const PostSchema = new mongoose.Schema(
       ref: "User",
       require: [true, "Each post must be linked to a user"],
     },
+    reviews: [Review.schema],
   },
   { timestamps: true }
 );

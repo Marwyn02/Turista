@@ -1,11 +1,9 @@
 import { useSession } from "next-auth/react";
 import { useRef } from "react";
 import { useRouter } from "next/router";
-import ReviewList from "./ReviewList";
 
 const PostReview = (props) => {
   const { data: session } = useSession();
-
   const router = useRouter();
 
   const reviewTitleRef = useRef();
@@ -43,7 +41,7 @@ const PostReview = (props) => {
     }
   };
   return (
-    <aside className="md:col-span-3 bg-white p-3 rounded-b-xl md:rounded-none">
+    <>
       <form onSubmit={submitReviewHandler}>
         <h2 className="font-bold">Review:</h2>
         <input
@@ -64,9 +62,7 @@ const PostReview = (props) => {
           Submit
         </button>
       </form>
-      <hr></hr>
-      <ReviewList />
-    </aside>
+    </>
   );
 };
 

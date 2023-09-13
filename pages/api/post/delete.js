@@ -3,9 +3,11 @@ import Post from "@/models/Post";
 
 const DELETE = async (req, res) => {
   try {
-    const Id = req.body.postId;
     await connectMongoDB();
-    await Post.findByIdAndDelete(Id);
+
+    const Id = req.body.postId;
+    await Post.findByIdAndDelete(Id); // Delete the post
+
     return res.status(201).json({ success: true, message: "Post deleted" });
   } catch (error) {
     return res

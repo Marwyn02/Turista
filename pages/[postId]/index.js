@@ -3,6 +3,7 @@ import { connectMongoDB } from "../../lib/connectMongoDB";
 import mongoose from "mongoose";
 import FindOne from "../api/post/findOne";
 import PostsDetail from "@/components/turistaPosts/PostsDetail";
+import GetOne from "../api/review/getOne";
 
 const index = (props) => {
   return (
@@ -16,6 +17,7 @@ const index = (props) => {
         amenities={props.postData.amenities}
         user={props.postData.user}
         userId={props.postData.userId}
+        reviews={props.postData.reviews}
       />
     </Fragment>
   );
@@ -43,6 +45,21 @@ export async function getStaticProps(context) {
         notFound: true, // Return a 404 page
       };
     }
+    // Return a user name of every review in a specific post
+    const reviewUser = await Promise.all(
+      selectedResult.reviews.map(async (review) => {
+        const user = await GetOne(review.user);
+        return {
+          id: review._id.toString(),
+          postId: review.post.toString(),
+          title: review.title,
+          description: review.description,
+          name: user,
+          userId: review.user.toString(),
+        };
+      })
+    );
+
     return {
       props: {
         postData: {
@@ -58,6 +75,7 @@ export async function getStaticProps(context) {
           })),
           user: selectedUser.name,
           userId: selectedUser._id.toString(),
+          reviews: reviewUser ? reviewUser : [], // If there are no reviews then just return empty array
         },
       },
       revalidate: 1,
