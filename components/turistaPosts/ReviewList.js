@@ -8,7 +8,6 @@ const ReviewList = (props) => {
           key={review.id}
           id={review.id}
           postId={review.postId}
-          title={review.title}
           description={review.description}
           name={review.name}
         />

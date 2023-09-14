@@ -6,7 +6,7 @@ const SubNavigation = () => {
   const { data: session } = useSession();
   const createPostHandler = () => {
     if (session) {
-      router.push("/new-post");
+      router.push("/create");
     } else {
       router.push("/account/login");
     }

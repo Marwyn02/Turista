@@ -6,9 +6,6 @@ const ReviewSchema = new mongoose.Schema(
       type: mongoose.Schema.Types.ObjectId,
       ref: "Post",
     },
-    title: {
-      type: String,
-    },
     description: {
       type: String,
     },

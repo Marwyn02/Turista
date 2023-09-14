@@ -48,9 +48,9 @@ const PostsDetail = (props) => {
   return (
     <section
       key={props.id}
-      className="grid md:grid-cols-12 gap-x-2 drop-shadow-lg shadow-white/20 py-5 sm:py-8 md:py-10 lg:py-16"
+      className="flex flex-col lg:flex-row gap-x-2 drop-shadow-lg shadow-white/20 md:px-10 py-1 sm:py-8 md:py-10 lg:py-16"
     >
-      <div className="md:col-span-7 md:col-start-2 bg-white relative rounded-t-xl md:rounded-xl">
+      <div className="md:basis-3/4 bg-white relative rounded-t-xl lg:rounded-xl lg:h-[51em]">
         {hasImage && (
           <img
             className="lg:col-span-3 lg:order-1 animated-slide rounded-t-xl"
@@ -85,37 +85,38 @@ const PostsDetail = (props) => {
           </p>
         </div>
         {activeSession ? (
-          <div className="mt-5 pb-3 px-2 flex justify-start gap-x-1.5">
+          <div className="mt-14 px-2 flex justify-between gap-x-1.5">
             <Link href="/">
-              <button className="bg-gray-200 text-black px-2 md:px-6 py-1 rounded-lg text-sm">
+              <button className="text-black w-20 md:w-28  md:px-6 py-1 rounded-lg text-sm border border-gray-600">
                 Back
               </button>
             </Link>
 
-            <button
-              className="bg-red-900 text-gray-100 px-2 md:px-6 py-1 rounded-lg text-sm"
-              onClick={deleteHandler}
-            >
-              Delete post
-            </button>
-
-            <Link href={`/update-post/${props.id}`}>
-              <button className="bg-blue-900 text-white px-2 md:px-6 py-1 rounded-lg text-sm">
-                Edit post
+            <div className="flex gap-x-1.5">
+              <Link href={`/edit/${props.id}`}>
+                <button className="bg-blue-900 text-white px-2 md:px-6 py-1 rounded-lg text-sm">
+                  Edit post
+                </button>
+              </Link>
+              <button
+                className="bg-red-900 text-gray-100 px-2 md:px-6 py-1 rounded-lg text-sm"
+                onClick={deleteHandler}
+              >
+                Delete post
               </button>
-            </Link>
+            </div>
           </div>
         ) : (
-          <div className="mt-5 pb-3 px-2">
+          <div className="mt-14 px-2">
             <Link href="/">
-              <button className="bg-gray-200 text-black px-2 md:px-6 py-1 rounded-lg text-sm">
+              <button className="text-black w-20 md:w-28 md:px-6 py-1 rounded-lg text-sm border border-gray-600">
                 Back
               </button>
             </Link>
           </div>
         )}
       </div>
-      <aside className="md:col-span-3 bg-white p-3 rounded-b-xl md:rounded-none">
+      <aside className="md:basis-1/4 bg-white p-3 rounded-b-xl md:rounded-none overflow-y-auto h-[51em]">
         <PostReview postId={props.id} />
         <ReviewList reviewData={props.reviews} />
       </aside>

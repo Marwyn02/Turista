@@ -52,7 +52,6 @@ export async function getStaticProps(context) {
         return {
           id: review._id.toString(),
           postId: review.post.toString(),
-          title: review.title,
           description: review.description,
           name: user,
           userId: review.user.toString(),

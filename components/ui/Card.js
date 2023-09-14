@@ -20,8 +20,8 @@ const Card = (props) => {
       key={props.id}
       className={
         !hasImage
-          ? "bg-gray-100 mb-5 rounded-lg drop-shadow-lg cursor-pointer"
-          : "bg-gray-100 mb-5 rounded-lg drop-shadow-lg"
+          ? "bg-gray-100 mb-5 rounded-lg drop-shadow-lg cursor-pointer border border-transparent hover:border-black/50 duration-200"
+          : "bg-gray-100 mb-5 rounded-lg drop-shadow-lg border border-transparent hover:border-black/50 duration-200"
       }
       onClick={!hasImage ? showDetailsHandler : undefined}
     >
