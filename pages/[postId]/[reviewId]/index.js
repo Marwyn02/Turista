@@ -22,11 +22,9 @@ export async function getStaticPaths() {
 export async function getStaticProps(context) {
   try {
     const Id = context.params.reviewId;
-    const selectedReview = await FindOne(Id);
+    const { selectedReview, selectedUser } = await FindOne(Id);
 
-    console.log("FIND: ", selectedReview);
-
-    if (!selectedReview) {
+    if (!selectedReview && !selectedUser) {
       return {
         notFound: true, // Return a 404 page
       };
@@ -39,6 +37,7 @@ export async function getStaticProps(context) {
           user: selectedReview.user.toString(),
           description: selectedReview.description,
           postId: selectedReview.post.toString(),
+          userName: selectedUser.name,
         },
       },
       revalidate: 1,
@@ -57,10 +56,9 @@ const index = (props) => {
   return (
     <Fragment>
       <ReviewDetail
-        id={props.reviewData.id}
-        user={props.reviewData.user}
         description={props.reviewData.description}
         postId={props.reviewData.postId}
+        username={props.reviewData.userName}
       />
     </Fragment>
   );

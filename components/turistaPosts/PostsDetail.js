@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import { useRouter } from "next/router";
 import { useSession } from "next-auth/react";
 
@@ -9,6 +9,11 @@ import ReviewList from "./ReviewList";
 const PostsDetail = (props) => {
   const { data: session } = useSession();
   const router = useRouter();
+
+  const buttonRef = useRef();
+  const dropdownRef = useRef();
+  const [dropdown, setDropdown] = useState(false);
+
   const [hasImage, setHasImage] = useState(true);
   const [activeSession, setActiveSession] = useState(false);
 
@@ -22,6 +27,7 @@ const PostsDetail = (props) => {
     }
   }, [props.image, session, props.userId]);
 
+  // Deletes the post
   const deleteHandler = async (event) => {
     event.preventDefault();
     const postId = props.id;
@@ -45,6 +51,24 @@ const PostsDetail = (props) => {
     }
   };
 
+  // Hide the dropdown when the user clicks outside the dropdown
+  useEffect(() => {
+    function handleClickOutside(event) {
+      if (
+        dropdownRef.current &&
+        !dropdownRef.current.contains(event.target) &&
+        buttonRef.current &&
+        !buttonRef.current.contains(event.target)
+      ) {
+        setDropdown(false);
+      }
+    }
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
+  }, []);
+
   return (
     <section
       key={props.id}
@@ -59,7 +83,48 @@ const PostsDetail = (props) => {
           />
         )}
         <div className="p-2.5">
-          <h1 className="text-zinc-700 font-semibold">{props.title}</h1>
+          <div className="flex justify-between">
+            <h1 className="text-zinc-700 font-semibold">{props.title}</h1>
+            <img
+              src="/horizontal-dots.svg"
+              alt="lel"
+              height={23}
+              width={23}
+              className="hover:bg-gray-200"
+              ref={buttonRef}
+              onClick={() => setDropdown(!dropdown)}
+            />
+          </div>
+
+          {dropdown && (
+            <div
+              ref={dropdownRef}
+              className="absolute right-2 bg-white rounded border w-32 z-[9999]"
+            >
+              {activeSession ? (
+                <ul className="text-sm text-slate-700">
+                  <Link href={`/edit/${props.id}`}>
+                    <li className="hover:bg-gray-200 hover:text-black py-1.5 pl-4">
+                      Edit
+                    </li>
+                  </Link>
+                  <li
+                    onClick={deleteHandler}
+                    className="hover:bg-gray-200 hover:text-black py-1.5 pl-4"
+                  >
+                    Delete
+                  </li>
+                </ul>
+              ) : (
+                <ul className="text-sm text-slate-700">
+                  <li className="hover:bg-gray-200 hover:text-black py-1.5 pl-4">
+                    Save
+                  </li>
+                </ul>
+              )}
+            </div>
+          )}
+
           <p className="text-xs -mt-1 text-zinc-900/50 font-light">
             {props.location}
           </p>
@@ -84,37 +149,14 @@ const PostsDetail = (props) => {
             {props.description}
           </p>
         </div>
-        {activeSession ? (
-          <div className="mt-14 px-2 flex justify-between gap-x-1.5">
-            <Link href="/">
-              <button className="text-black w-20 md:w-28  md:px-6 py-1 rounded-lg text-sm border border-gray-600">
-                Back
-              </button>
-            </Link>
 
-            <div className="flex gap-x-1.5">
-              <Link href={`/edit/${props.id}`}>
-                <button className="bg-blue-900 text-white px-2 md:px-6 py-1 rounded-lg text-sm">
-                  Edit post
-                </button>
-              </Link>
-              <button
-                className="bg-red-900 text-gray-100 px-2 md:px-6 py-1 rounded-lg text-sm"
-                onClick={deleteHandler}
-              >
-                Delete post
-              </button>
-            </div>
-          </div>
-        ) : (
-          <div className="mt-14 px-2">
-            <Link href="/">
-              <button className="text-black w-20 md:w-28 md:px-6 py-1 rounded-lg text-sm border border-gray-600">
-                Back
-              </button>
-            </Link>
-          </div>
-        )}
+        <div className="mt-14 px-2">
+          <Link href="/">
+            <button className="text-black w-20 md:w-28 md:px-6 py-1 rounded-lg text-sm border border-gray-600">
+              Back
+            </button>
+          </Link>
+        </div>
       </div>
       <aside className="md:basis-1/4 bg-white p-3 rounded-b-xl md:rounded-none overflow-y-auto h-[51em]">
         <PostReview postId={props.id} />
