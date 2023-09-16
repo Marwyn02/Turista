@@ -13,13 +13,11 @@ const Edit = async (req, res) => {
       { new: true }
     );
 
-    const updatedDescription = await Post.updateOne(
+    await Post.updateOne(
       { _id: postId, "reviews._id": id },
       { $set: { "reviews.$.description": description } },
       { new: true }
     );
-
-    console.log("Result: ", updatedDescription);
 
     return res.status(201).json({ success: true, message: "Review updated" });
   } catch (error) {

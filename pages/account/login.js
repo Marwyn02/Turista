@@ -1,5 +1,6 @@
 import { getProviders, getSession, signIn, useSession } from "next-auth/react";
 import { useRouter } from "next/router";
+
 import MainLayout from "@/components/layout/MainLayout";
 
 const login = ({ provider, session }) => {

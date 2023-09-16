@@ -52,15 +52,18 @@ const ReviewCard = ({ id, postId, description, name }) => {
         throw new Error("Failed to edit review");
       } else {
         setEditReview(false);
-        setNewDescription("");
+        // setNewDescription("");
         router.replace(`/${postId}`);
       }
     } catch (error) {
-      // throw new Error("Error in Edit Review: " + error);
-      console.log(error);
+      throw new Error("Error in Edit Review: " + error);
     }
   };
 
+  const showHideDropdown = () => {
+    setEditReview(!editReview);
+    setDropdown(false);
+  };
   // Hide the dropdown when the user clicks outside the dropdown
   useEffect(() => {
     function handleClickOutside(event) {
@@ -82,19 +85,18 @@ const ReviewCard = ({ id, postId, description, name }) => {
     return (
       <div
         key={id}
-        className="relative my-2 border border-transparent hover:border-black/70 rounded-lg duration-300 cursor-pointer"
+        className="relative my-2 rounded-lg duration-300 cursor-pointer"
       >
         <div className="bg-gray-100 rounded-lg p-1.5 ">
           <div className="flex justify-between pl-3">
             <p className="text-sm font-medium text-gray-900 mb-0.5">{name}</p>
             <img
-              src="/horizontal-dots.svg"
+              src="/xmark.svg"
+              height={20}
+              width={20}
               alt="lel"
-              height={23}
-              width={23}
               className="hover:bg-gray-200"
-              ref={buttonRef}
-              onClick={() => setDropdown(!dropdown)}
+              onClick={showHideDropdown}
             />
           </div>
 
@@ -106,14 +108,28 @@ const ReviewCard = ({ id, postId, description, name }) => {
               <ul className="text-sm text-slate-700">
                 <li
                   onClick={() => setEditReview(!editReview)}
-                  className="hover:bg-gray-200 hover:text-black py-1.5 pl-4"
+                  className="hover:bg-gray-200 hover:text-black py-1.5 pl-2 flex duration-300"
                 >
+                  <img
+                    src="/pen.svg"
+                    height={18}
+                    width={18}
+                    alt="lel"
+                    className="mr-1.5"
+                  />{" "}
                   Edit
                 </li>
                 <li
                   onClick={deleteReviewHandler}
-                  className="hover:bg-gray-200 hover:text-black py-1.5 pl-4"
+                  className="hover:bg-gray-200 hover:text-black py-1.5 pl-2 flex duration-300"
                 >
+                  <img
+                    src="/trash.svg"
+                    height={18}
+                    width={18}
+                    alt="lel"
+                    className="mr-1.5"
+                  />{" "}
                   Delete
                 </li>
               </ul>
@@ -122,23 +138,29 @@ const ReviewCard = ({ id, postId, description, name }) => {
 
           <form
             onSubmit={reviewHandlerSubmit}
-            className="flex w-full my-2 mx-2"
+            className="w-full rounded-lg p-1.5"
           >
-            <input
-              type="text"
-              id="description"
-              name="description"
-              className="text-sm py-1.5 px-3 rounded-l-lg text-gray-600 border-black border placeholder:text-gray-400"
-              placeholder="Edit your review here"
-              onChange={(e) => setNewDescription(e.target.value)}
-              value={newDescription}
-            />
-            <button
-              type="submit"
-              className="bg-gray-700 text-white rounded-r-lg px-4 text-sm"
-            >
-              Save
-            </button>
+            <div className="">
+              <textarea
+                type="text"
+                id="description"
+                name="description"
+                placeholder="Edit your review here"
+                cols="20"
+                rows="2"
+                onChange={(e) => setNewDescription(e.target.value)}
+                value={newDescription}
+                className="w-full py-2.5 px-3 rounded-t-lg text-sm text-gray-900 bg-white focus:ring-0 dark:placeholder-gray-400"
+              ></textarea>
+            </div>
+            <div className="flex items-center justify-between px-3 py-2 bg-gray-700 rounded-b-lg -mt-2">
+              <button
+                type="submit"
+                className="bg-gray-700 text-white px-4 text-sm hover:text-gray-200 duration-300"
+              >
+                Save
+              </button>
+            </div>
           </form>
         </div>
       </div>
@@ -170,15 +192,29 @@ const ReviewCard = ({ id, postId, description, name }) => {
           >
             <ul className="text-sm text-slate-700">
               <li
-                onClick={() => setEditReview(!editReview)}
-                className="hover:bg-gray-200 hover:text-black py-1.5 pl-4"
+                onClick={showHideDropdown}
+                className="hover:bg-gray-200 hover:text-black py-1.5 pl-2 flex duration-300"
               >
+                <img
+                  src="/pen.svg"
+                  height={18}
+                  width={18}
+                  alt="lel"
+                  className="mr-1.5"
+                />{" "}
                 Edit
               </li>
               <li
                 onClick={deleteReviewHandler}
-                className="hover:bg-gray-200 hover:text-black py-1.5 pl-4"
+                className="hover:bg-gray-200 hover:text-black py-1.5 pl-2 flex duration-300"
               >
+                <img
+                  src="/trash.svg"
+                  height={18}
+                  width={18}
+                  alt="lel"
+                  className="mr-1.5"
+                />{" "}
                 Delete
               </li>
             </ul>

@@ -1,8 +1,9 @@
-import ReviewDetail from "@/components/turistaPosts/ReviewDetail";
+import { Fragment } from "react";
 import { connectMongoDB } from "@/lib/connectMongoDB";
 import FindOne from "@/pages/api/review/findOne";
 import mongoose from "mongoose";
-import { Fragment } from "react";
+
+import ReviewDetail from "@/components/turistaPosts/ReviewDetail";
 
 export async function getStaticPaths() {
   await connectMongoDB();

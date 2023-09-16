@@ -104,14 +104,28 @@ const PostsDetail = (props) => {
               {activeSession ? (
                 <ul className="text-sm text-slate-700">
                   <Link href={`/edit/${props.id}`}>
-                    <li className="hover:bg-gray-200 hover:text-black py-1.5 pl-4">
+                    <li className="hover:bg-gray-200 hover:text-black py-1.5 pl-2 flex duration-300">
+                      <img
+                        src="/pen.svg"
+                        height={18}
+                        width={18}
+                        alt="lel"
+                        className="mr-1.5"
+                      />
                       Edit
                     </li>
                   </Link>
                   <li
                     onClick={deleteHandler}
-                    className="hover:bg-gray-200 hover:text-black py-1.5 pl-4"
+                    className="hover:bg-gray-200 hover:text-black py-1.5 pl-2 flex duration-300"
                   >
+                    <img
+                      src="/trash.svg"
+                      height={18}
+                      width={18}
+                      alt="lel"
+                      className="mr-1.5"
+                    />{" "}
                     Delete
                   </li>
                 </ul>
@@ -158,7 +172,7 @@ const PostsDetail = (props) => {
           </Link>
         </div>
       </div>
-      <aside className="md:basis-1/4 bg-white p-3 rounded-b-xl md:rounded-none overflow-y-auto h-[51em]">
+      <aside className="md:basis-1/4 bg-white p-3 rounded-b-xl md:rounded-none overflow-y-auto md:h-[51em]">
         <PostReview postId={props.id} />
         <ReviewList reviewData={props.reviews} />
       </aside>

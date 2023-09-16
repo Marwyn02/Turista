@@ -2,8 +2,9 @@ import { Fragment } from "react";
 import { connectMongoDB } from "../../lib/connectMongoDB";
 import mongoose from "mongoose";
 import FindOne from "../api/post/findOne";
-import PostsDetail from "@/components/turistaPosts/PostsDetail";
 import GetOne from "../api/review/getOne";
+
+import PostsDetail from "@/components/turistaPosts/PostsDetail";
 
 const index = (props) => {
   return (

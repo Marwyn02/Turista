@@ -1,5 +1,6 @@
 import mongoose from "mongoose";
 import { connectMongoDB } from "@/lib/connectMongoDB";
+
 import MainLayout from "@/components/layout/MainLayout";
 import PostsList from "@/components/turistaPosts/PostsList";
 import SubNavigation from "@/components/navigation/SubNavigation";

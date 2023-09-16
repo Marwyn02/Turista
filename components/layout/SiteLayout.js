@@ -1,4 +1,5 @@
-import React, { Fragment } from "react";
+import { Fragment } from "react";
+
 import MainNavigation from "../navigation/MainNavigation";
 
 const SiteLayout = (props) => {

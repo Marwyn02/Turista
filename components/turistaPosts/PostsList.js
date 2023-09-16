@@ -1,4 +1,5 @@
 import { Fragment } from "react";
+
 import PostsItem from "./PostsItem";
 
 const PostsList = (props) => {

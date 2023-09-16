@@ -1,8 +1,9 @@
+import mongoose from "mongoose";
 import { connectMongoDB } from "@/lib/connectMongoDB";
+import FindOne from "@/pages/api/post/findOne";
+
 import EditPost from "@/components/form/EditPost";
 import MainLayout from "@/components/layout/MainLayout";
-import FindOne from "@/pages/api/post/findOne";
-import mongoose from "mongoose";
 
 export async function getStaticPaths() {
   try {
