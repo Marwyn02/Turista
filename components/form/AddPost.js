@@ -2,6 +2,7 @@ import Link from "next/link";
 import { useRouter } from "next/router";
 import { useRef, useState } from "react";
 import { useSession } from "next-auth/react";
+import dynamic from "next/dynamic";
 
 const NewPostsForm = () => {
   const { data: session } = useSession();
@@ -71,6 +72,11 @@ const NewPostsForm = () => {
     }
   };
 
+  const Map = dynamic(() => import("@/pages/map/Map"), {
+    loading: () => "Loading...",
+    ssr: false,
+  });
+
   return (
     <form
       className="bg-white sm:my-4 py-10 md:rounded-lg"
@@ -85,6 +91,9 @@ const NewPostsForm = () => {
           share.
         </p>
         <div className="mt-10 grid grid-cols-1 gap-x-6 gap-y-8 sm:grid-cols-6">
+          <div>
+            <Map />
+          </div>
           {/* Title Input  */}
           <div className="sm:col-span-4">
             <label
