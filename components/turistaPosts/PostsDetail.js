@@ -6,6 +6,8 @@ import { useSession } from "next-auth/react";
 import PostReview from "./PostReview";
 import ReviewList from "./ReviewList";
 
+// import dynamic from "next/dynamic";
+
 const PostsDetail = (props) => {
   const { data: session } = useSession();
   const router = useRouter();
@@ -69,6 +71,10 @@ const PostsDetail = (props) => {
     };
   }, []);
 
+  // const Map = dynamic(() => import("@/pages/map/Map"), {
+  //   loading: () => "Loading...",
+  //   ssr: false,
+  // });
   return (
     <section
       key={props.id}

@@ -1,42 +1,41 @@
-import mapboxgl from "mapbox-gl";
-import "mapbox-gl/dist/mapbox-gl.css";
-import { useState, useRef, useEffect } from "react";
-// import the mapbox-gl styles so that the map is displayed correctly
+import React, { useState, useEffect, useRef } from "react";
+import mapboxgl from "!mapbox-gl";
 
-function MapboxMap() {
-  // this is where the map instance will be stored after initialization
-  const [map, setMap] = useState(<mapboxgl.Map></mapboxgl.Map>);
+mapboxgl.accessToken = process.env.NEXT_PUBLIC_MAPBOX_TOKEN;
 
-  // React ref to store a reference to the DOM node that will be used
-  // as a required parameter `container` when initializing the mapbox-gl
-  // will contain `null` by default
-  const mapNode = useRef(null);
+const Map = () => {
+  const mapContainerRef = useRef(null);
+  const [lng, setLng] = useState(121.0163);
+  const [lat, setLat] = useState(14.3039);
+  const [zoom, setZoom] = useState(12.5);
 
   useEffect(() => {
-    const node = mapNode.current;
-    // if the window object is not found, that means
-    // the component is rendered on the server
-    // or the dom node is not initialized, then return early
-    if (typeof window === "undefined" || node === null) return;
-
-    // otherwise, create a map instance
-    const mapboxMap = new mapboxgl.Map({
-      container: node,
-      accessToken: process.env.NEXT_PUBLIC_MAPBOX_TOKEN,
-      style: "mapbox://styles/mapbox/streets-v11",
-      center: [-74.5, 40],
-      zoom: 9,
+    const map = new mapboxgl.Map({
+      container: mapContainerRef.current,
+      style: "mapbox://styles/mapbox/outdoors-v12",
+      center: [lng, lat],
+      zoom: zoom,
     });
 
-    // save the map object to React.useState
-    setMap(mapboxMap);
+    map.on("move", () => {
+      setLng(map.getCenter().lng.toFixed(4));
+      setLat(map.getCenter().lat.toFixed(4));
+      setZoom(map.getZoom().toFixed(2));
+    });
 
     return () => {
-      mapboxMap.remove();
+      map.remove();
     };
   }, []);
 
-  return <div ref={mapNode} style={{ width: "100%", height: "100%" }} />;
-}
+  return (
+    <>
+      <div className="sidebar">
+        Longitude: {lng} | Latitude: {lat} | Zoom: {zoom}
+      </div>
+      <div ref={mapContainerRef} className="map-container" />
+    </>
+  );
+};
 
-export default MapboxMap;
+export default Map;
