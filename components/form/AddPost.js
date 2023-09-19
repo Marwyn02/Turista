@@ -3,6 +3,8 @@ import { useRouter } from "next/router";
 import { useRef, useState } from "react";
 import { useSession } from "next-auth/react";
 
+import Map from "@/pages/map/Map";
+
 const NewPostsForm = () => {
   const { data: session } = useSession();
   const router = useRouter();
@@ -131,6 +133,10 @@ const NewPostsForm = () => {
                 />
               </div>
             </div>
+          </div>
+
+          <div>
+            <Map />
           </div>
 
           {/* Image Input  */}
