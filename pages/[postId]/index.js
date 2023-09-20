@@ -12,6 +12,7 @@ const index = (props) => {
       <PostsDetail
         id={props.postData.id}
         title={props.postData.title}
+        coordinate={props.postData.coordinate}
         location={props.postData.location}
         image={props.postData.image}
         description={props.postData.description}
@@ -65,6 +66,10 @@ export async function getStaticProps(context) {
         postData: {
           id: selectedResult._id.toString(),
           title: selectedResult.title,
+          coordinate: {
+            lng: selectedResult.coordinate.lng,
+            lat: selectedResult.coordinate.lat,
+          },
           location: selectedResult.location,
           image: selectedResult.image,
           description: selectedResult.description,

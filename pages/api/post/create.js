@@ -5,6 +5,7 @@ import Review from "@/models/Review";
 const CREATE = async (req, res) => {
   const reviewPermission = req.body.post; // This will confirm if the request has a post id
   if (reviewPermission) {
+    // CREATE REVIEW
     // If the request has a post id then it will run this code for creating a new review
     try {
       await connectMongoDB();
@@ -26,6 +27,7 @@ const CREATE = async (req, res) => {
   }
   // But if it dont have post id, then it will create a post. But of course
   // this is a post create api call because creating a post doesn't request a post id
+  // CREATE POST
   else {
     try {
       await connectMongoDB();

@@ -2,11 +2,10 @@ import Link from "next/link";
 import { useState, useEffect, useRef } from "react";
 import { useRouter } from "next/router";
 import { useSession } from "next-auth/react";
+import dynamic from "next/dynamic";
 
 import PostReview from "./PostReview";
 import ReviewList from "./ReviewList";
-
-// import dynamic from "next/dynamic";
 
 const PostsDetail = (props) => {
   const { data: session } = useSession();
@@ -71,10 +70,10 @@ const PostsDetail = (props) => {
     };
   }, []);
 
-  // const Map = dynamic(() => import("@/pages/map/Map"), {
-  //   loading: () => "Loading...",
-  //   ssr: false,
-  // });
+  const Map = dynamic(() => import("@/pages/map/Map"), {
+    loading: () => "Loading...",
+    ssr: false,
+  });
   return (
     <section
       key={props.id}
@@ -168,6 +167,11 @@ const PostsDetail = (props) => {
           <p className="mt-2 text-zinc-600 text-base font-light">
             {props.description}
           </p>
+
+          <Map
+            checkLat={props.coordinate.lat}
+            checkLng={props.coordinate.lng}
+          />
         </div>
 
         <div className="mt-14 px-2">

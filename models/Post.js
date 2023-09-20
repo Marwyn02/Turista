@@ -9,6 +9,10 @@ const PostSchema = new mongoose.Schema(
       required: [true, "Please enter a title"],
       maxlength: [60, "No more than 60 characters"],
     },
+    coordinate: {
+      lng: { type: Number },
+      lat: { type: Number },
+    },
     location: {
       type: String,
       required: [true, "Please specify a location"],

@@ -24,6 +24,12 @@ export default NextAuth({
 
   secret: process.env.NEXTAUTH_SECRET,
 
+  cookies: {
+    // secure: process.env.NODE_ENV === "production",
+    secure: false,
+    sameSite: "lax",
+  },
+
   callbacks: {
     async signIn({ user, account, profile, email, credentials }) {
       if (account.type === "oauth") {

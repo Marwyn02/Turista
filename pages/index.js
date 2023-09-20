@@ -9,7 +9,6 @@ const Home = (props) => {
   return (
     <MainLayout>
       <SubNavigation />
-
       <PostsList posts={props.posts} />
     </MainLayout>
   );

@@ -2,20 +2,29 @@ import Link from "next/link";
 import { useRouter } from "next/router";
 import { useRef, useState } from "react";
 import { useSession } from "next-auth/react";
-
-import Map from "@/pages/map/Map";
+import dynamic from "next/dynamic";
 
 const NewPostsForm = () => {
   const { data: session } = useSession();
   const router = useRouter();
 
   const [selectedImage, setSelectedImage] = useState();
+  const [coordinates, setCoordinates] = useState({ lng: 0, lat: 0 });
 
   const titleInputRef = useRef();
   const locationInputRef = useRef();
   const imageInputRef = useRef();
   const checkboxRef = useRef([]);
   const descriptionInputRef = useRef();
+
+  const coor = ({ lat, lng }) => {
+    setCoordinates({ lng: lng, lat: lat });
+  };
+
+  const Map = dynamic(() => import("@/pages/map/Map"), {
+    loading: () => "Loading...",
+    ssr: false,
+  });
 
   const handleCheckboxChange = (event, index) => {
     checkboxRef.current[index] = {
@@ -47,6 +56,10 @@ const NewPostsForm = () => {
 
     const postData = {
       title: enteredTitle,
+      coordinate: {
+        lng: coordinates.lng,
+        lat: coordinates.lat,
+      },
       location: enteredLocation,
       image: selectedImage,
       description: enteredDescription,
@@ -136,7 +149,7 @@ const NewPostsForm = () => {
           </div>
 
           <div>
-            <Map />
+            <Map onMarkerClick={coor} />
           </div>
 
           {/* Image Input  */}
