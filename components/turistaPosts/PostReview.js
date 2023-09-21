@@ -56,19 +56,19 @@ const PostReview = (props) => {
     <>
       <form
         onSubmit={submitReviewHandler}
-        className="border-2 border-gray-500 lg:border-none rounded-lg lg:rounded-none px-4 md:px-2 py-2 mb-5 lg:mb-2"
+        className="lg:border-none rounded-lg lg:rounded-none px-1 md:px-2 mt-6 lg:my-8 lg:mb-2"
       >
-        <h2 className="font-semibold text-gray-700">Review:</h2>
+        <h2 className="font-semibold text-gray-700">Write your review</h2>
         <textarea
           type="text"
-          rows="2"
+          rows="4"
           cols="30"
           className={
             !inputError
               ? `border border-gray-300 p-2 text-sm w-full mt-1 rounded-xl`
               : `border border-red-500 p-2 text-sm w-full mt-1 rounded-xl`
           }
-          placeholder="Write your review here..."
+          placeholder="Is it fun right?"
           ref={reviewDescriptionRef}
         ></textarea>
         {inputError && (
@@ -81,7 +81,7 @@ const PostReview = (props) => {
         )}
         <button
           type="submit"
-          className="border rounded-lg border-gray-400 text-sm px-2 py-1 w-full my-2 tracking-wide hover:bg-gray-400 hover:text-gray-50 duration-300"
+          className="border rounded-lg border-gray-400 text-sm px-2 py-1 w-full my-2 tracking-wide hover:bg-indigo-500 hover:text-white duration-300"
         >
           Submit
         </button>

@@ -1,10 +1,13 @@
+import { useSession } from "next-auth/react";
 import { useRouter } from "next/router";
 import { useState, useEffect, useRef } from "react";
 
-const ReviewCard = ({ id, postId, description, name }) => {
+const ReviewCard = ({ id, postId, description, name, userId }) => {
+  const { data: session } = useSession();
   const router = useRouter();
   const dropdownRef = useRef();
   const buttonRef = useRef();
+  const [activeSession, setActiveSession] = useState(false);
   const [dropdown, setDropdown] = useState(false);
   const [editReview, setEditReview] = useState(false);
 
@@ -64,6 +67,7 @@ const ReviewCard = ({ id, postId, description, name }) => {
     setEditReview(!editReview);
     setDropdown(false);
   };
+
   // Hide the dropdown when the user clicks outside the dropdown
   useEffect(() => {
     function handleClickOutside(event) {
@@ -81,6 +85,13 @@ const ReviewCard = ({ id, postId, description, name }) => {
       document.removeEventListener("mousedown", handleClickOutside);
     };
   }, []);
+
+  useEffect(() => {
+    if (session && session.user._id === userId) {
+      setActiveSession(true);
+    }
+  }, [session, userId]);
+
   if (editReview) {
     return (
       <div
@@ -167,22 +178,21 @@ const ReviewCard = ({ id, postId, description, name }) => {
     );
   }
   return (
-    <div
-      key={id}
-      className="relative my-2 border border-transparent hover:border-black/70 rounded-lg duration-300 cursor-pointer"
-    >
-      <div className="pl-3 bg-gray-100 rounded-lg p-1.5 ">
+    <div key={id} className="relative my-2">
+      <div className="pl-3 p-1.5 ">
         <div className="flex justify-between">
           <p className="text-sm font-medium text-gray-900 mb-0.5">{name}</p>
-          <img
-            src="/horizontal-dots.svg"
-            alt="lel"
-            height={23}
-            width={23}
-            className="hover:bg-gray-200"
-            ref={buttonRef}
-            onClick={() => setDropdown(!dropdown)}
-          />
+          {activeSession && (
+            <img
+              src="/horizontal-dots.svg"
+              alt="lel"
+              height={23}
+              width={23}
+              className="hover:bg-gray-200"
+              ref={buttonRef}
+              onClick={() => setDropdown(!dropdown)}
+            />
+          )}
         </div>
 
         {dropdown && (

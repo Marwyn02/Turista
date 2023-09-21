@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { useState, useEffect, useRef } from "react";
+import { useState, useEffect, useRef, Suspense } from "react";
 import { useRouter } from "next/router";
 import { useSession } from "next-auth/react";
 import dynamic from "next/dynamic";
@@ -75,116 +75,127 @@ const PostsDetail = (props) => {
     ssr: false,
   });
   return (
-    <section
-      key={props.id}
-      className="flex flex-col lg:flex-row gap-x-2 drop-shadow-lg shadow-white/20 md:px-10 py-1 sm:py-8 md:py-10 lg:py-16"
-    >
-      <div className="md:basis-3/4 bg-white relative rounded-t-xl lg:rounded-xl lg:h-[51em]">
+    <section key={props.id} className="md:px-28 pt-5 md:pt-20">
+      <div className="bg-white rounded-t-xl lg:rounded-xl">
+        {/* Image */}
         {hasImage && (
           <img
-            className="lg:col-span-3 lg:order-1 animated-slide rounded-t-xl"
+            className="animated-slide md:rounded-lg md:h-[30em]"
             src={props.image}
             alt={props.title}
           />
         )}
-        <div className="p-2.5">
-          <div className="flex justify-between">
-            <h1 className="text-zinc-700 font-semibold">{props.title}</h1>
-            <img
-              src="/horizontal-dots.svg"
-              alt="lel"
-              height={23}
-              width={23}
-              className="hover:bg-gray-200"
-              ref={buttonRef}
-              onClick={() => setDropdown(!dropdown)}
-            />
-          </div>
 
-          {dropdown && (
-            <div
-              ref={dropdownRef}
-              className="absolute right-2 bg-white rounded border w-32 z-[9999]"
-            >
-              {activeSession ? (
-                <ul className="text-sm text-slate-700">
-                  <Link href={`/edit/${props.id}`}>
-                    <li className="hover:bg-gray-200 hover:text-black py-1.5 pl-2 flex duration-300">
+        <div className="lg:flex lg:flex-row px-5 pt-6 lg:pt-6">
+          {/* Title */}
+          <div className="basis-auto lg:basis-7/12 lg:pr-20 relative">
+            <div className="flex justify-between">
+              <h1 className="text-zinc-700 font-semibold text-2xl lg:text-4xl lg:tracking-wide">
+                {props.title}
+              </h1>
+              <img
+                src="/horizontal-dots.svg"
+                alt="lel"
+                height={23}
+                width={23}
+                className="hover:bg-gray-200"
+                ref={buttonRef}
+                onClick={() => setDropdown(!dropdown)}
+              />
+            </div>
+
+            {/* Dropdown  */}
+            {dropdown && (
+              <div
+                ref={dropdownRef}
+                className="absolute right-1 lg:right-20 bg-white rounded border w-32 z-[9999]"
+              >
+                {activeSession ? (
+                  <ul className="text-sm text-slate-700">
+                    <Link href={`/edit/${props.id}`}>
+                      <li className="hover:bg-gray-200 hover:text-black py-1.5 pl-2 flex duration-300">
+                        <img
+                          src="/pen.svg"
+                          height={18}
+                          width={18}
+                          alt="lel"
+                          className="mr-1.5"
+                        />
+                        Edit
+                      </li>
+                    </Link>
+                    <li
+                      onClick={deleteHandler}
+                      className="hover:bg-gray-200 hover:text-black py-1.5 pl-2 flex duration-300"
+                    >
                       <img
-                        src="/pen.svg"
+                        src="/trash.svg"
                         height={18}
                         width={18}
                         alt="lel"
                         className="mr-1.5"
-                      />
-                      Edit
+                      />{" "}
+                      Delete
                     </li>
-                  </Link>
-                  <li
-                    onClick={deleteHandler}
-                    className="hover:bg-gray-200 hover:text-black py-1.5 pl-2 flex duration-300"
-                  >
-                    <img
-                      src="/trash.svg"
-                      height={18}
-                      width={18}
-                      alt="lel"
-                      className="mr-1.5"
-                    />{" "}
-                    Delete
-                  </li>
-                </ul>
-              ) : (
-                <ul className="text-sm text-slate-700">
-                  <li className="hover:bg-gray-200 hover:text-black py-1.5 pl-4">
-                    Save
-                  </li>
-                </ul>
-              )}
+                  </ul>
+                ) : (
+                  <ul className="text-sm text-slate-700">
+                    <li className="hover:bg-gray-200 hover:text-black py-1.5 pl-4">
+                      Save
+                    </li>
+                  </ul>
+                )}
+              </div>
+            )}
+
+            {/* Location   */}
+            <p className="text-sm lg:text-xl mt-2 text-black font-medium">
+              {props.location}
+            </p>
+
+            {/* User */}
+            <p className="text-base font-medium mt-5 text-black/80 border-y py-5">
+              Posted by {props.user ? props.user : "Anonymous"}
+            </p>
+
+            {/* Amenities */}
+            <div className="py-6">
+              <h3 className="font-medium text-lg">This place has</h3>
+              <ul className="mt-2">
+                {props.amenities &&
+                  props.amenities
+                    .filter((item) => item.checked)
+                    .map((item) => (
+                      <li
+                        key={item.id}
+                        className="text-black/80 font-light text-base py-1"
+                      >
+                        - {item.name}
+                      </li>
+                    ))}
+              </ul>
             </div>
-          )}
 
-          <p className="text-xs -mt-1 text-zinc-900/50 font-light">
-            {props.location}
-          </p>
-          <div className="flex gap-x-2 mt-2">
-            {props.amenities &&
-              props.amenities
-                .filter((item) => item.checked)
-                .map((item) => (
-                  <div
-                    key={item.id}
-                    className="text-gray-600 text-xs border-blue-300 bg-gray-50 border rounded-xl px-1.5 py-0.5"
-                  >
-                    {item.name}
-                  </div>
-                ))}
+            {/* Description */}
+            <p className="text-black text-base font-light border-t py-5 mb-8">
+              {props.description}
+            </p>
           </div>
-          <p className="text-xs mt-2 mb-0.5 text-gray-500">
-            - {props.user ? props.user : "Anonymous"}
-          </p>
-          <hr className="mt-3"></hr>
-          <p className="mt-2 text-zinc-600 text-base font-light">
-            {props.description}
-          </p>
 
-          <Map
-            checkLat={props.coordinate.lat}
-            checkLng={props.coordinate.lng}
-          />
-        </div>
-
-        <div className="mt-14 px-2">
-          <Link href="/">
-            <button className="text-black w-20 md:w-28 md:px-6 py-1 rounded-lg text-sm border border-gray-600">
-              Back
-            </button>
-          </Link>
+          <div className="basis-auto lg:basis-5/12 lg:px-8">
+            {/* Map */}
+            <Map
+              checkLat={props.coordinate.lat}
+              checkLng={props.coordinate.lng}
+            />
+            {activeSession && <PostReview postId={props.id} />}
+          </div>
         </div>
       </div>
-      <aside className="md:basis-1/4 bg-white p-3 rounded-b-xl md:rounded-none overflow-y-auto md:h-[51em]">
-        <PostReview postId={props.id} />
-        <ReviewList reviewData={props.reviews} />
+      <aside className="bg-white px-5 py-3 rounded-b-xl md:rounded-none overflow-y-auto">
+        <Suspense fallback={<p className="text-center">Loading reviews...</p>}>
+          <ReviewList reviewData={props.reviews} />
+        </Suspense>
       </aside>
     </section>
   );

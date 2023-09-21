@@ -9,7 +9,7 @@ const NewPostsForm = () => {
   const router = useRouter();
 
   const [selectedImage, setSelectedImage] = useState();
-  const [coordinates, setCoordinates] = useState({ lng: 0, lat: 0 });
+  const coordinatesRef = useRef({ lng: 0, lat: 0 });
 
   const titleInputRef = useRef();
   const locationInputRef = useRef();
@@ -18,7 +18,7 @@ const NewPostsForm = () => {
   const descriptionInputRef = useRef();
 
   const coor = ({ lat, lng }) => {
-    setCoordinates({ lng: lng, lat: lat });
+    coordinatesRef.current = { lng, lat };
   };
 
   const Map = dynamic(() => import("@/pages/map/Map"), {
@@ -57,8 +57,8 @@ const NewPostsForm = () => {
     const postData = {
       title: enteredTitle,
       coordinate: {
-        lng: coordinates.lng,
-        lat: coordinates.lat,
+        lng: coordinatesRef.current.lng,
+        lat: coordinatesRef.current.lat,
       },
       location: enteredLocation,
       image: selectedImage,
@@ -67,23 +67,25 @@ const NewPostsForm = () => {
       user: session.user._id,
     };
 
-    try {
-      const response = await fetch("/api/post/create", {
-        method: "POST",
-        headers: {
-          "Content-type": "application/json",
-        },
-        body: JSON.stringify(postData),
-      });
+    console.log(postData);
 
-      if (!response.ok) {
-        throw new Error("Failed to create post");
-      } else {
-        router.push("/");
-      }
-    } catch (error) {
-      throw new Error("Error in create post: " + error);
-    }
+    // try {
+    //   const response = await fetch("/api/post/create", {
+    //     method: "POST",
+    //     headers: {
+    //       "Content-type": "application/json",
+    //     },
+    //     body: JSON.stringify(postData),
+    //   });
+
+    //   if (!response.ok) {
+    //     throw new Error("Failed to create post");
+    //   } else {
+    //     router.push("/");
+    //   }
+    // } catch (error) {
+    //   throw new Error("Error in create post: " + error);
+    // }
   };
 
   return (
@@ -148,7 +150,8 @@ const NewPostsForm = () => {
             </div>
           </div>
 
-          <div>
+          {/* Map Input  */}
+          <div className="sm:col-span-4">
             <Map onMarkerClick={coor} />
           </div>
 

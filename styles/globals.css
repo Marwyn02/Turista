@@ -30,11 +30,13 @@ body {
 } */
 body {
   /* background-color: rgb(219, 224, 224); */
-  background: linear-gradient(to bottom, rgb(230, 235, 235), transparent);
+  /* background: linear-gradient(to bottom, rgb(230, 235, 235), transparent); */
+  background-color: transparent;
 }
 
 .map-container {
-  height: 400px;
+  height: 230px;
+  border-radius: 18px;
 }
 
 @keyframes slide {

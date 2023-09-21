@@ -12,7 +12,7 @@ const SubNavigation = () => {
     }
   };
   return (
-    <section className="bg-gray-100 my-4 rounded-lg border hover:bg-gray-200 duration-200">
+    <section className="bg-gray-100 mt-8 mb-4 rounded-lg border hover:bg-gray-200 duration-200">
       {session && (
         <div className="flex pl-5 pt-2">
           <img src={session.user.image} alt="" className="w-10 rounded-2xl" />

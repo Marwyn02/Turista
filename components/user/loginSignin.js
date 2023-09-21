@@ -9,7 +9,7 @@ export default function Component() {
       <div className="flex">
         <button
           onClick={() => signOut()}
-          className="mr-2 self-center py-1.5 px-2 text-sm text-indigo-400 hover:text-indigo-600 duration-300"
+          className="mr-5 self-center py-1.5 px-2 text-xs lg:text-sm text-indigo-400 hover:text-indigo-600 duration-300"
         >
           Sign out
         </button>
@@ -20,7 +20,7 @@ export default function Component() {
     <>
       <Link
         href="/account/login"
-        className="mr-2 self-center py-1.5 px-2 text-sm text-indigo-400 hover:text-indigo-600 duration-300"
+        className="mr-5 self-center py-1.5 px-2 text-xs lg:text-sm text-indigo-400 hover:text-indigo-600 duration-300"
       >
         Sign in
       </Link>
