@@ -6,9 +6,9 @@ const GETONE = async (userId) => {
     await connectMongoDB();
     const user = await User.findById(userId); // Find the user by their userId
 
-    const Username = user.name; // Returns a user name from user.name
+    const { name, image } = user; // Returns a user name from user.name
 
-    return Username;
+    return { name, image };
   } catch (error) {
     console.log("Error in review find: ", error);
   }

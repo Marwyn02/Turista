@@ -9,6 +9,9 @@ const ReviewSchema = new mongoose.Schema(
     description: {
       type: String,
     },
+    image: {
+      type: String,
+    },
     user: {
       type: mongoose.Schema.Types.ObjectId,
       ref: "User",

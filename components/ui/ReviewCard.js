@@ -2,7 +2,7 @@ import { useSession } from "next-auth/react";
 import { useRouter } from "next/router";
 import { useState, useEffect, useRef } from "react";
 
-const ReviewCard = ({ id, postId, description, name, userId }) => {
+const ReviewCard = ({ id, postId, description, image, name, userId }) => {
   const { data: session } = useSession();
   const router = useRouter();
   const dropdownRef = useRef();
@@ -94,12 +94,12 @@ const ReviewCard = ({ id, postId, description, name, userId }) => {
 
   if (editReview) {
     return (
-      <div
-        key={id}
-        className="relative my-2 rounded-lg duration-300 cursor-pointer"
-      >
-        <div className="bg-gray-100 rounded-lg p-1.5 ">
-          <div className="flex justify-between pl-3">
+      <>
+        <div
+          key={id}
+          className="relative my-2 rounded-lg duration-300 bg-gray-100 p-1.5"
+        >
+          <div className="flex justify-between px-3">
             <p className="text-sm font-medium text-gray-900 mb-0.5">{name}</p>
             <img
               src="/xmark.svg"
@@ -174,31 +174,38 @@ const ReviewCard = ({ id, postId, description, name, userId }) => {
             </div>
           </form>
         </div>
-      </div>
+      </>
     );
   }
   return (
-    <div key={id} className="relative my-2">
-      <div className="pl-3 p-1.5 ">
+    <>
+      <div key={id} className="relative my-2 md:pl-3 p-1.5 ">
         <div className="flex justify-between">
-          <p className="text-sm font-medium text-gray-900 mb-0.5">{name}</p>
-          {activeSession && (
-            <img
-              src="/horizontal-dots.svg"
-              alt="lel"
-              height={23}
-              width={23}
-              className="hover:bg-gray-200"
-              ref={buttonRef}
-              onClick={() => setDropdown(!dropdown)}
-            />
-          )}
+          <div className="flex first-letter:items-center">
+            <img src={image} alt="lel" className="rounded-3xl" />
+            <p className="text-base font-medium text-gray-900 mb-0.5 ml-3">
+              {name}
+            </p>
+          </div>
+          <div className="flex items-center">
+            {activeSession && (
+              <img
+                src="/horizontal-dots.svg"
+                alt="lel"
+                height={23}
+                width={23}
+                className="hover:bg-gray-200"
+                ref={buttonRef}
+                onClick={() => setDropdown(!dropdown)}
+              />
+            )}
+          </div>
         </div>
 
         {dropdown && (
           <div
             ref={dropdownRef}
-            className="absolute right-2 bg-white rounded border w-32 z-[9999]"
+            className="absolute right-2 top-11 bg-white rounded border w-32 z-[9999]"
           >
             <ul className="text-sm text-slate-700">
               <li
@@ -231,9 +238,11 @@ const ReviewCard = ({ id, postId, description, name, userId }) => {
           </div>
         )}
 
-        <p className="text-sm mt-2 mb-0.5 text-gray-800">{description}</p>
+        <p className="text-sm mt-3 mb-0.5 lg:pl-5 text-gray-800">
+          {description}
+        </p>
       </div>
-    </div>
+    </>
   );
 };
 

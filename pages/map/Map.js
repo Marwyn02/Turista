@@ -90,10 +90,6 @@ const Map = (props) => {
   if (props.checkLat && props.checkLng) {
     return (
       <>
-        {/* <div className="sidebar">
-          Longitude: {props.checkLng.toFixed(4)} | Latitude:{" "}
-          {props.checkLat.toFixed(4)}
-        </div> */}
         <div
           ref={mapContainerRef}
           className="map-container"

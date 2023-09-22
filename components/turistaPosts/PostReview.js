@@ -28,6 +28,7 @@ const PostReview = (props) => {
       const reviewData = {
         post: props.postId,
         description: enteredDescription,
+        image: session.user.image,
         user: session.user._id,
       };
 

@@ -154,9 +154,12 @@ const PostsDetail = (props) => {
             </p>
 
             {/* User */}
-            <p className="text-base font-medium mt-5 text-black/80 border-y py-5">
-              Posted by {props.user ? props.user : "Anonymous"}
-            </p>
+            <div className="flex items-center mt-5 border-y py-5">
+              <img src={props.userImage} alt="lel" className="rounded-3xl" />
+              <p className="text-base font-medium text-black/80 ml-4">
+                Posted by {props.user ? props.user : "Anonymous"}
+              </p>
+            </div>
 
             {/* Amenities */}
             <div className="py-6">
@@ -182,8 +185,8 @@ const PostsDetail = (props) => {
             </p>
           </div>
 
+          {/* Map and Create Review */}
           <div className="basis-auto lg:basis-5/12 lg:px-8">
-            {/* Map */}
             <Map
               checkLat={props.coordinate.lat}
               checkLng={props.coordinate.lng}

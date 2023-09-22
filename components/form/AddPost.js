@@ -67,25 +67,23 @@ const NewPostsForm = () => {
       user: session.user._id,
     };
 
-    console.log(postData);
+    try {
+      const response = await fetch("/api/post/create", {
+        method: "POST",
+        headers: {
+          "Content-type": "application/json",
+        },
+        body: JSON.stringify(postData),
+      });
 
-    // try {
-    //   const response = await fetch("/api/post/create", {
-    //     method: "POST",
-    //     headers: {
-    //       "Content-type": "application/json",
-    //     },
-    //     body: JSON.stringify(postData),
-    //   });
-
-    //   if (!response.ok) {
-    //     throw new Error("Failed to create post");
-    //   } else {
-    //     router.push("/");
-    //   }
-    // } catch (error) {
-    //   throw new Error("Error in create post: " + error);
-    // }
+      if (!response.ok) {
+        throw new Error("Failed to create post");
+      } else {
+        router.push("/");
+      }
+    } catch (error) {
+      throw new Error("Error in create post: " + error);
+    }
   };
 
   return (

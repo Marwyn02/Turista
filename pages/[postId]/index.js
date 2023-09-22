@@ -19,6 +19,7 @@ const index = (props) => {
         amenities={props.postData.amenities}
         user={props.postData.user}
         userId={props.postData.userId}
+        userImage={props.postData.userImage}
         reviews={props.postData.reviews}
       />
     </Fragment>
@@ -47,15 +48,17 @@ export async function getStaticProps(context) {
         notFound: true, // Return a 404 page
       };
     }
+
     // Return a user name of every review in a specific post
     const reviewUser = await Promise.all(
       selectedResult.reviews.map(async (review) => {
-        const user = await GetOne(review.user);
+        const { name, image } = await GetOne(review.user);
         return {
           id: review._id.toString(),
           postId: review.post.toString(),
           description: review.description,
-          name: user,
+          image: image,
+          name: name,
           userId: review.user.toString(),
         };
       })
@@ -80,6 +83,7 @@ export async function getStaticProps(context) {
           })),
           user: selectedUser.name,
           userId: selectedUser._id.toString(),
+          userImage: selectedUser.image,
           reviews: reviewUser ? reviewUser : [], // If there are no reviews then just return empty array
         },
       },
