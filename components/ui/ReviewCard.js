@@ -1,4 +1,5 @@
 import { useSession } from "next-auth/react";
+import Link from "next/link";
 import { useRouter } from "next/router";
 import { useState, useEffect, useRef } from "react";
 
@@ -181,8 +182,10 @@ const ReviewCard = ({ id, postId, description, image, name, userId }) => {
     <>
       <div key={id} className="relative my-2 md:pl-3 p-1.5 ">
         <div className="flex justify-between">
-          <div className="flex first-letter:items-center">
-            <img src={image} alt="lel" className="rounded-3xl" />
+          <div className="flex items-center">
+            <Link href={`/user/${userId}`}>
+              <img src={image} alt="lel" className="rounded-full" />
+            </Link>
             <p className="text-base font-medium text-gray-900 mb-0.5 ml-3">
               {name}
             </p>

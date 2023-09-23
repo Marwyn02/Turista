@@ -1,48 +1,117 @@
-import React from "react";
+import { useState, useEffect, useRef } from "react";
+import Link from "next/link";
+import { useSession } from "next-auth/react";
+import { useRouter } from "next/router";
 
-const Dropdown = () => {
+const Dropdown = (props) => {
+  const { data: session } = useSession();
+  const router = useRouter();
+  const buttonRef = useRef();
+  const dropdownRef = useRef();
+  const [dropdown, setDropdown] = useState(false);
+
+  const [activeSession, setActiveSession] = useState(false);
+
+  // Deletes the post
+  const deleteHandler = async (event) => {
+    event.preventDefault();
+    const postId = props.user.postId;
+
+    try {
+      const response = await fetch(`/api/post/delete`, {
+        method: "DELETE",
+        headers: {
+          "Content-type": "application/json",
+        },
+        body: JSON.stringify({ postId }),
+      });
+
+      if (!response.ok) {
+        throw new Error("Failed to delete post");
+      } else {
+        router.push("/");
+      }
+    } catch (error) {
+      throw new Error("Error in delete Post: " + error);
+    }
+  };
+
+  // Check if the user has already active
+  useEffect(() => {
+    if (session && session.user._id === props.user.userId) {
+      setActiveSession(true);
+    }
+  }, [session, props.user.userId]);
+
+  useEffect(() => {
+    function handleClickOutside(event) {
+      if (
+        dropdownRef.current &&
+        !dropdownRef.current.contains(event.target) &&
+        buttonRef.current &&
+        !buttonRef.current.contains(event.target)
+      ) {
+        setDropdown(false);
+      }
+    }
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
+  }, []);
   return (
     <>
-      <div
-        ref={dropdownRef}
-        className="absolute right-1 lg:right-20 bg-white rounded border w-32 z-[9999]"
-      >
-        {activeSession ? (
-          <ul className="text-sm text-slate-700">
-            <Link href={`/edit/${props.id}`}>
-              <li className="hover:bg-gray-200 hover:text-black py-1.5 pl-2 flex duration-300">
+      <img
+        src="/horizontal-dots.svg"
+        alt="lel"
+        height={23}
+        width={23}
+        className="hover:bg-gray-200"
+        ref={buttonRef}
+        onClick={() => setDropdown(!dropdown)}
+      />
+      {dropdown && (
+        <div
+          ref={dropdownRef}
+          className="absolute right-0 top-8 lg:right-20 bg-white rounded border w-32 z-[9999]"
+        >
+          {activeSession ? (
+            <ul className="text-sm text-slate-700">
+              <Link href={`/edit/${props.user.postId}`}>
+                <li className="hover:bg-gray-200 hover:text-black py-1.5 pl-2 flex duration-300">
+                  <img
+                    src="/pen.svg"
+                    height={18}
+                    width={18}
+                    alt="lel"
+                    className="mr-1.5"
+                  />
+                  Edit
+                </li>
+              </Link>
+              <li
+                onClick={deleteHandler}
+                className="hover:bg-gray-200 hover:text-black py-1.5 pl-2 flex duration-300"
+              >
                 <img
-                  src="/pen.svg"
+                  src="/trash.svg"
                   height={18}
                   width={18}
                   alt="lel"
                   className="mr-1.5"
-                />
-                Edit
+                />{" "}
+                Delete
               </li>
-            </Link>
-            <li
-              onClick={deleteHandler}
-              className="hover:bg-gray-200 hover:text-black py-1.5 pl-2 flex duration-300"
-            >
-              <img
-                src="/trash.svg"
-                height={18}
-                width={18}
-                alt="lel"
-                className="mr-1.5"
-              />{" "}
-              Delete
-            </li>
-          </ul>
-        ) : (
-          <ul className="text-sm text-slate-700">
-            <li className="hover:bg-gray-200 hover:text-black py-1.5 pl-4">
-              Save
-            </li>
-          </ul>
-        )}
-      </div>
+            </ul>
+          ) : (
+            <ul className="text-sm text-slate-700">
+              <li className="hover:bg-gray-200 hover:text-black py-1.5 pl-4">
+                Save
+              </li>
+            </ul>
+          )}
+        </div>
+      )}
     </>
   );
 };

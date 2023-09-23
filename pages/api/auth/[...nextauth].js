@@ -52,6 +52,7 @@ export default NextAuth({
 
       const user = await getUserByEmail({ email: token.email });
       token.user = user;
+
       return token;
     },
 

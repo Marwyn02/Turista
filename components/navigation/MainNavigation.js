@@ -8,7 +8,7 @@ const MainNavigation = () => {
 
   return (
     <nav className="fixed z-10 w-full bg-white border-b">
-      <div className="flex justify-between md:justify-around w-full py-4 rounded-br-md">
+      <div className="flex justify-between items-center md:justify-around w-full py-4 rounded-br-md">
         {pathname.length > 1 ? (
           <h1 className="text-xs lg:text-sm text-gray-500 font-semibold ml-7 lg:ml-5 flex items-center hover:text-black">
             <Link href="/"> Back </Link>

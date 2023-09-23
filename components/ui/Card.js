@@ -20,26 +20,26 @@ const Card = (props) => {
       key={props.id}
       className={
         !hasImage
-          ? "bg-gray-100 mb-5 rounded-lg drop-shadow-lg cursor-pointer border border-transparent hover:border-black/50 duration-200"
-          : "bg-gray-100 mb-5 rounded-lg drop-shadow-lg border border-transparent hover:border-black/50 duration-200"
+          ? "bg-gray-100 mb-5 md:rounded-lg drop-shadow-lg cursor-pointer md:border border-transparent hover:md:border-black/50 duration-200"
+          : "bg-gray-100 mb-5 md:rounded-lg drop-shadow-lg md:border border-transparent hover:md:border-black/50 duration-200"
       }
       onClick={!hasImage ? showDetailsHandler : undefined}
     >
       <div className="p-4">
-        <h1 className="text-zinc-600 font-semibold">{props.title}</h1>
-        <p className="text-xs -mt-1 text-zinc-900/60 font-light">
-          {props.location}
-        </p>
-        <p className="mt-2 text-zinc-800 text-base font-light">
-          {props.description}
-        </p>
+        <h1 className="text-zinc-600 font-semibold text-xl">{props.title}</h1>
+        <p className="text-xs mt-2 text-black">{props.location}</p>
+        {!hasImage ? (
+          <p className="mt-2 text-zinc-800 text-base font-light">
+            {props.description}
+          </p>
+        ) : null}
       </div>
       {hasImage && (
         <img
           src={props.image}
           alt={props.title}
           onClick={showDetailsHandler}
-          className="rounded-b-lg cursor-pointer drop-shadow-lg"
+          className="md:rounded-b-lg cursor-pointer drop-shadow-lg"
         />
       )}
     </section>

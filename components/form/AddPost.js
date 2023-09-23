@@ -43,6 +43,7 @@ const NewPostsForm = () => {
     }
   };
 
+  // Submit the input
   const submitInputHandler = async (event) => {
     event.preventDefault();
 
