@@ -1,33 +1,39 @@
-import React from "react";
-
-const UserProfile = ({ name, image }) => {
-  console.log("PROPS: ", image);
+const UserProfile = ({ name, image, postCount, reviewCount }) => {
   return (
-    <section className="bg-[#0D0F1D]">
-      <div className="w-full h-28 lg:h-[250px] bg-gradient-to-b from-indigo-700 to-[#0D0F1D]" />
-      <div className="px-5 lg:px-32">
-        <div className="-mt-5 grid justify-items-center md:items-start ">
+    <section className="bg-gray-50">
+      <div className="py-20 md:py-32 px-3 lg:px-32">
+        <div className="-mt-5 md:px-10 justify-items-center md:flex md:justify-items-start">
           <img
             src={image}
             alt="lel"
-            className="h-14 md:h-20 rounded-full mx-auto"
+            className="h-14 md:h-20 rounded-full mx-auto md:mx-0"
           />
-          <p className="text-lg md:text-xl ml-4 mt-2 text-white font-medium tracking-wide">
+          <p className="text-lg md:text-xl text-center ml-4 mt-0.5 md:mt-2 text-indigo-600 font-semibold tracking-wide">
             {name}
           </p>
         </div>
-        <div className="bg-[#1B1D2A] p-5 my-5 md:my-8 rounded-lg">
-          <h1>UserProfile</h1>
-          <h1>UserProfile</h1>
-          <h1>UserProfile</h1>
-          <h1>UserProfile</h1>
-          <h1>UserProfile</h1>
-          <h1>UserProfile</h1>
-          <h1>UserProfile</h1>
-          <h1>UserProfile</h1>
-          <h1>THis is a props: {name}</h1>
-          <h1>UserProfile</h1>
-          <h1>Yes</h1>
+        <div className="bg-indigo-600 py-3 px-5 my-3 md:my-8 rounded-lg text-white text-xs text-center font-semibold">
+          <div className="grid grid-cols-4 gap-x-2">
+            <p>Posts</p>
+            <p>Following</p>
+            <p>Followers</p>
+            <p>Reviews</p>
+          </div>
+          <div className="grid grid-cols-4 gap-x-2 mt-1 ">
+            <p>{postCount}</p>
+            <p>0</p>
+            <p>0</p>
+            <p>{reviewCount}</p>
+          </div>
+        </div>
+
+        <div className="bg-[#1B1D2A] px-5 text-white rounded-lg text-sm grid grid-cols-5 gap-x-3">
+          <p className="border-b-4 border-transparent hover:border-indigo-600 duration-200 py-3">
+            Posts
+          </p>
+          <p className="border-b-4 border-transparent hover:border-indigo-600 duration-200 py-3">
+            Reviews
+          </p>
         </div>
       </div>
     </section>

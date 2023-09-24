@@ -10,6 +10,8 @@ export default function Component() {
   const dropdownRef = useRef();
   const [dropdown, setDropdown] = useState(false);
 
+  const userPath = pathname.search("user");
+
   useEffect(() => {
     function handleClickOutside(event) {
       if (
@@ -30,14 +32,18 @@ export default function Component() {
   if (session) {
     return (
       <div className="flex relative">
-        <img
-          src={session.user.image}
-          alt="lel"
-          ref={buttonRef}
-          onClick={() => setDropdown(!dropdown)}
-          className="mr-5 rounded-full h-8 md:h-10 border-2 hover:opacity-90 duration-150 cursor-pointer"
-        />
+        {/* Hide user image if the page is user's profile page */}
+        {userPath !== 1 && (
+          <img
+            src={session.user.image}
+            alt="lel"
+            ref={buttonRef}
+            onClick={() => setDropdown(!dropdown)}
+            className="mr-5 rounded-full h-8 md:h-10 border-2 hover:opacity-90 duration-150 cursor-pointer"
+          />
+        )}
 
+        {/* Show sign out button if user's logged in */}
         {dropdown && (
           <div
             ref={dropdownRef}
@@ -65,6 +71,7 @@ export default function Component() {
       </div>
     );
   }
+  // Show sign in button only if the user is not in the /account/login page
   if (pathname !== "/account/login") {
     return (
       <>

@@ -1,5 +1,6 @@
 import NextAuth from "next-auth/next";
 import FacebookProvider from "next-auth/providers/facebook";
+import GoogleProvider from "next-auth/providers/google";
 import User from "@/models/User";
 
 export default NextAuth({
@@ -20,6 +21,10 @@ export default NextAuth({
       clientSecret: process.env.FACEBOOK_CLIENT_SECRET,
       scope: "email",
     }),
+    GoogleProvider({
+      clientId: process.env.GOOGLE_CLIENT_ID,
+      clientSecret: process.env.GOOGLE_CLIENT_SECRET,
+    }),
   ],
 
   secret: process.env.NEXTAUTH_SECRET,
@@ -32,9 +37,12 @@ export default NextAuth({
 
   callbacks: {
     async signIn({ user, account, profile, email, credentials }) {
+      // console.log("Signed in with OAuth: ", profile);
+      // console.log("Account: ", account);
       if (account.type === "oauth") {
         return await signInWithOAuth({ account, profile });
       }
+
       return true;
     },
 
@@ -53,12 +61,14 @@ export default NextAuth({
       const user = await getUserByEmail({ email: token.email });
       token.user = user;
 
+      console.log(token);
       return token;
     },
 
     async session({ session, token, user }) {
       // session.accessToken = token.accessToken;
       session.user = token.user;
+      console.log("Session: ", session);
       return session;
     },
   },
@@ -72,14 +82,26 @@ async function signInWithOAuth({ account, profile }) {
   const user = await User.findOne({ email: profile.email });
   if (user) return true;
 
-  const newUser = new User({
-    name: profile.name,
-    email: profile.email,
-    image: profile.picture.data.url,
-    provider: account.provider,
-  });
-  const saveUser = await newUser.save();
-  return true;
+  if (account.provider === "facebook") {
+    const newUser = new User({
+      name: profile.name,
+      email: profile.email,
+      image: profile.picture.data.url,
+      provider: account.provider,
+    });
+
+    const saveUser = await newUser.save();
+    return true;
+  } else if (account.provider === "google") {
+    const newUser = new User({
+      name: profile.name,
+      email: profile.email,
+      image: profile.picture,
+      provider: account.provider,
+    });
+    const saveUser = await newUser.save();
+    return true;
+  }
 }
 
 async function getUserByEmail({ email }) {

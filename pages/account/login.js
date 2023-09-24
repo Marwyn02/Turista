@@ -6,6 +6,7 @@ import MainLayout from "@/components/layout/MainLayout";
 const login = ({ provider, session }) => {
   const router = useRouter();
   const { data: account } = useSession();
+
   if (account) {
     router.push("/");
   }
@@ -30,10 +31,10 @@ const login = ({ provider, session }) => {
           </div>
           <div className="flex justify-center">
             <button
+              onClick={() => signIn(provider.google.id)}
               className="w-5/6 rounded-full border py-3 text-sm mt-5 font-semibold tracking-wide text-gray-700 hover:bg-blue-500 hover:text-gray-50 hover:border-blue-500 duration-300"
-              disabled
             >
-              Google
+              {provider.google.name}
             </button>
           </div>
           <div className="flex justify-center">

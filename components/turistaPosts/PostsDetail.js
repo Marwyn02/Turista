@@ -11,7 +11,7 @@ const PostsDetail = (props) => {
   const { data: session } = useSession();
 
   const [hasImage, setHasImage] = useState(true);
-  const [activeSession, setActiveSession] = useState(false);
+  // const [activeSession, setActiveSession] = useState(false);
 
   // Check if the user has already active
   useEffect(() => {
@@ -19,10 +19,10 @@ const PostsDetail = (props) => {
       setHasImage(false);
     }
 
-    if (session && session.user._id === props.userId) {
-      setActiveSession(true);
-    }
-  }, [props.image, session, props.userId]);
+    // if (session && session.user._id === props.userId) {
+    //   setActiveSession(true);
+    // }
+  }, [props.image]);
 
   const Map = dynamic(() => import("@/pages/map/Map"), {
     loading: () => "Loading...",
@@ -63,7 +63,10 @@ const PostsDetail = (props) => {
                 <img src={props.userImage} alt="lel" className="rounded-full" />
               </Link>
               <p className="text-base font-medium text-black/80 ml-4">
-                Posted by {props.user ? props.user : "Anonymous"}
+                Posted by{" "}
+                <span className="text-indigo-600">
+                  {props.user ? props.user : "Anonymous"}
+                </span>
               </p>
             </div>
 
@@ -97,7 +100,7 @@ const PostsDetail = (props) => {
               checkLat={props.coordinate.lat}
               checkLng={props.coordinate.lng}
             />
-            {activeSession && <PostReview postId={props.id} />}
+            {session && <PostReview postId={props.id} />}
           </div>
         </div>
       </div>

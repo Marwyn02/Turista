@@ -1,4 +1,4 @@
-import { Fragment } from "react";
+import { Suspense } from "react";
 import { connectMongoDB } from "../../lib/connectMongoDB";
 import mongoose from "mongoose";
 import FindOne from "../api/post/findOne";
@@ -8,7 +8,7 @@ import PostsDetail from "@/components/turistaPosts/PostsDetail";
 
 const index = (props) => {
   return (
-    <Fragment>
+    <Suspense fallback={<p>Loading content...</p>}>
       <PostsDetail
         id={props.postData.id}
         title={props.postData.title}
@@ -22,7 +22,7 @@ const index = (props) => {
         userImage={props.postData.userImage}
         reviews={props.postData.reviews}
       />
-    </Fragment>
+    </Suspense>
   );
 };
 

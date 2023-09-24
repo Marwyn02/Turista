@@ -14,6 +14,9 @@ const UserSchema = new mongoose.Schema(
       type: String,
       trim: true,
     },
+    provider: {
+      type: String,
+    },
   },
   { timestamps: true }
 );

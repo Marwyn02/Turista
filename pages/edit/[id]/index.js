@@ -4,6 +4,7 @@ import FindOne from "@/pages/api/post/findOne";
 
 import EditPost from "@/components/form/EditPost";
 import MainLayout from "@/components/layout/MainLayout";
+import { Suspense } from "react";
 
 export async function getStaticPaths() {
   try {
@@ -58,16 +59,18 @@ export async function getStaticProps(context) {
 const editPost = (props) => {
   try {
     return (
-      <MainLayout>
-        <EditPost
-          id={props.postData.id}
-          title={props.postData.title}
-          location={props.postData.location}
-          image={props.postData.image}
-          description={props.postData.description}
-          amenities={props.postData.amenities}
-        />
-      </MainLayout>
+      <Suspense fallback={<p>Loading content...</p>}>
+        <MainLayout>
+          <EditPost
+            id={props.postData.id}
+            title={props.postData.title}
+            location={props.postData.location}
+            image={props.postData.image}
+            description={props.postData.description}
+            amenities={props.postData.amenities}
+          />
+        </MainLayout>
+      </Suspense>
     );
   } catch (error) {
     throw new Error("Error fetching edit post data: ", error);

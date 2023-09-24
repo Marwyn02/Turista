@@ -1,10 +1,11 @@
-import UserProfile from "@/components/profile/UserProfile";
-
 import { connectMongoDB } from "@/lib/connectMongoDB";
 import mongoose from "mongoose";
-import { useRouter } from "next/router";
+import { Suspense } from "react";
 
+import CountData from "../api/user/countData";
 import FindUser from "../api/user/findUser";
+
+import UserProfile from "@/components/profile/UserProfile";
 
 export async function getStaticPaths() {
   try {
@@ -26,6 +27,10 @@ export async function getStaticProps(context) {
   try {
     const userId = context.params.userId;
     const { name, image } = await FindUser(userId);
+
+    const PostReviewCount = await CountData(userId);
+
+    // console.log(PostReviewCount);
 
     if (!name && !image) {
       return {
@@ -53,6 +58,8 @@ export async function getStaticProps(context) {
         userData: {
           name: name,
           image: image,
+          postCount: PostReviewCount.PostCount,
+          reviewCount: PostReviewCount.ReviewCount,
           // id: selectedResult._id.toString(),
           // title: selectedResult.title,
           // coordinate: {
@@ -86,16 +93,15 @@ export async function getStaticProps(context) {
 }
 
 const userId = (props) => {
-  // const router = useRouter();
-  // const { userId } = router.query;
-
-  // console.log(userId);
-  // const user = await FindUser(userId);
-  // console.log(user);
-  // console.log("This is the user details: ", userDetails);
-
   return (
-    <UserProfile name={props.userData.name} image={props.userData.image} />
+    <Suspense fallback={<p>Loading content...</p>}>
+      <UserProfile
+        name={props.userData.name}
+        image={props.userData.image}
+        postCount={props.userData.postCount}
+        reviewCount={props.userData.reviewCount}
+      />
+    </Suspense>
   );
 };
 
