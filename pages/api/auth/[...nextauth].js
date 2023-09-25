@@ -37,8 +37,6 @@ export default NextAuth({
 
   callbacks: {
     async signIn({ user, account, profile, email, credentials }) {
-      // console.log("Signed in with OAuth: ", profile);
-      // console.log("Account: ", account);
       if (account.type === "oauth") {
         return await signInWithOAuth({ account, profile });
       }
@@ -61,14 +59,13 @@ export default NextAuth({
       const user = await getUserByEmail({ email: token.email });
       token.user = user;
 
-      console.log(token);
       return token;
     },
 
     async session({ session, token, user }) {
       // session.accessToken = token.accessToken;
       session.user = token.user;
-      console.log("Session: ", session);
+
       return session;
     },
   },

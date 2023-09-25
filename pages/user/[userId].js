@@ -6,6 +6,7 @@ import CountData from "../api/user/countData";
 import FindUser from "../api/user/findUser";
 
 import UserProfile from "@/components/profile/UserProfile";
+import Post from "@/models/Post";
 
 export async function getStaticPaths() {
   try {
@@ -30,7 +31,7 @@ export async function getStaticProps(context) {
 
     const PostReviewCount = await CountData(userId);
 
-    // console.log(PostReviewCount);
+    const find = await Post.find({ user: userId }).sort({ _id: -1 });
 
     if (!name && !image) {
       return {
@@ -38,17 +39,29 @@ export async function getStaticProps(context) {
       };
     }
 
+    const posts = await Promise.all(
+      find.map(async (posts) => {
+        return {
+          id: posts._id.toString(),
+          title: posts.title,
+          location: posts.location,
+          image: posts.image,
+        };
+      })
+    );
+
     // Return a user name of every review in a specific post
     // const reviewUser = await Promise.all(
-    //   selectedResult.reviews.map(async (review) => {
-    //     const { name, image } = await GetOne(review.user);
+    //   find.title.map(async (titles) => {
+    //     // const { name, image } = await GetOne(review.user);
     //     return {
-    //       id: review._id.toString(),
-    //       postId: review.post.toString(),
-    //       description: review.description,
-    //       image: image,
-    //       name: name,
-    //       userId: review.user.toString(),
+    //       // id: review._id.toString(),
+    //       // postId: review.post.toString(),
+    //       // description: review.description,
+    //       // image: image,
+    //       // name: name,
+    //       // userId: review.user.toString(),
+    //       title: titles.title,
     //     };
     //   })
     // );
@@ -60,6 +73,8 @@ export async function getStaticProps(context) {
           image: image,
           postCount: PostReviewCount.PostCount,
           reviewCount: PostReviewCount.ReviewCount,
+          posts: posts,
+          // find: reviewUser,
           // id: selectedResult._id.toString(),
           // title: selectedResult.title,
           // coordinate: {
@@ -100,6 +115,7 @@ const userId = (props) => {
         image={props.userData.image}
         postCount={props.userData.postCount}
         reviewCount={props.userData.reviewCount}
+        posts={props.userData.posts}
       />
     </Suspense>
   );

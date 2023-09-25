@@ -1,4 +1,8 @@
-const UserProfile = ({ name, image, postCount, reviewCount }) => {
+import { useState } from "react";
+
+const UserProfile = ({ name, image, postCount, reviewCount, posts }) => {
+  const [toggler, setToggler] = useState(false);
+
   return (
     <section className="bg-gray-50">
       <div className="py-20 md:py-32 px-3 lg:px-32">
@@ -28,13 +32,30 @@ const UserProfile = ({ name, image, postCount, reviewCount }) => {
         </div>
 
         <div className="bg-[#1B1D2A] px-5 text-white rounded-lg text-sm grid grid-cols-5 gap-x-3">
-          <p className="border-b-4 border-transparent hover:border-indigo-600 duration-200 py-3">
+          <button
+            onClick={() => setToggler(!toggler)}
+            className="border-b-4 border-transparent hover:border-indigo-600 duration-200 py-3"
+          >
             Posts
-          </p>
+          </button>
           <p className="border-b-4 border-transparent hover:border-indigo-600 duration-200 py-3">
             Reviews
           </p>
         </div>
+        {toggler ? (
+          <div className="pb-4 mt-4 my-5 grid grid-cols-1 sm:grid-cols-2 gap-4">
+            {posts.map((post) => (
+              <div className="relative bg-gray-200 pt-[100%]">
+                <img
+                  key={post.id}
+                  src={post.image}
+                  alt="lel"
+                  className="rounded-lg absolute inset-0 w-full h-full object-cover"
+                />
+              </div>
+            ))}
+          </div>
+        ) : null}
       </div>
     </section>
   );
