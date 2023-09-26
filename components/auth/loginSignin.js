@@ -51,6 +51,18 @@ export default function Component() {
           >
             {session && (
               <div>
+                <Link href={`/`}>
+                  <button className="flex items-center py-2 px-4 font-semibold text-xs lg:text-sm text-indigo-400 hover:text-indigo-600 duration-300">
+                    {/* <img
+                    src="/logout.svg"
+                    alt="lel"
+                    height={18}
+                    width={18}
+                    className="mr-2"
+                  /> */}
+                    Profile
+                  </button>
+                </Link>
                 <button
                   onClick={() => signOut()}
                   className="flex items-center py-2 px-4 font-semibold text-xs lg:text-sm text-indigo-400 hover:text-indigo-600 duration-300"

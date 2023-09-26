@@ -39,7 +39,7 @@ const Card = (props) => {
           src={props.image}
           alt={props.title}
           onClick={showDetailsHandler}
-          className="md:rounded-b-lg cursor-pointer drop-shadow-lg"
+          className="md:rounded-b-lg cursor-pointer drop-shadow-lg w-full"
         />
       )}
     </section>

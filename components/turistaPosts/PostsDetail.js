@@ -11,17 +11,12 @@ const PostsDetail = (props) => {
   const { data: session } = useSession();
 
   const [hasImage, setHasImage] = useState(true);
-  // const [activeSession, setActiveSession] = useState(false);
 
   // Check if the user has already active
   useEffect(() => {
     if (props.image === "") {
       setHasImage(false);
     }
-
-    // if (session && session.user._id === props.userId) {
-    //   setActiveSession(true);
-    // }
   }, [props.image]);
 
   const Map = dynamic(() => import("@/pages/map/Map"), {
@@ -29,7 +24,6 @@ const PostsDetail = (props) => {
     ssr: false,
   });
 
-  // console.log(props);
   return (
     <section key={props.id} className="md:px-28 pt-5 md:pt-20">
       <div className="bg-white rounded-t-xl lg:rounded-xl">

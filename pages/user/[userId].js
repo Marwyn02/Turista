@@ -2,11 +2,14 @@ import { connectMongoDB } from "@/lib/connectMongoDB";
 import mongoose from "mongoose";
 import { Suspense } from "react";
 
+import Post from "@/models/Post";
+import Review from "@/models/Review";
+import User from "@/models/User";
+
 import CountData from "../api/user/countData";
 import FindUser from "../api/user/findUser";
 
 import UserProfile from "@/components/profile/UserProfile";
-import Post from "@/models/Post";
 
 export async function getStaticPaths() {
   try {
@@ -31,7 +34,9 @@ export async function getStaticProps(context) {
 
     const PostReviewCount = await CountData(userId);
 
-    const find = await Post.find({ user: userId }).sort({ _id: -1 });
+    const userPosts = await Post.find({ user: userId }).sort({ _id: -1 });
+
+    const userReviews = await Review.find({ user: userId }).sort({ _id: -1 });
 
     if (!name && !image) {
       return {
@@ -40,31 +45,30 @@ export async function getStaticProps(context) {
     }
 
     const posts = await Promise.all(
-      find.map(async (posts) => {
+      userPosts.map(async (post) => {
         return {
-          id: posts._id.toString(),
-          title: posts.title,
-          location: posts.location,
-          image: posts.image,
+          id: post._id.toString(),
+          title: post.title,
+          location: post.location,
+          image: post.image,
         };
       })
     );
 
-    // Return a user name of every review in a specific post
-    // const reviewUser = await Promise.all(
-    //   find.title.map(async (titles) => {
-    //     // const { name, image } = await GetOne(review.user);
-    //     return {
-    //       // id: review._id.toString(),
-    //       // postId: review.post.toString(),
-    //       // description: review.description,
-    //       // image: image,
-    //       // name: name,
-    //       // userId: review.user.toString(),
-    //       title: titles.title,
-    //     };
-    //   })
-    // );
+    const reviews = await Promise.all(
+      userReviews.map(async (review) => {
+        const user = await User.findById(review.user);
+        const { name } = user;
+        return {
+          id: review._id.toString(),
+          username: name,
+          description: review.description,
+          post: review.post.toString(),
+          user: review.user.toString(),
+          image: review.image,
+        };
+      })
+    );
 
     return {
       props: {
@@ -74,25 +78,7 @@ export async function getStaticProps(context) {
           postCount: PostReviewCount.PostCount,
           reviewCount: PostReviewCount.ReviewCount,
           posts: posts,
-          // find: reviewUser,
-          // id: selectedResult._id.toString(),
-          // title: selectedResult.title,
-          // coordinate: {
-          //   lng: selectedResult.coordinate.lng,
-          //   lat: selectedResult.coordinate.lat,
-          // },
-          // location: selectedResult.location,
-          // image: selectedResult.image,
-          // description: selectedResult.description,
-          // amenities: selectedResult.amenities.map((amenity) => ({
-          //   name: amenity.name,
-          //   checked: amenity.checked,
-          //   id: amenity.id,
-          // })),
-          // user: selectedUser.name,
-          // userId: selectedUser._id.toString(),
-          // userImage: selectedUser.image,
-          // reviews: reviewUser ? reviewUser : [], // If there are no reviews then just return empty array
+          reviews: reviews,
         },
       },
       revalidate: 1,
@@ -116,6 +102,7 @@ const userId = (props) => {
         postCount={props.userData.postCount}
         reviewCount={props.userData.reviewCount}
         posts={props.userData.posts}
+        reviews={props.userData.reviews}
       />
     </Suspense>
   );

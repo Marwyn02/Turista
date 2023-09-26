@@ -43,8 +43,6 @@ export async function getStaticProps(context) {
     const postId = context.params.postId;
     const { selectedResult, selectedUser } = await FindOne(postId);
 
-    // console.log("Result: ", selectedResult);
-
     if (!selectedResult && !selectedUser) {
       return {
         notFound: true, // Return a 404 page

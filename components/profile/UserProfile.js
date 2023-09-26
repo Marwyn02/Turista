@@ -1,11 +1,28 @@
-import { useState } from "react";
+import { Suspense, useState } from "react";
+import UserPostList from "./UI/UserPostList";
+import UserReviewList from "./UI/UserReviewList";
 
-const UserProfile = ({ name, image, postCount, reviewCount, posts }) => {
-  const [toggler, setToggler] = useState(false);
+const UserProfile = ({
+  name,
+  image,
+  postCount,
+  reviewCount,
+  posts,
+  reviews,
+}) => {
+  const [showPost, setShowPost] = useState(true);
+  const [showReview, setShowReview] = useState(false);
+
+  // Toggler function of post and review
+  const toggleHandler = (show) => {
+    setShowPost(show === "post");
+    setShowReview(show === "review");
+  };
 
   return (
     <section className="bg-gray-50">
       <div className="py-20 md:py-32 px-3 lg:px-32">
+        {/* User's profile image and name */}
         <div className="-mt-5 md:px-10 justify-items-center md:flex md:justify-items-start">
           <img
             src={image}
@@ -16,6 +33,8 @@ const UserProfile = ({ name, image, postCount, reviewCount, posts }) => {
             {name}
           </p>
         </div>
+
+        {/* User's profile datas */}
         <div className="bg-indigo-600 py-3 px-5 my-3 md:my-8 rounded-lg text-white text-xs text-center font-semibold">
           <div className="grid grid-cols-4 gap-x-2">
             <p>Posts</p>
@@ -31,31 +50,43 @@ const UserProfile = ({ name, image, postCount, reviewCount, posts }) => {
           </div>
         </div>
 
-        <div className="bg-[#1B1D2A] px-5 text-white rounded-lg text-sm grid grid-cols-5 gap-x-3">
+        {/* Button group - Post and Review */}
+        <div className="bg-[#1B1D2A] px-5 text-gray-200 rounded-lg text-sm grid grid-cols-5 gap-x-3">
           <button
-            onClick={() => setToggler(!toggler)}
-            className="border-b-4 border-transparent hover:border-indigo-600 duration-200 py-3"
+            onClick={() => toggleHandler("post")}
+            className={
+              showPost
+                ? "border-b-4 border-indigo-600 text-white duration-200 py-3"
+                : "border-b-4 border-transparent hover:border-indigo-600 hover:text-white duration-200 py-3"
+            }
           >
             Posts
           </button>
-          <p className="border-b-4 border-transparent hover:border-indigo-600 duration-200 py-3">
+          <button
+            onClick={() => toggleHandler("review")}
+            className={
+              showReview
+                ? "border-b-4 border-indigo-600 text-white duration-200 py-3"
+                : "border-b-4 border-transparent hover:border-indigo-600 hover:text-white duration-200 py-3"
+            }
+          >
             Reviews
-          </p>
+          </button>
         </div>
-        {toggler ? (
-          <div className="pb-4 mt-4 my-5 grid grid-cols-1 sm:grid-cols-2 gap-4">
-            {posts.map((post) => (
-              <div className="relative bg-gray-200 pt-[100%]">
-                <img
-                  key={post.id}
-                  src={post.image}
-                  alt="lel"
-                  className="rounded-lg absolute inset-0 w-full h-full object-cover"
-                />
-              </div>
-            ))}
-          </div>
-        ) : null}
+
+        {/* User's posts section */}
+        {showPost && (
+          <Suspense fallback={<p>Loading posts...</p>}>
+            <UserPostList posts={posts} />
+          </Suspense>
+        )}
+
+        {/* User's posts section */}
+        {showReview && (
+          <Suspense fallback={<p>Loading reviews...</p>}>
+            <UserReviewList reviews={reviews} />
+          </Suspense>
+        )}
       </div>
     </section>
   );
