@@ -10,8 +10,6 @@ export default function Component() {
   const dropdownRef = useRef();
   const [dropdown, setDropdown] = useState(false);
 
-  const userPath = pathname.search("user");
-
   useEffect(() => {
     function handleClickOutside(event) {
       if (
@@ -33,33 +31,24 @@ export default function Component() {
     return (
       <div className="flex relative">
         {/* Hide user image if the page is user's profile page */}
-        {userPath !== 1 && (
-          <img
-            src={session.user.image}
-            alt="lel"
-            ref={buttonRef}
-            onClick={() => setDropdown(!dropdown)}
-            className="mr-5 rounded-full h-8 md:h-10 border-2 hover:opacity-90 duration-150 cursor-pointer"
-          />
-        )}
+        <img
+          src={session.user.image}
+          alt="lel"
+          ref={buttonRef}
+          onClick={() => setDropdown(!dropdown)}
+          className="rounded-full h-8 w-8 md:h-10 md:w-10 border-2 hover:opacity-90 duration-150 cursor-pointer"
+        />
 
         {/* Show sign out button if user's logged in */}
         {dropdown && (
           <div
             ref={dropdownRef}
-            className="absolute right-5 top-10 lg:top-12 bg-white rounded border w-32 z-[9999]"
+            className="absolute right-3 top-10 lg:top-12 bg-white rounded border w-32 z-[9999]"
           >
             {session && (
               <div>
                 <Link href={`/`}>
                   <button className="flex items-center py-2 px-4 font-semibold text-xs lg:text-sm text-indigo-400 hover:text-indigo-600 duration-300">
-                    {/* <img
-                    src="/logout.svg"
-                    alt="lel"
-                    height={18}
-                    width={18}
-                    className="mr-2"
-                  /> */}
                     Profile
                   </button>
                 </Link>

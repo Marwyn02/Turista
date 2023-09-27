@@ -3,13 +3,11 @@ import { connectMongoDB } from "@/lib/connectMongoDB";
 
 import MainLayout from "@/components/layout/MainLayout";
 import PostsList from "@/components/turistaPosts/PostsList";
-import SubNavigation from "@/components/navigation/SubNavigation";
 import { Suspense } from "react";
 
 const Home = (props) => {
   return (
     <MainLayout>
-      <SubNavigation />
       <Suspense fallback={<p className="text-center">Loading posts...</p>}>
         <PostsList posts={props.posts} />
       </Suspense>

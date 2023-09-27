@@ -21,7 +21,7 @@ const UserProfile = ({
 
   return (
     <section className="bg-gray-50">
-      <div className="py-20 md:py-32 px-3 lg:px-32">
+      <div className="py-16 md:py-32 px-3 lg:px-32">
         {/* User's profile image and name */}
         <div className="-mt-5 md:px-10 justify-items-center md:flex md:justify-items-start">
           <img

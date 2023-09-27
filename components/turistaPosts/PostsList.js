@@ -1,10 +1,8 @@
-import { Fragment } from "react";
-
 import PostsItem from "./PostsItem";
 
 const PostsList = (props) => {
   return (
-    <Fragment>
+    <section className="grid md:grid-cols-4 gap-4 px-5 md:px-0">
       {props.posts.map((item) => (
         <PostsItem
           key={item.id}
@@ -15,7 +13,7 @@ const PostsList = (props) => {
           description={item.description}
         />
       ))}
-    </Fragment>
+    </section>
   );
 };
 
