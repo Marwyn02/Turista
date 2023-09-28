@@ -3,7 +3,7 @@ import { connectMongoDB } from "@/lib/connectMongoDB";
 import FindOne from "@/pages/api/post/findOne";
 
 import EditPost from "@/components/form/EditPost";
-import MainLayout from "@/components/layout/MainLayout";
+import FormLayout from "@/components/layout/FormLayout";
 import { Suspense } from "react";
 
 export async function getStaticPaths() {
@@ -40,6 +40,7 @@ export async function getStaticProps(context) {
           description: selectedResult.description,
           amenities: selectedResult.amenities.map((item) => ({
             name: item.name,
+            description: item.description,
             checked: item.checked,
           })),
         },
@@ -60,7 +61,7 @@ const editPost = (props) => {
   try {
     return (
       <Suspense fallback={<p>Loading content...</p>}>
-        <MainLayout>
+        <FormLayout>
           <EditPost
             id={props.postData.id}
             title={props.postData.title}
@@ -69,7 +70,7 @@ const editPost = (props) => {
             description={props.postData.description}
             amenities={props.postData.amenities}
           />
-        </MainLayout>
+        </FormLayout>
       </Suspense>
     );
   } catch (error) {

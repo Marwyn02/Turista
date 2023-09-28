@@ -25,29 +25,50 @@ const PostsDetail = (props) => {
   });
 
   return (
-    <section key={props.id} className="md:px-28 pt-5 md:pt-20">
+    <section key={props.id} className="md:px-32 pt-5 md:pt-20">
       <div className="bg-white rounded-t-xl lg:rounded-xl">
         {/* Image */}
         {hasImage && (
-          <img
-            className="animated-slide md:rounded-lg md:h-[30em]"
-            src={props.image}
-            alt={props.title}
-          />
+          <div className="md:grid md:grid-rows-4 md:grid-cols-3 md:gap-4">
+            <div className="md:row-span-4 md:col-span-2">
+              <img
+                className="animated-slide md:rounded-lg h-full w-full hover:brightness-90 duration-100"
+                src={props.image}
+                alt={props.title}
+              />
+            </div>
+
+            {/* Dummy extra images */}
+            <div className="hidden md:block md:row-span-2">
+              <img
+                className="md:rounded-lg w-full h-full hover:brightness-90 duration-100"
+                src="https://images.unsplash.com/photo-1695453463057-aa5d48d9e3d4?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2832&q=80"
+                alt={props.title}
+              />
+            </div>
+            <div className="hidden md:block md:row-span-2">
+              <img
+                className="md:rounded-lg w-full h-full hover:brightness-90 duration-100"
+                src="https://images.unsplash.com/photo-1695065906720-19e9c4d4644e?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2988&q=80"
+                alt={props.title}
+              />
+            </div>
+          </div>
         )}
 
-        <div className="lg:flex lg:flex-row px-5 pt-6 lg:pt-6">
-          <div className="basis-auto lg:basis-7/12 lg:pr-20 relative">
+        {/* Post text details */}
+        <div className="lg:flex lg:flex-row pt-4 md:pt-6 px-5 md:px-0 lg:pt-3">
+          <div className="basis-auto lg:basis-7/12 lg:pr-14 relative">
             {/* Title and Dropdown */}
             <div className="flex justify-between">
-              <h1 className="text-zinc-700 font-semibold text-2xl lg:text-4xl lg:tracking-wide">
+              <h1 className="capitalize text-zinc-700 font-semibold text-2xl lg:text-4xl lg:tracking-wide">
                 {props.title}
               </h1>
               <Dropdown user={{ userId: props.userId, postId: props.id }} />
             </div>
 
             {/* Location   */}
-            <p className="text-sm lg:text-xl mt-2 text-black font-medium">
+            <p className="capitalize text-sm lg:text-xl mt-2 text-black font-medium">
               {props.location}
             </p>
 
@@ -83,13 +104,13 @@ const PostsDetail = (props) => {
             </div>
 
             {/* Description */}
-            <p className="text-black text-base font-light border-t py-5 mb-8">
+            <p className="capitalize text-black text-base font-light border-t py-5 mb-8">
               {props.description}
             </p>
           </div>
 
           {/* Map and Create Review */}
-          <div className="basis-auto lg:basis-5/12 lg:px-8">
+          <div className="basis-auto lg:basis-5/12">
             <Map
               checkLat={props.coordinate.lat}
               checkLng={props.coordinate.lng}
@@ -98,7 +119,8 @@ const PostsDetail = (props) => {
           </div>
         </div>
       </div>
-      <aside className="bg-white px-5 py-3 rounded-b-xl md:rounded-none overflow-y-auto">
+
+      <aside className="bg-white py-3 px-5 md:px-0 rounded-b-xl md:rounded-none overflow-y-auto">
         <Suspense fallback={<p className="text-center">Loading reviews...</p>}>
           <ReviewList reviewData={props.reviews} />
         </Suspense>

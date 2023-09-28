@@ -1,11 +1,11 @@
-import MainLayout from "@/components/layout/MainLayout";
+import FormLayout from "@/components/layout/FormLayout";
 import AddPost from "@/components/form/AddPost";
 
 const NewPost = () => {
   return (
-    <MainLayout>
+    <FormLayout>
       <AddPost />
-    </MainLayout>
+    </FormLayout>
   );
 };
 

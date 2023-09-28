@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { useState } from "react";
 import { useRouter } from "next/router";
+import AmenitiesBox from "../ui/AmenitiesBox";
 
 const EditPost = (props) => {
   const router = useRouter();
@@ -11,10 +12,8 @@ const EditPost = (props) => {
   const [newLocation, setNewLocation] = useState(location);
   const [newAmenities, setNewAmenities] = useState(amenities);
 
-  const handleCheckboxChange = (event, index) => {
-    const updatedAmenities = [...newAmenities];
-    updatedAmenities[index].checked = event.target.checked;
-    setNewAmenities(updatedAmenities);
+  const amenitiesChecked = (amenity) => {
+    setNewAmenities(amenity);
   };
 
   const handleSubmit = async (e) => {
@@ -27,6 +26,7 @@ const EditPost = (props) => {
       description: newDescription,
       amenities: newAmenities,
     };
+
     try {
       const response = await fetch(`/api/post/edit`, {
         method: "PUT",
@@ -47,149 +47,136 @@ const EditPost = (props) => {
   };
 
   return (
-    <form
-      onSubmit={handleSubmit}
-      className="bg-white sm:my-4 py-10 md:rounded-lg"
-    >
-      <div className="space-y-12 px-5">
-        <h2 className="text-4xl font-semibold leading-7 text-blue-400 underline">
-          Edit your post
-        </h2>
-        <p className="text-sm leading-6 text-gray-600">
-          This information will be displayed publicly so be careful what you
-          share.
-        </p>
-        <div className="mt-10 grid grid-cols-1 gap-x-6 gap-y-5 md:gap-y-8 sm:grid-cols-6">
-          {/* Title Input  */}
-          <div className="sm:col-span-4">
-            <label
-              className="text-sm font-medium leading-6 text-gray-600"
-              htmlFor="title"
-            >
-              Title
-            </label>
-            <div>
-              <div className="flex rounded-md shadow-sm ring-1 ring-inset ring-gray-300 focus-within:ring-2 focus-within:ring-inset focus-within:ring-blue-600 sm:max-w-md">
-                <input
-                  type="text"
-                  name="title"
-                  id="title"
-                  className="block flex-1 border-0 bg-transparent py-1.5 pl-2 text-gray-600 placeholder:text-gray-300 focus:ring-0 sm:text-sm sm:leading-6"
-                  placeholder="My travel post title"
-                  onChange={(e) => setNewTitle(e.target.value)}
-                  value={newTitle}
-                  required
-                ></input>
-              </div>
-            </div>
-          </div>
+    <form onSubmit={handleSubmit} className="bg-white sm:my-4">
+      <div className="space-y-10 md:px-2">
+        <div className="px-5">
+          <h2 className="text-xl">Your post.</h2>
+          <p className="text-xs text-gray-600 mt-2">
+            This information will be displayed publicly so be careful what you
+            share.
+          </p>
+        </div>
 
-          {/* Location Input  */}
-          <div className="sm:col-span-4">
-            <label
-              className="text-sm font-medium leading-6 text-gray-600"
-              htmlFor="location"
-            >
-              Location
-            </label>
-            <div>
-              <div className="flex rounded-md shadow-sm ring-1 ring-inset ring-gray-300 focus-within:ring-2 focus-within:ring-inset focus-within:ring-blue-600 sm:max-w-md">
-                <input
-                  type="text"
-                  name="location"
-                  id="location"
-                  className="block flex-1 border-0 bg-transparent py-1.5 pl-2 text-gray-600 placeholder:text-gray-300 focus:ring-0 sm:text-sm sm:leading-6"
-                  placeholder="Where it was street, country name"
-                  onChange={(e) => setNewLocation(e.target.value)}
-                  value={newLocation}
-                  required
-                ></input>
-              </div>
-            </div>
-          </div>
-
+        <div>
           {/* Image Input  */}
-          <div className="sm:col-span-4">
-            <label
-              htmlFor="image"
-              className="text-sm font-medium leading-6 text-gray-600"
-            >
-              Image
-            </label>
+          <div className="sm:col-span-6">
             <img
               src={image}
               alt={title}
               name="image"
               id="image"
-              className="h-20"
+              className="w-full md:rounded-lg"
             />
           </div>
 
-          {/* Amenities Input  */}
-          <div className="sm:col-span-4 border border-gray-300 p-4 rounded-lg">
-            {newAmenities.map((amenity, index) => (
-              <div className="relative flex gap-x-3" key={amenity.name}>
-                <div className="flex h-6 items-center">
-                  <input
-                    id={amenity.name}
-                    name={amenity.name}
-                    type="checkbox"
-                    onChange={(e) => handleCheckboxChange(e, index)}
-                    checked={amenity.checked}
-                    className="h-4 w-4 rounded border-gray-300 text-indigo-600 focus:ring-indigo-600"
-                  />
-                </div>
-                <div className="text-sm leading-6">
-                  <label
-                    htmlFor={amenity.name}
-                    className="font-medium text-indigo-400"
-                  >
-                    {amenity.name}
-                  </label>
-                </div>
-              </div>
-            ))}
-          </div>
-
-          {/* Description Input  */}
-          <div className="sm:col-span-full">
-            <label
-              className="text-sm font-medium leading-6 text-gray-600"
-              htmlFor="description"
-            >
-              Description
-            </label>
-            <div>
-              <div className="flex rounded-md shadow-sm ring-1 ring-inset ring-gray-300 focus-within:ring-2 focus-within:ring-inset focus-within:ring-blue-600 sm:max-w-md">
-                <textarea
-                  cols="30"
-                  rows="5"
-                  name="description"
-                  id="description"
-                  className="block flex-1 border-0 bg-transparent py-1.5 pl-2 text-gray-600 placeholder:text-gray-400 focus:ring-0 sm:text-sm sm:leading-6"
-                  placeholder="Is it fun? Maybe not"
-                  onChange={(e) => setNewDescription(e.target.value)}
-                  value={newDescription}
-                ></textarea>
+          <div className="mt-10 grid grid-cols-1 gap-x-6 gap-y-8 px-5 sm:grid-cols-6">
+            {/* Amenities Input  */}
+            <div className="sm:col-span-6 border-t pt-10">
+              <h2 className="text-sm font-medium leading-6 text-gray-600">
+                Amenities
+              </h2>
+              <div className="grid grid-cols-2 gap-2">
+                <AmenitiesBox
+                  editAmenities={newAmenities}
+                  amenitiesChecked={amenitiesChecked}
+                />
               </div>
             </div>
-          </div>
 
-          <div className="flex gap-x-1.5">
-            <div>
-              <Link href={`/${id}`}>
-                <button className="bg-gray-200 text-sm py-1 px-5 w-max rounded text-gray-900">
-                  Cancel
-                </button>
-              </Link>
-            </div>
-            <div>
-              <button
-                type="submit"
-                className="bg-indigo-500 text-sm py-1 px-5 w-max rounded text-gray-100"
+            {/* Title Input  */}
+            <div className="sm:col-span-6">
+              <label
+                className="text-sm font-medium leading-6 text-gray-600"
+                htmlFor="title"
               >
-                Save
-              </button>
+                Title
+              </label>
+              <div>
+                <div className="flex w-full">
+                  <input
+                    type="text"
+                    name="title"
+                    id="title"
+                    className="flex-1 border rounded-lg shadow-sm py-2.5 px-3 pl-3 text-gray-600 
+                            placeholder:text-gray-300 sm:text-sm sm:leading-6 focus:ring-1 
+                             focus:ring-indigo-600 focus:border-indigo-600 focus:outline-none"
+                    placeholder="My travel post title"
+                    onChange={(e) => setNewTitle(e.target.value)}
+                    value={newTitle}
+                    required
+                  ></input>
+                </div>
+              </div>
+            </div>
+
+            {/* Location Input  */}
+            <div className="sm:col-span-6">
+              <label
+                className="text-sm font-medium leading-6 text-gray-600"
+                htmlFor="location"
+              >
+                Location
+              </label>
+              <div>
+                <div className="flex w-full">
+                  <input
+                    type="text"
+                    name="location"
+                    id="location"
+                    className="flex-1 border rounded-lg shadow-sm py-2.5 px-3 pl-3 text-gray-600 
+                            placeholder:text-gray-300 sm:text-sm sm:leading-6 focus:ring-1 
+                            focus:ring-indigo-600 focus:border-indigo-600 focus:outline-none"
+                    placeholder="Where it was street, country name"
+                    onChange={(e) => setNewLocation(e.target.value)}
+                    value={newLocation}
+                    required
+                  ></input>
+                </div>
+              </div>
+            </div>
+
+            {/* Description Input  */}
+            <div className="sm:col-span-6">
+              <label
+                className="text-sm font-medium leading-6 text-gray-600"
+                htmlFor="description"
+              >
+                Description
+              </label>
+              <div>
+                <div className="flex w-full">
+                  <textarea
+                    cols="30"
+                    rows="5"
+                    name="description"
+                    id="description"
+                    className="resize-none flex-1 border rounded-lg shadow-sm py-2.5 px-3 pl-3 text-gray-600 
+                             placeholder:text-gray-300 sm:text-sm sm:leading-6 focus:ring-1 
+                             focus:ring-indigo-600 focus:border-indigo-600 focus:outline-none"
+                    placeholder="Is it fun? Maybe not"
+                    onChange={(e) => setNewDescription(e.target.value)}
+                    value={newDescription}
+                  ></textarea>
+                </div>
+              </div>
+            </div>
+
+            <div className="flex justify-between md:justify-normal items-center gap-x-1.5 py-3">
+              <div>
+                <Link href={`/${id}`}>
+                  <button className="bg-white text-gray-900 border border-black text-sm px-5 py-1.5 w-full rounded hover:bg-gray-900 hover:text-white duration-200">
+                    Cancel
+                  </button>
+                </Link>
+              </div>
+              <div>
+                <button
+                  type="submit"
+                  className="bg-indigo-500 text-white text-sm px-5 py-1.5 w-full border border-transparent rounded hover:bg-indigo-200 hover:text-gray-600 duration-200"
+                >
+                  Save
+                </button>
+              </div>
             </div>
           </div>
         </div>

@@ -6,23 +6,24 @@ mapboxgl.accessToken = process.env.NEXT_PUBLIC_MAPBOX_TOKEN;
 const Map = (props) => {
   const coordinatesRef = useRef({ lng: 0, lat: 0 });
   const markerRef = useRef(null);
+  const [marked, setMarked] = useState(false);
 
   const mapContainerRef = useRef(null);
   const [lng, setLng] = useState(() => {
     if (props.checkLng) {
       return props.checkLng;
     } else {
-      return 121.0163;
+      return 120.979;
     }
   });
   const [lat, setLat] = useState(() => {
     if (props.checkLat) {
       return props.checkLat;
     } else {
-      return 14.3039;
+      return 14.5828;
     }
   });
-  const [zoom] = useState(12.5);
+  const [zoom] = useState(8);
 
   useEffect(() => {
     const map = new mapboxgl.Map({
@@ -84,6 +85,7 @@ const Map = (props) => {
   // }, [mapInstance, markers]);
 
   const handleMapCoordinates = () => {
+    setMarked(true);
     props.onMarkerClick(coordinatesRef.current);
   };
 
@@ -98,6 +100,7 @@ const Map = (props) => {
       </>
     );
   }
+
   return (
     <>
       <div
@@ -105,15 +108,27 @@ const Map = (props) => {
         className="map-container"
         coordinates={coordinatesRef.current}
       />
-      <button
-        className="w-full py-1.5 mt-3 text-sm border border-black/50 rounded hover:bg-indigo-500 hover:border-indigo-500 hover:text-white duration-300"
-        onClick={(e) => {
-          e.preventDefault();
-          handleMapCoordinates();
-        }}
-      >
-        Save
-      </button>
+
+      {marked ? (
+        <button
+          className="w-full py-1.5 mt-3 text-sm border border-gray-200 rounded bg-gray-200 text-gray-500"
+          disabled
+        >
+          Marked
+        </button>
+      ) : (
+        <button
+          className="w-full py-1.5 mt-3 text-sm border border-black/50 rounded 
+                hover:bg-indigo-500 hover:border-indigo-500 hover:text-white 
+                  duration-300"
+          onClick={(e) => {
+            e.preventDefault();
+            handleMapCoordinates();
+          }}
+        >
+          Mark location
+        </button>
+      )}
     </>
   );
 };
