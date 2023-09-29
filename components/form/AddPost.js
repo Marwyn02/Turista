@@ -9,12 +9,13 @@ const NewPostsForm = (props) => {
   const { data: session } = useSession();
   const router = useRouter();
 
-  const [selectedImage, setSelectedImage] = useState();
+  const [images, setImages] = useState([]);
+  const [selectedImage, setSelectedImage] = useState(null);
+  // const [imageIndex, setImageIndex] = useState(0);
 
   const amenitiesRef = useRef([]);
   const coordinatesRef = useRef({ lng: 0, lat: 0 });
   const descriptionInputRef = useRef();
-  const imageInputRef = useRef();
   const locationInputRef = useRef();
   const titleInputRef = useRef();
 
@@ -27,13 +28,20 @@ const NewPostsForm = (props) => {
     ssr: false,
   });
 
-  const handleFileChange = () => {
-    const enteredImage = imageInputRef.current;
+  const handleImageChange = (e) => {
+    const image = e.target.files[0];
+    if (image && images.length < 3) {
+      const reader = new FileReader();
 
-    if (enteredImage.files.length > 0) {
-      const file = enteredImage.files[0];
-      const url = URL.createObjectURL(file);
-      setSelectedImage(url);
+      reader.onload = (e) => {
+        const newImage = [...images, e.target.result];
+        setImages(newImage);
+        setSelectedImage(e.target.result);
+      };
+
+      reader.readAsDataURL(image);
+    } else if (images.length >= 3) {
+      alert("You have reached three images!");
     }
   };
 
@@ -67,23 +75,25 @@ const NewPostsForm = (props) => {
       user: session.user._id,
     };
 
-    try {
-      const response = await fetch("/api/post/create", {
-        method: "POST",
-        headers: {
-          "Content-type": "application/json",
-        },
-        body: JSON.stringify(postData),
-      });
+    console.log(postData);
 
-      if (!response.ok) {
-        throw new Error("Failed to create post");
-      } else {
-        router.push("/");
-      }
-    } catch (error) {
-      throw new Error("Error in create post: " + error);
-    }
+    // try {
+    //   const response = await fetch("/api/post/create", {
+    //     method: "POST",
+    //     headers: {
+    //       "Content-type": "application/json",
+    //     },
+    //     body: JSON.stringify(postData),
+    //   });
+
+    //   if (!response.ok) {
+    //     throw new Error("Failed to create post");
+    //   } else {
+    //     router.push("/");
+    //   }
+    // } catch (error) {
+    //   throw new Error("Error in create post: " + error);
+    // }
   };
 
   return (
@@ -148,20 +158,32 @@ const NewPostsForm = (props) => {
             >
               Image
             </label>
-            <input
-              id="image"
-              name="image"
-              type="file"
-              className="block w-full text-sm text-slate-500
-                        file:mr-4 file:py-2 file:px-4
-                        file:rounded-full file:border-0
-                        file:text-sm file:font-semibold
-                        file:bg-indigo-50 file:text-indigo-500
-                        hover:file:bg-indigo-100"
-              accept="image/*"
-              onChange={handleFileChange}
-              ref={imageInputRef}
-            />
+
+            <>
+              <input
+                id="image"
+                name="image"
+                type="file"
+                // className="block w-full text-sm text-slate-500
+                //       file:mr-4 file:py-2 file:px-4
+                //       file:rounded-full file:border-0
+                //       file:text-sm file:font-semibold
+                //       file:bg-indigo-50 file:text-indigo-500
+                //       hover:file:bg-indigo-100"
+                accept="image/*"
+                onChange={handleImageChange}
+              />
+              {selectedImage && (
+                <img
+                  src={selectedImage}
+                  alt="Selected Image"
+                  className="h-[300px] w-full"
+                />
+              )}
+              {images.length < 3 && (
+                <button onClick={() => setSelectedImage(null)}>Clear</button>
+              )}
+            </>
           </div>
 
           {/* Title Input  */}
