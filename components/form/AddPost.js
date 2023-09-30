@@ -10,8 +10,6 @@ const NewPostsForm = (props) => {
   const router = useRouter();
 
   const [images, setImages] = useState([]);
-  const [selectedImage, setSelectedImage] = useState(null);
-  // const [imageIndex, setImageIndex] = useState(0);
 
   const amenitiesRef = useRef([]);
   const coordinatesRef = useRef({ lng: 0, lat: 0 });
@@ -19,7 +17,7 @@ const NewPostsForm = (props) => {
   const locationInputRef = useRef();
   const titleInputRef = useRef();
 
-  const coor = ({ lat, lng }) => {
+  const coordinates = ({ lat, lng }) => {
     coordinatesRef.current = { lng, lat };
   };
 
@@ -28,20 +26,18 @@ const NewPostsForm = (props) => {
     ssr: false,
   });
 
-  const handleImageChange = (e) => {
+  // Image handler
+  const handleImageChange = async (e) => {
     const image = e.target.files[0];
+
     if (image && images.length < 3) {
       const reader = new FileReader();
 
       reader.onload = (e) => {
-        const newImage = [...images, e.target.result];
+        const newImage = [...images, { url: e.target.result }];
         setImages(newImage);
-        setSelectedImage(e.target.result);
       };
-
       reader.readAsDataURL(image);
-    } else if (images.length >= 3) {
-      alert("You have reached three images!");
     }
   };
 
@@ -61,9 +57,12 @@ const NewPostsForm = (props) => {
       description: check.description,
       checked: check.checked,
     }));
+    const img = images.map((i) => ({
+      url: i.url,
+    }));
 
     const postData = {
-      image: selectedImage,
+      image: img,
       title: enteredTitle,
       location: enteredLocation,
       coordinate: {
@@ -75,25 +74,24 @@ const NewPostsForm = (props) => {
       user: session.user._id,
     };
 
-    console.log(postData);
+    try {
+      const response = await fetch("/api/post/create", {
+        method: "POST",
+        headers: {
+          "Content-type": "application/json",
+        },
+        body: JSON.stringify(postData),
+      });
 
-    // try {
-    //   const response = await fetch("/api/post/create", {
-    //     method: "POST",
-    //     headers: {
-    //       "Content-type": "application/json",
-    //     },
-    //     body: JSON.stringify(postData),
-    //   });
-
-    //   if (!response.ok) {
-    //     throw new Error("Failed to create post");
-    //   } else {
-    //     router.push("/");
-    //   }
-    // } catch (error) {
-    //   throw new Error("Error in create post: " + error);
-    // }
+      if (!response.ok) {
+        throw new Error("Failed to create post");
+      } else {
+        router.push("/");
+      }
+    } catch (error) {
+      // throw new Error("Error in create post: " + error);
+      console.error(error);
+    }
   };
 
   return (
@@ -110,7 +108,7 @@ const NewPostsForm = (props) => {
         <div className="mt-10 grid grid-cols-1 gap-x-6 gap-y-8 px-5 sm:grid-cols-6">
           {/* Map Input  */}
           <div className="sm:col-span-6">
-            <Map onMarkerClick={coor} />
+            <Map onMarkerClick={coordinates} />
           </div>
 
           {/* Location Input  */}
@@ -152,36 +150,49 @@ const NewPostsForm = (props) => {
 
           {/* Image Input  */}
           <div className="sm:col-span-6 py-10 border-y">
-            <label
-              className="text-sm font-medium leading-6 text-gray-600"
-              htmlFor="image"
-            >
+            <label className="text-sm font-medium leading-6 text-gray-600">
               Image
             </label>
-
             <>
-              <input
-                id="image"
-                name="image"
-                type="file"
-                // className="block w-full text-sm text-slate-500
-                //       file:mr-4 file:py-2 file:px-4
-                //       file:rounded-full file:border-0
-                //       file:text-sm file:font-semibold
-                //       file:bg-indigo-50 file:text-indigo-500
-                //       hover:file:bg-indigo-100"
-                accept="image/*"
-                onChange={handleImageChange}
-              />
-              {selectedImage && (
-                <img
-                  src={selectedImage}
-                  alt="Selected Image"
-                  className="h-[300px] w-full"
+              {images.length < 3 && (
+                <input
+                  id="image"
+                  name="image"
+                  type="file"
+                  className="block w-full text-sm text-slate-500 mt-1 mb-2.5
+                        file:mr-4 file:py-2 file:px-4
+                        file:rounded-full file:border-0
+                        file:text-sm file:font-semibold
+                        file:bg-indigo-50 file:text-indigo-500
+                        hover:file:bg-indigo-100"
+                  accept="image/*"
+                  onChange={handleImageChange}
                 />
               )}
-              {images.length < 3 && (
-                <button onClick={() => setSelectedImage(null)}>Clear</button>
+              {images && (
+                <>
+                  {images.map((img, index) => (
+                    <img
+                      key={index}
+                      src={img.url}
+                      alt="Selected Image"
+                      className="h-[200px] w-full rounded-lg my-2"
+                    />
+                  ))}
+                </>
+              )}
+              {images.length <= 3 && images.length !== 0 ? (
+                <button
+                  onClick={(e) => {
+                    setImages([]);
+                    e.preventDefault();
+                  }}
+                  className="bg-gray-100 text-xs border rounded-full px-1.5 py-0.5 text-gray-700"
+                >
+                  Clear image(s)
+                </button>
+              ) : (
+                ""
               )}
             </>
           </div>

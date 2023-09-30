@@ -81,7 +81,7 @@ const UserProfile = ({
           </Suspense>
         )}
 
-        {/* User's posts section */}
+        {/* User's reviews section */}
         {showReview && (
           <Suspense fallback={<p>Loading reviews...</p>}>
             <UserReviewList reviews={reviews} />

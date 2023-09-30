@@ -18,7 +18,7 @@ const PostSchema = new mongoose.Schema(
       required: [true, "Please specify a location"],
     },
     image: {
-      type: String,
+      type: Array,
       required: [true, "Please provide an image for your post"],
     },
     amenities: [Amenity.schema],

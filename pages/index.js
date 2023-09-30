@@ -28,7 +28,7 @@ export async function getStaticProps() {
         posts: posts.map((post) => ({
           title: post.title,
           location: post.location,
-          image: post.image,
+          image: post.image[0].url,
           description: post.description,
           amenities: post.amenities.map((amenity) => ({
             name: amenity.name,

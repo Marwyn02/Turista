@@ -31,6 +31,7 @@ const CREATE = async (req, res) => {
   else {
     try {
       await connectMongoDB();
+
       const result = new Post(req.body);
       await result.save();
       return res.status(201).json({ success: true, message: "Post created" });

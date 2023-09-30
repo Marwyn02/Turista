@@ -3,6 +3,7 @@ import { useSession } from "next-auth/react";
 import dynamic from "next/dynamic";
 
 import PostReview from "./PostReview";
+import PostImages from "./PostUI/PostImages";
 import ReviewList from "./ReviewList";
 import Dropdown from "../ui/Dropdown";
 import Link from "next/link";
@@ -28,33 +29,7 @@ const PostsDetail = (props) => {
     <section key={props.id} className="md:px-32 pt-5 md:pt-20">
       <div className="bg-white rounded-t-xl lg:rounded-xl">
         {/* Image */}
-        {hasImage && (
-          <div className="md:grid md:grid-rows-4 md:grid-cols-3 md:gap-4">
-            <div className="md:row-span-4 md:col-span-2">
-              <img
-                className="animated-slide md:rounded-lg h-full w-full hover:brightness-90 duration-100"
-                src={props.image}
-                alt={props.title}
-              />
-            </div>
-
-            {/* Dummy extra images */}
-            <div className="hidden md:block md:row-span-2">
-              <img
-                className="md:rounded-lg w-full h-full hover:brightness-90 duration-100"
-                src="https://images.unsplash.com/photo-1695453463057-aa5d48d9e3d4?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2832&q=80"
-                alt={props.title}
-              />
-            </div>
-            <div className="hidden md:block md:row-span-2">
-              <img
-                className="md:rounded-lg w-full h-full hover:brightness-90 duration-100"
-                src="https://images.unsplash.com/photo-1695065906720-19e9c4d4644e?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2988&q=80"
-                alt={props.title}
-              />
-            </div>
-          </div>
-        )}
+        {hasImage && <PostImages images={props.image} />}
 
         {/* Post text details */}
         <div className="lg:flex lg:flex-row pt-4 md:pt-6 px-5 md:px-0 lg:pt-3">

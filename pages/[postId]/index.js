@@ -74,7 +74,9 @@ export async function getStaticProps(context) {
             lat: selectedResult.coordinate.lat,
           },
           location: selectedResult.location,
-          image: selectedResult.image,
+          image: selectedResult.image.map((i) => ({
+            url: i.url,
+          })),
           description: selectedResult.description,
           amenities: selectedResult.amenities.map((amenity) => ({
             name: amenity.name,
