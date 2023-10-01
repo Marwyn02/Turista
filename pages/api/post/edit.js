@@ -1,10 +1,8 @@
-import { connectMongoDB } from "@/lib/connectMongoDB";
 import Post from "@/models/Post";
 
-const Edit = async (req, res) => {
+export default async function edit(req, res) {
   try {
     const { id, title, location, description, amenities } = req.body;
-    await connectMongoDB();
     const result = await Post.findByIdAndUpdate(id, {
       $set: {
         title: title,
@@ -13,13 +11,20 @@ const Edit = async (req, res) => {
         amenities: amenities,
       },
     });
+
     await result.save();
-    return res.status(201).json({ success: true, message: "Post updated" });
+    return res.status(200).json({
+      success: true,
+      message: `Post ID:${id} has been updated successfully!`,
+      redirect: `/${id}`,
+    });
   } catch (error) {
     return res
       .status(500)
-      .json({ success: false, message: "Post updation failed: " + error });
+      .json({
+        success: false,
+        message: `Post ID:${id} updation failed, `,
+        error,
+      });
   }
-};
-
-export default Edit;
+}

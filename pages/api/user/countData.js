@@ -1,10 +1,8 @@
-import { connectMongoDB } from "@/lib/connectMongoDB";
 import Post from "@/models/Post";
 import Review from "@/models/Review";
 
-const countData = async (userId) => {
+export default async function CountData(userId) {
   try {
-    await connectMongoDB();
     const PostCount = await Post.countDocuments({ user: userId });
     const ReviewCount = await Review.countDocuments({ user: userId });
 
@@ -12,6 +10,4 @@ const countData = async (userId) => {
   } catch (error) {
     throw new Error("Error made in countData", error);
   }
-};
-
-export default countData;
+}

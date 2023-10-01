@@ -6,6 +6,27 @@ import EditPost from "@/components/form/EditPost";
 import FormLayout from "@/components/layout/FormLayout";
 import { Suspense } from "react";
 
+export default function index(props) {
+  try {
+    return (
+      <Suspense fallback={<p>Loading content...</p>}>
+        <FormLayout>
+          <EditPost
+            id={props.postData.id}
+            title={props.postData.title}
+            location={props.postData.location}
+            image={props.postData.image}
+            description={props.postData.description}
+            amenities={props.postData.amenities}
+          />
+        </FormLayout>
+      </Suspense>
+    );
+  } catch (error) {
+    throw new Error("Error fetching edit post data: ", error);
+  }
+}
+
 export async function getStaticPaths() {
   try {
     await connectMongoDB();
@@ -36,7 +57,7 @@ export async function getStaticProps(context) {
           id: selectedResult._id.toString(),
           title: selectedResult.title,
           location: selectedResult.location,
-          image: selectedResult.image,
+          image: selectedResult.image[0].url,
           description: selectedResult.description,
           amenities: selectedResult.amenities.map((item) => ({
             name: item.name,
@@ -56,26 +77,3 @@ export async function getStaticProps(context) {
     };
   }
 }
-
-const editPost = (props) => {
-  try {
-    return (
-      <Suspense fallback={<p>Loading content...</p>}>
-        <FormLayout>
-          <EditPost
-            id={props.postData.id}
-            title={props.postData.title}
-            location={props.postData.location}
-            image={props.postData.image}
-            description={props.postData.description}
-            amenities={props.postData.amenities}
-          />
-        </FormLayout>
-      </Suspense>
-    );
-  } catch (error) {
-    throw new Error("Error fetching edit post data: ", error);
-  }
-};
-
-export default editPost;

@@ -1,4 +1,4 @@
-const PostImages = ({ images }) => {
+export default function PostImages({ images }) {
   return (
     <div className="md:grid md:grid-rows-4 md:grid-cols-3 md:gap-4">
       <div className="md:row-span-4 md:col-span-2">
@@ -32,6 +32,4 @@ const PostImages = ({ images }) => {
       )}
     </div>
   );
-};
-
-export default PostImages;
+}

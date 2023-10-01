@@ -24,13 +24,15 @@ const ReviewCard = ({ id, postId, description, image, name, userId }) => {
         body: JSON.stringify({ id, postId }),
       });
 
-      if (!response.ok) {
-        throw new Error("Failed to delete review");
+      if (response.ok) {
+        const res = await response.json();
+        console.log(res.message);
+        router.push(res.redirect);
       } else {
-        router.push(`/${postId}`);
+        throw new Error(res.message);
       }
     } catch (error) {
-      throw new Error("Error in delete Review: ", error);
+      throw new Error("Error in Delete Review Handler: ", error);
     }
   };
 
@@ -52,15 +54,16 @@ const ReviewCard = ({ id, postId, description, image, name, userId }) => {
         body: JSON.stringify(updatedReview),
       });
 
-      if (!response.ok) {
-        throw new Error("Failed to edit review");
-      } else {
+      if (response.ok) {
+        const res = await response.json();
+        console.log(res.message);
         setEditReview(false);
-        // setNewDescription("");
-        router.replace(`/${postId}`);
+        router.push(res.redirect);
+      } else {
+        throw new Error(res.message);
       }
     } catch (error) {
-      throw new Error("Error in Edit Review: " + error);
+      throw new Error("Error in Edit Review Handler: ", error);
     }
   };
 
@@ -87,6 +90,7 @@ const ReviewCard = ({ id, postId, description, image, name, userId }) => {
     };
   }, []);
 
+  // Check if the user active is same with review creator
   useEffect(() => {
     if (session && session.user._id === userId) {
       setActiveSession(true);

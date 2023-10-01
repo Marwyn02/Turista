@@ -1,14 +1,10 @@
-import { connectMongoDB } from "@/lib/connectMongoDB";
 import Post from "@/models/Post";
 import Review from "@/models/Review";
 
-const DELETE = async (req, res) => {
+export default async function Delete(req, res) {
+  const reviewId = req.body.id;
+  const postId = req.body.postId;
   try {
-    await connectMongoDB();
-
-    const reviewId = req.body.id;
-    const postId = req.body.postId;
-
     // Find the post then update the reviews array to by pulling out the review object
     await Post.findByIdAndUpdate(
       { _id: postId },
@@ -18,12 +14,15 @@ const DELETE = async (req, res) => {
 
     await Review.findByIdAndDelete(reviewId); // Delete the review object
 
-    return res.status(201).json({ success: true, message: "Review deleted" });
+    return res.status(200).json({
+      success: true,
+      message: `Review ID:${reviewId} is deleted!`,
+      redirect: `/${postId}`,
+    });
   } catch (error) {
-    return res
-      .status(500)
-      .json({ success: false, message: "Review deletion failed: " + error });
+    return res.status(500).json({
+      success: false,
+      message: `Deleting Review ID:${reviewId} failed, ` + error,
+    });
   }
-};
-
-export default DELETE;
+}

@@ -2,7 +2,7 @@ import { useSession } from "next-auth/react";
 import { useRef, useState } from "react";
 import { useRouter } from "next/router";
 
-const PostReview = (props) => {
+export default function PostReview(props) {
   const { data: session } = useSession();
   const router = useRouter();
 
@@ -41,10 +41,12 @@ const PostReview = (props) => {
           body: JSON.stringify(reviewData),
         });
 
-        if (!response.ok) {
-          throw new Error("Failed to create review.");
+        if (response.ok) {
+          const res = await response.json();
+          console.log(res.message);
+          router.push(res.redirect);
         } else {
-          router.push(`/${props.postId}`);
+          throw new Error(res.message);
         }
       } catch (error) {
         throw new Error("Error in create review: " + error);
@@ -89,6 +91,4 @@ const PostReview = (props) => {
       </form>
     </>
   );
-};
-
-export default PostReview;
+}

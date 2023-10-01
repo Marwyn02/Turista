@@ -28,9 +28,9 @@ const AmenitiesBox = (props) => {
     });
 
     amenitiesRef.current[index].checked = checked;
-  };
 
-  props.amenitiesChecked(amenitiesRef.current);
+    props.amenitiesChecked(amenitiesRef.current);
+  };
 
   return (
     <>

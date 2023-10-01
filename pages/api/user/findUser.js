@@ -1,9 +1,7 @@
-import { connectMongoDB } from "@/lib/connectMongoDB";
 import User from "@/models/User";
 
-const FindUser = async (userId) => {
+export default async function FindUser(userId) {
   try {
-    await connectMongoDB();
     const user = await User.findById(userId); // Find the user by their userId
 
     const { name, image } = user; // Returns a user name from user.name
@@ -12,6 +10,4 @@ const FindUser = async (userId) => {
   } catch (error) {
     throw new Error("Error in user find: ", error);
   }
-};
-
-export default FindUser;
+}

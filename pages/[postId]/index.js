@@ -6,7 +6,7 @@ import GetOne from "../api/review/getOne";
 
 import PostsDetail from "@/components/turistaPosts/PostsDetail";
 
-const index = (props) => {
+export default function index(props) {
   return (
     <Suspense fallback={<p>Loading content...</p>}>
       <PostsDetail
@@ -24,7 +24,7 @@ const index = (props) => {
       />
     </Suspense>
   );
-};
+}
 
 export async function getStaticPaths() {
   await connectMongoDB();
@@ -100,5 +100,3 @@ export async function getStaticProps(context) {
     };
   }
 }
-
-export default index;

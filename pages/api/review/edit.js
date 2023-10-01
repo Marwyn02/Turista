@@ -1,12 +1,9 @@
-import { connectMongoDB } from "@/lib/connectMongoDB";
 import Review from "@/models/Review";
 import Post from "@/models/Post";
 
-const Edit = async (req, res) => {
+export default async function Edit(req, res) {
   try {
     const { id, postId, description } = req.body;
-    await connectMongoDB();
-
     await Review.updateOne(
       { _id: id },
       { $set: { description: description } },
@@ -19,12 +16,20 @@ const Edit = async (req, res) => {
       { new: true }
     );
 
-    return res.status(201).json({ success: true, message: "Review updated" });
+    return res
+      .status(200)
+      .json({
+        success: true,
+        message: `Review ID:${id} has been updated!`,
+        redirect: `/${postId}`,
+      });
   } catch (error) {
     return res
       .status(500)
-      .json({ success: false, message: "Review updation failed: " + error });
+      .json({
+        success: false,
+        message: `Updating Review ID:${id} failed, `,
+        error,
+      });
   }
-};
-
-export default Edit;
+}

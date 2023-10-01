@@ -1,24 +1,29 @@
-import { connectMongoDB } from "@/lib/connectMongoDB";
 import Post from "@/models/Post";
 import Review from "@/models/Review";
 
-const CREATE = async (req, res) => {
+export default async function create(req, res) {
   const reviewPermission = req.body.post; // This will confirm if the request has a post id
   if (reviewPermission) {
     // CREATE REVIEW
     // If the request has a post id then it will run this code for creating a new review
     try {
-      await connectMongoDB();
       const postId = reviewPermission;
-      const review = new Review(req.body);
 
+      const review = new Review(req.body);
       const post = await Post.findById(postId); // Get the Post by the Id
 
       post.reviews.push(review); // Push the review document to the post document
 
       await review.save();
       await post.save();
-      return res.status(201).json({ success: true, message: "Review created" });
+
+      return res
+        .status(200)
+        .json({
+          success: true,
+          message: "Review created",
+          redirect: `/${postId}`,
+        });
     } catch (error) {
       return res
         .status(500)
@@ -30,17 +35,15 @@ const CREATE = async (req, res) => {
   // CREATE POST
   else {
     try {
-      await connectMongoDB();
-
       const result = new Post(req.body);
       await result.save();
-      return res.status(201).json({ success: true, message: "Post created" });
+      return res
+        .status(200)
+        .json({ success: true, message: "Post created", redirect: "/" });
     } catch (error) {
       return res
         .status(500)
         .json({ success: false, message: "Post creation failed: " + error });
     }
   }
-};
-
-export default CREATE;
+}

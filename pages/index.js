@@ -5,7 +5,7 @@ import MainLayout from "@/components/layout/MainLayout";
 import PostsList from "@/components/turistaPosts/PostsList";
 import { Suspense } from "react";
 
-const Home = (props) => {
+export default function Home(props) {
   return (
     <MainLayout>
       <Suspense fallback={<p className="text-center">Loading posts...</p>}>
@@ -13,7 +13,7 @@ const Home = (props) => {
       </Suspense>
     </MainLayout>
   );
-};
+}
 
 export async function getStaticProps() {
   try {
@@ -26,15 +26,9 @@ export async function getStaticProps() {
     return {
       props: {
         posts: posts.map((post) => ({
-          title: post.title,
+          id: post._id.toString(),
           location: post.location,
           image: post.image[0].url,
-          description: post.description,
-          amenities: post.amenities.map((amenity) => ({
-            name: amenity.name,
-            checked: amenity.checked,
-          })),
-          id: post._id.toString(),
         })),
       },
       revalidate: 1,
@@ -48,5 +42,3 @@ export async function getStaticProps() {
     };
   }
 }
-
-export default Home;

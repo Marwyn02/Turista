@@ -8,9 +8,7 @@ const PostsList = (props) => {
           key={item.id}
           id={item.id}
           image={item.image}
-          title={item.title}
           location={item.location}
-          description={item.description}
         />
       ))}
     </section>

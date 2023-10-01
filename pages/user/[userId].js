@@ -50,7 +50,7 @@ export async function getStaticProps(context) {
           id: post._id.toString(),
           title: post.title,
           location: post.location,
-          image: post.image,
+          image: post.image[0].url,
         };
       })
     );

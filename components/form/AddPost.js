@@ -5,7 +5,7 @@ import { useSession } from "next-auth/react";
 import dynamic from "next/dynamic";
 import AmenitiesBox from "../ui/AmenitiesBox";
 
-const NewPostsForm = (props) => {
+export default function AddPost() {
   const { data: session } = useSession();
   const router = useRouter();
 
@@ -46,8 +46,8 @@ const NewPostsForm = (props) => {
   };
 
   // Submit the input
-  const submitInputHandler = async (event) => {
-    event.preventDefault();
+  const submitInputHandler = async (e) => {
+    e.preventDefault();
 
     const enteredTitle = titleInputRef.current.value;
     const enteredLocation = locationInputRef.current.value;
@@ -83,14 +83,15 @@ const NewPostsForm = (props) => {
         body: JSON.stringify(postData),
       });
 
-      if (!response.ok) {
-        throw new Error("Failed to create post");
+      if (response.ok) {
+        const res = await response.json();
+        console.log(res.message);
+        router.push(res.redirect);
       } else {
-        router.push("/");
+        throw new Error(res.message);
       }
     } catch (error) {
-      // throw new Error("Error in create post: " + error);
-      console.error(error);
+      throw new Error("Error in Create Post Submit Handler: ", error);
     }
   };
 
@@ -272,6 +273,4 @@ const NewPostsForm = (props) => {
       </div>
     </form>
   );
-};
-
-export default NewPostsForm;
+}

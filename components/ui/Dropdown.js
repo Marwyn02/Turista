@@ -13,8 +13,8 @@ const Dropdown = (props) => {
   const [activeSession, setActiveSession] = useState(false);
 
   // Deletes the post
-  const deleteHandler = async (event) => {
-    event.preventDefault();
+  const deleteHandler = async (e) => {
+    e.preventDefault();
     const postId = props.user.postId;
 
     try {
@@ -26,13 +26,15 @@ const Dropdown = (props) => {
         body: JSON.stringify({ postId }),
       });
 
-      if (!response.ok) {
-        throw new Error("Failed to delete post");
+      const res = await response.json();
+      if (response.ok) {
+        console.log(res.message);
+        router.push(res.redirect);
       } else {
-        router.push("/");
+        throw new Error(res.message);
       }
     } catch (error) {
-      throw new Error("Error in delete Post: " + error);
+      throw new Error("Error in Delete Post Handler, ", error);
     }
   };
 

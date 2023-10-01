@@ -1,4 +1,4 @@
-import { useState, useEffect, Suspense } from "react";
+import { Suspense } from "react";
 import { useSession } from "next-auth/react";
 import dynamic from "next/dynamic";
 
@@ -8,17 +8,8 @@ import ReviewList from "./ReviewList";
 import Dropdown from "../ui/Dropdown";
 import Link from "next/link";
 
-const PostsDetail = (props) => {
+export default function PostsDetail(props) {
   const { data: session } = useSession();
-
-  const [hasImage, setHasImage] = useState(true);
-
-  // Check if the user has already active
-  useEffect(() => {
-    if (props.image === "") {
-      setHasImage(false);
-    }
-  }, [props.image]);
 
   const Map = dynamic(() => import("@/pages/map/Map"), {
     loading: () => "Loading...",
@@ -29,7 +20,7 @@ const PostsDetail = (props) => {
     <section key={props.id} className="md:px-32 pt-5 md:pt-20">
       <div className="bg-white rounded-t-xl lg:rounded-xl">
         {/* Image */}
-        {hasImage && <PostImages images={props.image} />}
+        <PostImages images={props.image} />
 
         {/* Post text details */}
         <div className="lg:flex lg:flex-row pt-4 md:pt-6 px-5 md:px-0 lg:pt-3">
@@ -50,7 +41,11 @@ const PostsDetail = (props) => {
             {/* User */}
             <div className="flex items-center mt-5 border-y py-5">
               <Link href={`/user/${props.userId}`}>
-                <img src={props.userImage} alt="lel" className="rounded-full" />
+                <img
+                  src={props.userImage}
+                  alt="lel"
+                  className="rounded-full h-10 w-10"
+                />
               </Link>
               <p className="text-base font-medium text-black/80 ml-4">
                 Posted by{" "}
@@ -102,6 +97,4 @@ const PostsDetail = (props) => {
       </aside>
     </section>
   );
-};
-
-export default PostsDetail;
+}

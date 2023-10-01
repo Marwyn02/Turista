@@ -1,19 +1,7 @@
 import { useRouter } from "next/router";
-import { useEffect } from "react";
 
 const Card = (props) => {
   const router = useRouter();
-
-  useEffect(() => {
-    if (props.image === "") {
-      setHasImage(false);
-    }
-  }, [props.image]);
-
-  const showDetailsHandler = () => {
-    router.push("/" + props.id);
-  };
-
   return (
     <div>
       <main
@@ -23,7 +11,7 @@ const Card = (props) => {
         <img
           src={props.image}
           alt={props.title}
-          onClick={showDetailsHandler}
+          onClick={() => router.push(`/${props.id}`)}
           className="absolute inset-0 h-full w-full cursor-pointer object-cover rounded-lg border border-transparent hover:border-gray-500 duration-300"
         />
       </main>

@@ -1,9 +1,10 @@
 import Link from "next/link";
 import { useState } from "react";
 import { useRouter } from "next/router";
+
 import AmenitiesBox from "../ui/AmenitiesBox";
 
-const EditPost = (props) => {
+export default function EditPost(props) {
   const router = useRouter();
   const { id, title, location, image, description, amenities } = props;
 
@@ -16,7 +17,7 @@ const EditPost = (props) => {
     setNewAmenities(amenity);
   };
 
-  const handleSubmit = async (e) => {
+  const handleEditSubmit = async (e) => {
     e.preventDefault();
 
     const updatedPost = {
@@ -36,18 +37,20 @@ const EditPost = (props) => {
         body: JSON.stringify(updatedPost),
       });
 
-      if (!response.ok) {
-        throw new Error("Failed to update post");
+      const res = await response.json();
+      if (response.ok) {
+        console.log(res.message);
+        router.push(res.redirect);
       } else {
-        router.push(`/${id}`);
+        throw new Error(res.message);
       }
     } catch (error) {
-      throw new Error("Error in Edit Post: " + error);
+      throw new Error("Error in Edit Post Submit Handler: " + error);
     }
   };
 
   return (
-    <form onSubmit={handleSubmit} className="bg-white sm:my-4">
+    <form onSubmit={handleEditSubmit} className="bg-white sm:my-4">
       <div className="space-y-10 md:px-2">
         <div className="px-5">
           <h2 className="text-xl">Your post.</h2>
@@ -183,6 +186,4 @@ const EditPost = (props) => {
       </div>
     </form>
   );
-};
-
-export default EditPost;
+}

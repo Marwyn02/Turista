@@ -1,19 +1,20 @@
-import { connectMongoDB } from "@/lib/connectMongoDB";
 import Post from "@/models/Post";
 
-const DELETE = async (req, res) => {
+export default async function Delete(req, res) {
+  const id = req.body.postId;
   try {
-    await connectMongoDB();
+    await Post.findByIdAndDelete(id); // Delete the post
 
-    const Id = req.body.postId;
-    await Post.findByIdAndDelete(Id); // Delete the post
-
-    return res.status(201).json({ success: true, message: "Post deleted" });
+    return res.status(200).json({
+      success: true,
+      message: `Post ID:${id} has been deleted successfully!`,
+      redirect: "/",
+    });
   } catch (error) {
-    return res
-      .status(500)
-      .json({ success: false, message: "Post deletion failed: " + error });
+    return res.status(500).json({
+      success: false,
+      message: `Deleting Post ID:${id} failed, `,
+      error,
+    });
   }
-};
-
-export default DELETE;
+}
