@@ -1,4 +1,5 @@
 import Link from "next/link";
+import Image from "next/image";
 
 const UserPostList = ({ posts }) => {
   return (
@@ -7,10 +8,12 @@ const UserPostList = ({ posts }) => {
         {posts.map((post) => (
           <div key={post.id} className="relative bg-gray-200 pt-[100%]">
             <Link href={`/${post.id}`}>
-              <img
+              <Image
+                className="rounded-lg absolute inset-0 w-full h-full object-cover hover:brightness-90 duration-100"
                 src={post.image}
+                width={200}
+                height={200}
                 alt="lel"
-                className="rounded-lg absolute inset-0 w-full h-full object-cover"
               />
             </Link>
           </div>

@@ -93,7 +93,7 @@ export async function getStaticProps(context) {
   }
 }
 
-const userId = (props) => {
+export default function userId(props) {
   return (
     <Suspense fallback={<p>Loading content...</p>}>
       <UserProfile
@@ -106,6 +106,4 @@ const userId = (props) => {
       />
     </Suspense>
   );
-};
-
-export default userId;
+}

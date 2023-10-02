@@ -1,4 +1,5 @@
 import Link from "next/link";
+import Image from "next/image";
 
 const UserReviewList = ({ reviews }) => {
   return (
@@ -9,10 +10,13 @@ const UserReviewList = ({ reviews }) => {
             <div className="flex justify-between">
               <div className="flex items-center">
                 <Link href={`/user/${review.user}`}>
-                  <img
+                  <Image
+                    className="rounded-full h-10 w-10 hover:brightness-90 duration-100"
                     src={review.image}
+                    width={100}
+                    height={100}
                     alt="lel"
-                    className="rounded-full h-[50px] w-[50px]"
+                    quality={10}
                   />
                 </Link>
                 <p className="text-base font-medium text-gray-900 mb-0.5 ml-3">

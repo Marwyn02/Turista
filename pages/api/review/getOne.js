@@ -1,6 +1,6 @@
 import User from "@/models/User";
 
-const GETONE = async (userId) => {
+export default async function GetOne(userId) {
   try {
     const user = await User.findById(userId); // Find the user by their userId
 
@@ -10,6 +10,4 @@ const GETONE = async (userId) => {
   } catch (error) {
     console.log("Error in review find: ", error);
   }
-};
-
-export default GETONE;
+}

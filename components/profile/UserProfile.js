@@ -1,4 +1,5 @@
 import { Suspense, useState } from "react";
+import Head from "next/head";
 import UserPostList from "./UI/UserPostList";
 import UserReviewList from "./UI/UserReviewList";
 
@@ -21,6 +22,10 @@ const UserProfile = ({
 
   return (
     <section className="bg-gray-50">
+      <Head>
+        <title>{name}</title>
+        <meta property="og:title" content="Turista user" key="userTitle" />
+      </Head>
       <div className="py-16 md:py-32 px-3 lg:px-32">
         {/* User's profile image and name */}
         <div className="-mt-5 md:px-10 justify-items-center md:flex md:justify-items-start">

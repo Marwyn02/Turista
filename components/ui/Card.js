@@ -1,3 +1,4 @@
+import Image from "next/image";
 import { useRouter } from "next/router";
 
 const Card = (props) => {
@@ -8,11 +9,13 @@ const Card = (props) => {
         key={props.id}
         className="pt-[100%] relative rounded-xl duration-300"
       >
-        <img
-          src={props.image}
-          alt={props.title}
-          onClick={() => router.push(`/${props.id}`)}
+        <Image
           className="absolute inset-0 h-full w-full cursor-pointer object-cover rounded-lg border border-transparent hover:border-gray-500 duration-300"
+          src={props.image}
+          height={100}
+          width={200}
+          alt="Image"
+          onClick={() => router.push(`/${props.id}`)}
         />
       </main>
       <section className="py-0.5 md:py-1.5">

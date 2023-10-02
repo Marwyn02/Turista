@@ -1,12 +1,13 @@
 import { Suspense } from "react";
 import { useSession } from "next-auth/react";
 import dynamic from "next/dynamic";
+import Link from "next/link";
+import Head from "next/head";
 
 import PostReview from "./PostReview";
 import PostImages from "./PostUI/PostImages";
 import ReviewList from "./ReviewList";
 import Dropdown from "../ui/Dropdown";
-import Link from "next/link";
 
 export default function PostsDetail(props) {
   const { data: session } = useSession();
@@ -18,6 +19,10 @@ export default function PostsDetail(props) {
 
   return (
     <section key={props.id} className="md:px-32 pt-5 md:pt-20">
+      <Head>
+        <title>{props.title}</title>
+        <meta property="og:title" content="Turista post detail" key="title" />
+      </Head>
       <div className="bg-white rounded-t-xl lg:rounded-xl">
         {/* Image */}
         <PostImages images={props.image} />

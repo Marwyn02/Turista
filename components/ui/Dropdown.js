@@ -68,19 +68,19 @@ const Dropdown = (props) => {
         alt="lel"
         height={23}
         width={23}
-        className="hover:bg-gray-200"
+        className="hover:bg-gray-200 cursor-pointer"
         ref={buttonRef}
         onClick={() => setDropdown(!dropdown)}
       />
       {dropdown && (
         <div
           ref={dropdownRef}
-          className="absolute right-0 top-8 lg:right-20 bg-white rounded border w-32 z-[9999]"
+          className="absolute right-0 top-8 lg:top-10 lg:right-14 bg-white rounded border w-32 z-[9999]"
         >
           {activeSession ? (
             <ul className="text-sm text-slate-700">
               <Link href={`/edit/${props.user.postId}`}>
-                <li className="hover:bg-gray-200 hover:text-black py-1.5 pl-2 flex duration-300">
+                <li className="cursor-pointer hover:bg-gray-200 hover:text-black py-1.5 pl-2 flex duration-300">
                   <img
                     src="/pen.svg"
                     height={18}
@@ -93,7 +93,7 @@ const Dropdown = (props) => {
               </Link>
               <li
                 onClick={deleteHandler}
-                className="hover:bg-gray-200 hover:text-black py-1.5 pl-2 flex duration-300"
+                className="cursor-pointer hover:bg-gray-200 hover:text-black py-1.5 pl-2 flex duration-300"
               >
                 <img
                   src="/trash.svg"
@@ -106,7 +106,7 @@ const Dropdown = (props) => {
               </li>
             </ul>
           ) : (
-            <ul className="text-sm text-slate-700">
+            <ul className="cursor-pointer text-sm text-slate-700">
               <li className="hover:bg-gray-200 hover:text-black py-1.5 pl-4">
                 Save
               </li>

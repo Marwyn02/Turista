@@ -16,6 +16,7 @@ export default function AddPost() {
   const descriptionInputRef = useRef();
   const locationInputRef = useRef();
   const titleInputRef = useRef();
+  const imageInputRef = useRef([]);
 
   const coordinates = ({ lat, lng }) => {
     coordinatesRef.current = { lng, lat };
@@ -49,6 +50,53 @@ export default function AddPost() {
   const submitInputHandler = async (e) => {
     e.preventDefault();
 
+    // const form = e.currentTarget;
+    // const fileInput = Array.from(form.elements).find(
+    //   ({ name }) => name === "image"
+    // );
+    for (let i = 0; i < imageInputRef.current.files.length; i++) {
+      const file = imageInputRef.current.files[i];
+
+      const data = new FormData();
+      data.append("file", file);
+      data.append("upload_preset", "Turista-Uploads");
+
+      const response = await fetch(
+        "https://api.cloudinary.com/v1_1/dgzsmdvo4/image/upload",
+        {
+          method: "POST",
+          body: data,
+        }
+      ).then((r) => r.json());
+
+      console.log(response);
+    }
+
+    // console.log(imageInputRef.current.files.length);
+    // console.log("FILEINPUT: ", fileInput.files);
+
+    // for (let i = 0; i < images.length; i++) {
+    //   const file = images[i]
+
+    //   const formData = new FormData();
+
+    //   for (const file of fileInput.files) {
+    //     formData.append("file", file);
+    //   }
+    //   formData.append("upload_preset", "Turista-Uploads");
+
+    // const data = await fetch(
+    //   "https://api.cloudinary.com/v1_1/dgzsmdvo4/image/upload",
+    //   {
+    //     method: "POST",
+    //     body: formData,
+    //   }
+    // ).then((r) => r.json());
+    //   }
+
+    // console.log(images[0].url);
+    // console.log("FORM: ", fileInput.files);
+
     const enteredTitle = titleInputRef.current.value;
     const enteredLocation = locationInputRef.current.value;
     const enteredDescription = descriptionInputRef.current.value;
@@ -63,7 +111,7 @@ export default function AddPost() {
 
     const postData = {
       image: img,
-      title: enteredTitle,
+      title: enteredTitle.charAt(0).toUpperCase() + enteredTitle.slice(1),
       location: enteredLocation,
       coordinate: {
         lng: coordinatesRef.current.lng,
@@ -74,25 +122,27 @@ export default function AddPost() {
       user: session.user._id,
     };
 
-    try {
-      const response = await fetch("/api/post/create", {
-        method: "POST",
-        headers: {
-          "Content-type": "application/json",
-        },
-        body: JSON.stringify(postData),
-      });
+    // console.log(postData);
 
-      if (response.ok) {
-        const res = await response.json();
-        console.log(res.message);
-        router.push(res.redirect);
-      } else {
-        throw new Error(res.message);
-      }
-    } catch (error) {
-      throw new Error("Error in Create Post Submit Handler: ", error);
-    }
+    // try {
+    //   const response = await fetch("/api/post/create", {
+    //     method: "POST",
+    //     headers: {
+    //       "Content-type": "application/json",
+    //     },
+    //     body: JSON.stringify(postData),
+    //   });
+
+    //   if (response.ok) {
+    //     const res = await response.json();
+    //     console.log(res.message);
+    //     router.push(res.redirect);
+    //   } else {
+    //     throw new Error(res.message);
+    //   }
+    // } catch (error) {
+    //   throw new Error("Error in Create Post Submit Handler: ", error);
+    // }
   };
 
   return (
@@ -168,6 +218,8 @@ export default function AddPost() {
                         hover:file:bg-indigo-100"
                   accept="image/*"
                   onChange={handleImageChange}
+                  ref={imageInputRef}
+                  multiple
                 />
               )}
               {images && (
