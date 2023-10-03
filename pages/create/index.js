@@ -1,12 +1,10 @@
 import FormLayout from "@/components/layout/FormLayout";
 import AddPost from "@/components/form/AddPost";
 
-const NewPost = () => {
+export default function index() {
   return (
     <FormLayout>
       <AddPost />
     </FormLayout>
   );
-};
-
-export default NewPost;
+}

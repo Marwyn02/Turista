@@ -2,7 +2,7 @@ import Post from "@/models/Post";
 import Review from "@/models/Review";
 
 export default async function create(req, res) {
-  const reviewPermission = req.body.post; // This will confirm if the request has a post id
+  const reviewPermission = req.body.post;
   if (reviewPermission) {
     // CREATE REVIEW
     // If the request has a post id then it will run this code for creating a new review
@@ -17,13 +17,11 @@ export default async function create(req, res) {
       await review.save();
       await post.save();
 
-      return res
-        .status(200)
-        .json({
-          success: true,
-          message: "Review created",
-          redirect: `/${postId}`,
-        });
+      return res.status(200).json({
+        success: true,
+        message: "Review created",
+        redirect: `/${postId}`,
+      });
     } catch (error) {
       return res
         .status(500)

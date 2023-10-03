@@ -33,7 +33,7 @@ export async function getStaticProps() {
         posts: posts.map((post) => ({
           id: post._id.toString(),
           location: post.location,
-          image: post.image[0].url,
+          image: post.image[0].image,
         })),
       },
       revalidate: 1,

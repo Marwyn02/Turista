@@ -6,9 +6,9 @@ export default function PostImages({ images }) {
       <div className="md:row-span-4 md:col-span-2">
         <Image
           className="animated-slide md:rounded-lg h-full w-full hover:brightness-90 duration-100"
-          src={images[0].url}
-          width={400}
-          height={250}
+          src={images[0].image}
+          width={1000}
+          height={1000}
           alt="Image 1"
         />
       </div>
@@ -16,11 +16,10 @@ export default function PostImages({ images }) {
         <div className="hidden md:block md:row-span-2">
           <Image
             className="md:rounded-lg w-full h-full hover:brightness-90 duration-100"
-            src={images[1].url}
-            width={100}
-            height={100}
+            src={images[1].image}
+            width={400}
+            height={250}
             alt="Image 2"
-            quality={20}
           />
         </div>
       ) : (
@@ -30,11 +29,10 @@ export default function PostImages({ images }) {
         <div className="hidden md:block md:row-span-2">
           <Image
             className="md:rounded-lg w-full h-full hover:brightness-90 duration-100"
-            src={images[2].url}
-            width={100}
-            height={100}
+            src={images[2].image}
+            width={400}
+            height={250}
             alt="Image 3"
-            quality={20}
           />
         </div>
       ) : (

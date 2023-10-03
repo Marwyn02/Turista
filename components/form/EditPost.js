@@ -17,6 +17,7 @@ export default function EditPost(props) {
     setNewAmenities(amenity);
   };
 
+  // Update the current post data
   const handleEditSubmit = async (e) => {
     e.preventDefault();
 
@@ -64,7 +65,7 @@ export default function EditPost(props) {
           {/* Image Input  */}
           <div className="sm:col-span-6">
             <img
-              src={image}
+              src={image.image}
               alt={title}
               name="image"
               id="image"
@@ -164,6 +165,7 @@ export default function EditPost(props) {
               </div>
             </div>
 
+            {/* Cancel and update buttons */}
             <div className="flex justify-between md:justify-normal items-center gap-x-1.5 py-3">
               <div>
                 <Link href={`/${id}`}>

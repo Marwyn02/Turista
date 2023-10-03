@@ -50,7 +50,7 @@ export async function getStaticProps(context) {
           id: post._id.toString(),
           title: post.title,
           location: post.location,
-          image: post.image[0].url,
+          image: post.image[0].image,
         };
       })
     );
@@ -69,7 +69,6 @@ export async function getStaticProps(context) {
         };
       })
     );
-
     return {
       props: {
         userData: {

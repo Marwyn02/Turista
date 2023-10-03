@@ -1,8 +1,9 @@
+import dynamic from "next/dynamic";
 import Link from "next/link";
 import { useRouter } from "next/router";
-import { useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useSession } from "next-auth/react";
-import dynamic from "next/dynamic";
+
 import AmenitiesBox from "../ui/AmenitiesBox";
 
 export default function AddPost() {
@@ -10,6 +11,7 @@ export default function AddPost() {
   const router = useRouter();
 
   const [images, setImages] = useState([]);
+  const [imageData, setImageData] = useState([]);
 
   const amenitiesRef = useRef([]);
   const coordinatesRef = useRef({ lng: 0, lat: 0 });
@@ -17,6 +19,8 @@ export default function AddPost() {
   const locationInputRef = useRef();
   const titleInputRef = useRef();
   const imageInputRef = useRef([]);
+
+  const [showContinue, setShowContinue] = useState(false);
 
   const coordinates = ({ lat, lng }) => {
     coordinatesRef.current = { lng, lat };
@@ -26,6 +30,10 @@ export default function AddPost() {
     loading: () => "Loading...",
     ssr: false,
   });
+
+  const amenitiesChecked = (amenity) => {
+    amenitiesRef.current = amenity;
+  };
 
   // Image handler
   const handleImageChange = async (e) => {
@@ -42,18 +50,12 @@ export default function AddPost() {
     }
   };
 
-  const amenitiesChecked = (amenity) => {
-    amenitiesRef.current = amenity;
-  };
-
-  // Submit the input
-  const submitInputHandler = async (e) => {
+  // Image submit to cloudinary handler
+  const handleImageSubmit = async (e) => {
     e.preventDefault();
 
-    // const form = e.currentTarget;
-    // const fileInput = Array.from(form.elements).find(
-    //   ({ name }) => name === "image"
-    // );
+    const newImageDataArray = [];
+
     for (let i = 0; i < imageInputRef.current.files.length; i++) {
       const file = imageInputRef.current.files[i];
 
@@ -70,32 +72,21 @@ export default function AddPost() {
       ).then((r) => r.json());
 
       console.log(response);
+
+      const newImageData = {
+        image: response.secure_url,
+        public_id: response.public_id,
+      };
+      newImageDataArray.push(newImageData);
     }
 
-    // console.log(imageInputRef.current.files.length);
-    // console.log("FILEINPUT: ", fileInput.files);
+    setImageData(newImageDataArray);
+    setShowContinue(true);
+  };
 
-    // for (let i = 0; i < images.length; i++) {
-    //   const file = images[i]
-
-    //   const formData = new FormData();
-
-    //   for (const file of fileInput.files) {
-    //     formData.append("file", file);
-    //   }
-    //   formData.append("upload_preset", "Turista-Uploads");
-
-    // const data = await fetch(
-    //   "https://api.cloudinary.com/v1_1/dgzsmdvo4/image/upload",
-    //   {
-    //     method: "POST",
-    //     body: formData,
-    //   }
-    // ).then((r) => r.json());
-    //   }
-
-    // console.log(images[0].url);
-    // console.log("FORM: ", fileInput.files);
+  // Submit the input
+  const submitInputHandler = async (e) => {
+    e.preventDefault();
 
     const enteredTitle = titleInputRef.current.value;
     const enteredLocation = locationInputRef.current.value;
@@ -105,8 +96,9 @@ export default function AddPost() {
       description: check.description,
       checked: check.checked,
     }));
-    const img = images.map((i) => ({
-      url: i.url,
+    const img = imageData.map((i) => ({
+      image: i.image,
+      public_id: i.public_id,
     }));
 
     const postData = {
@@ -122,29 +114,26 @@ export default function AddPost() {
       user: session.user._id,
     };
 
-    // console.log(postData);
+    try {
+      const response = await fetch("/api/post/create", {
+        method: "POST",
+        headers: {
+          "Content-type": "application/json",
+        },
+        body: JSON.stringify(postData),
+      });
 
-    // try {
-    //   const response = await fetch("/api/post/create", {
-    //     method: "POST",
-    //     headers: {
-    //       "Content-type": "application/json",
-    //     },
-    //     body: JSON.stringify(postData),
-    //   });
-
-    //   if (response.ok) {
-    //     const res = await response.json();
-    //     console.log(res.message);
-    //     router.push(res.redirect);
-    //   } else {
-    //     throw new Error(res.message);
-    //   }
-    // } catch (error) {
-    //   throw new Error("Error in Create Post Submit Handler: ", error);
-    // }
+      if (response.ok) {
+        const res = await response.json();
+        console.log(res.message);
+        router.push(res.redirect);
+      } else {
+        throw new Error(res.message);
+      }
+    } catch (error) {
+      throw new Error("Error in Create Post Submit Handler: ", error);
+    }
   };
-
   return (
     <form className="bg-white sm:my-4" onSubmit={submitInputHandler}>
       <div className="space-y-10 md:px-2">
@@ -204,6 +193,9 @@ export default function AddPost() {
             <label className="text-sm font-medium leading-6 text-gray-600">
               Image
             </label>
+            <p className="text-xs text-gray-500 mb-3">
+              Choose three (3) images/files to save
+            </p>
             <>
               {images.length < 3 && (
                 <input
@@ -247,61 +239,75 @@ export default function AddPost() {
               ) : (
                 ""
               )}
+              {imageInputRef.current &&
+                imageInputRef.current.files &&
+                imageInputRef.current.files.length === 3 && (
+                  <button
+                    onClick={handleImageSubmit}
+                    className="text-sm bg-green-300 text-gray-800 px-3 py-1 rounded-full my-2"
+                  >
+                    Save Images
+                  </button>
+                )}
             </>
           </div>
 
           {/* Title Input  */}
-          <div className="sm:col-span-6">
-            <label
-              className="text-sm font-medium leading-6 text-gray-600"
-              htmlFor="title"
-            >
-              Title
-            </label>
-            <div>
-              <div className="flex w-full">
-                <input
-                  type="text"
-                  name="title"
-                  id="title"
-                  autoComplete="title"
-                  className="flex-1 border rounded-lg shadow-sm py-2.5 px-3 pl-3 
+          {showContinue && (
+            <div className="sm:col-span-6">
+              <label
+                className="text-sm font-medium leading-6 text-gray-600"
+                htmlFor="title"
+              >
+                Title
+              </label>
+              <div>
+                <div className="flex w-full">
+                  <input
+                    type="text"
+                    name="title"
+                    id="title"
+                    autoComplete="title"
+                    className="flex-1 border rounded-lg shadow-sm py-2.5 px-3 pl-3 
                           text-gray-600 placeholder:text-gray-300
                             sm:text-sm sm:leading-6 focus:ring-1 focus:ring-indigo-600
                           focus:border-indigo-600 focus:outline-none"
-                  placeholder="My travel post title"
-                  ref={titleInputRef}
-                  required
-                />
+                    placeholder="My travel post title"
+                    ref={titleInputRef}
+                    required
+                  />
+                </div>
               </div>
             </div>
-          </div>
+          )}
 
           {/* Description Input  */}
-          <div className="sm:col-span-6">
-            <label
-              className="text-sm font-medium leading-6 text-gray-600"
-              htmlFor="description"
-            >
-              Description
-            </label>
-            <div>
-              <div className="flex w-full">
-                <textarea
-                  cols="30"
-                  rows="5"
-                  type="text"
-                  name="description"
-                  id="description"
-                  className="resize-none flex-1 border rounded-lg shadow-sm py-2.5 px-3 pl-3 text-gray-600 
+          {showContinue && (
+            <div className="sm:col-span-6">
+              <label
+                className="text-sm font-medium leading-6 text-gray-600"
+                htmlFor="description"
+              >
+                Description
+              </label>
+              <div>
+                <div className="flex w-full">
+                  <textarea
+                    cols="30"
+                    rows="5"
+                    type="text"
+                    name="description"
+                    id="description"
+                    className="resize-none flex-1 border rounded-lg shadow-sm py-2.5 px-3 pl-3 text-gray-600 
                           placeholder:text-gray-300 sm:text-sm sm:leading-6 focus:ring-1 
                           focus:ring-indigo-600 focus:border-indigo-600 focus:outline-none"
-                  placeholder="Is it fun? Maybe not..."
-                  ref={descriptionInputRef}
-                ></textarea>
+                    placeholder="Is it fun? Maybe not..."
+                    ref={descriptionInputRef}
+                  ></textarea>
+                </div>
               </div>
             </div>
-          </div>
+          )}
 
           {/* Submit and cancel buttons */}
           <div className="flex gap-x-1.5 pt-5">
@@ -312,14 +318,16 @@ export default function AddPost() {
                 </button>
               </Link>
             </div>
-            <div>
-              <button
-                type="submit"
-                className="bg-indigo-500 text-sm py-1 px-1.5 w-max rounded text-gray-100"
-              >
-                Create a post
-              </button>
-            </div>
+            {showContinue && (
+              <div>
+                <button
+                  type="submit"
+                  className="bg-indigo-500 text-sm py-1 px-1.5 w-max rounded text-gray-100"
+                >
+                  Create a post
+                </button>
+              </div>
+            )}
           </div>
         </div>
       </div>

@@ -45,6 +45,7 @@ const Dropdown = (props) => {
     }
   }, [session, props.user.userId]);
 
+  // Close the dropdown when clicked outside the element
   useEffect(() => {
     function handleClickOutside(event) {
       if (

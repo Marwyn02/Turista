@@ -1,6 +1,6 @@
 import PostsItem from "./PostsItem";
 
-const PostsList = (props) => {
+export default function PostsList(props) {
   return (
     <section className="grid md:grid-cols-4 gap-4 px-5 md:px-0">
       {props.posts.map((item) => (
@@ -13,6 +13,4 @@ const PostsList = (props) => {
       ))}
     </section>
   );
-};
-
-export default PostsList;
+}
