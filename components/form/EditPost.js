@@ -3,6 +3,7 @@ import { useState } from "react";
 import { useRouter } from "next/router";
 
 import AmenitiesBox from "../ui/AmenitiesBox";
+import EditPostImage from "./UI/EditPostImage";
 
 export default function EditPost(props) {
   const router = useRouter();
@@ -13,6 +14,8 @@ export default function EditPost(props) {
   const [newLocation, setNewLocation] = useState(location);
   const [newAmenities, setNewAmenities] = useState(amenities);
 
+  const [loading, setLoading] = useState(false);
+
   const amenitiesChecked = (amenity) => {
     setNewAmenities(amenity);
   };
@@ -20,6 +23,7 @@ export default function EditPost(props) {
   // Update the current post data
   const handleEditSubmit = async (e) => {
     e.preventDefault();
+    setLoading(true);
 
     const updatedPost = {
       id: id,
@@ -42,6 +46,7 @@ export default function EditPost(props) {
       if (response.ok) {
         console.log(res.message);
         router.push(res.redirect);
+        setLoading(false);
       } else {
         throw new Error(res.message);
       }
@@ -64,13 +69,7 @@ export default function EditPost(props) {
         <div>
           {/* Image Input  */}
           <div className="sm:col-span-6">
-            <img
-              src={image.image}
-              alt={title}
-              name="image"
-              id="image"
-              className="w-full md:rounded-lg"
-            />
+            <EditPostImage image={image} title={title} />
           </div>
 
           <div className="mt-10 grid grid-cols-1 gap-x-6 gap-y-8 px-5 sm:grid-cols-6">
@@ -178,8 +177,9 @@ export default function EditPost(props) {
                 <button
                   type="submit"
                   className="bg-indigo-500 text-white text-sm px-5 py-1.5 w-full border border-transparent rounded hover:bg-indigo-200 hover:text-gray-600 duration-200"
+                  disabled={loading}
                 >
-                  Save
+                  {!loading ? "Save" : "Saving..."}
                 </button>
               </div>
             </div>

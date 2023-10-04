@@ -66,6 +66,7 @@ export default NextAuth({
       // session.accessToken = token.accessToken;
       session.user = token.user;
 
+      // console.log(session);
       return session;
     },
   },

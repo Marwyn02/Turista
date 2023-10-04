@@ -1,7 +1,7 @@
 import dynamic from "next/dynamic";
 import Link from "next/link";
 import { useRouter } from "next/router";
-import { useEffect, useRef, useState } from "react";
+import { useRef, useState } from "react";
 import { useSession } from "next-auth/react";
 
 import AmenitiesBox from "../ui/AmenitiesBox";
@@ -21,6 +21,7 @@ export default function AddPost() {
   const imageInputRef = useRef([]);
 
   const [showContinue, setShowContinue] = useState(false);
+  const [loading, setLoading] = useState(false);
 
   const coordinates = ({ lat, lng }) => {
     coordinatesRef.current = { lng, lat };
@@ -53,6 +54,7 @@ export default function AddPost() {
   // Image submit to cloudinary handler
   const handleImageSubmit = async (e) => {
     e.preventDefault();
+    setLoading(true);
 
     const newImageDataArray = [];
 
@@ -82,11 +84,13 @@ export default function AddPost() {
 
     setImageData(newImageDataArray);
     setShowContinue(true);
+    setLoading(false);
   };
 
   // Submit the input
   const submitInputHandler = async (e) => {
     e.preventDefault();
+    setLoading(true);
 
     const enteredTitle = titleInputRef.current.value;
     const enteredLocation = locationInputRef.current.value;
@@ -127,6 +131,7 @@ export default function AddPost() {
         const res = await response.json();
         console.log(res.message);
         router.push(res.redirect);
+        setLoading(false);
       } else {
         throw new Error(res.message);
       }
@@ -323,8 +328,9 @@ export default function AddPost() {
                 <button
                   type="submit"
                   className="bg-indigo-500 text-sm py-1 px-1.5 w-max rounded text-gray-100"
+                  disabled={loading}
                 >
-                  Create a post
+                  {!loading ? "Create a new post" : "Creating your post"}
                 </button>
               </div>
             )}

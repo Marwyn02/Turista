@@ -47,7 +47,7 @@ export default function Component() {
           >
             {session && (
               <div>
-                <Link href={`/`}>
+                <Link href={`/user/${session.user._id}`}>
                   <button className="flex items-center py-2 px-4 font-semibold text-xs lg:text-sm text-indigo-400 hover:text-indigo-600 duration-300">
                     Profile
                   </button>

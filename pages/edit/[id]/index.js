@@ -1,4 +1,5 @@
 import mongoose from "mongoose";
+import Head from "next/head";
 import { connectMongoDB } from "@/lib/connectMongoDB";
 import FindOne from "@/pages/api/post/findOne";
 
@@ -10,6 +11,9 @@ export default function index(props) {
   try {
     return (
       <Suspense fallback={<p>Loading content...</p>}>
+        <Head>
+          <title>Edit post</title>
+        </Head>
         <FormLayout>
           <EditPost
             id={props.postData.id}
@@ -57,7 +61,10 @@ export async function getStaticProps(context) {
           id: selectedResult._id.toString(),
           title: selectedResult.title,
           location: selectedResult.location,
-          image: selectedResult.image[0],
+          image: selectedResult.image.map((i) => ({
+            image: i.image,
+            public_id: i.public_id,
+          })),
           description: selectedResult.description,
           amenities: selectedResult.amenities.map((item) => ({
             name: item.name,
