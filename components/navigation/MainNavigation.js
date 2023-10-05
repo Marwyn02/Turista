@@ -2,7 +2,7 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useSession } from "next-auth/react";
 
-import Login from "../auth/loginSignin";
+import LoginNavProfile from "../auth/LoginNavProfile";
 
 const MainNavigation = () => {
   const { data: session } = useSession();
@@ -46,7 +46,7 @@ const MainNavigation = () => {
           <div></div>
         ) : (
           <div className="grid place-content-end">
-            <Login />
+            <LoginNavProfile />
           </div>
         )}
       </div>

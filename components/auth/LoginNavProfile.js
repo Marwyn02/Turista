@@ -30,10 +30,10 @@ export default function Component() {
   if (session) {
     return (
       <div className="flex relative">
-        {/* Hide user image if the page is user's profile page */}
+        {/* User's image */}
         <img
           src={session.user.image}
-          alt="lel"
+          alt="Profile Image"
           ref={buttonRef}
           onClick={() => setDropdown(!dropdown)}
           className="rounded-full h-8 w-8 md:h-10 md:w-10 border-2 hover:opacity-90 duration-150 cursor-pointer"
@@ -43,18 +43,25 @@ export default function Component() {
         {dropdown && (
           <div
             ref={dropdownRef}
-            className="absolute right-3 top-10 lg:top-12 bg-white rounded border w-32 z-[9999]"
+            className="absolute right-2 top-10 lg:top-12 bg-white rounded-lg
+                       border p-1.5 w-max z-[9999]"
           >
             {session && (
               <div>
                 <Link href={`/user/${session.user._id}`}>
-                  <button className="flex items-center py-2 px-4 font-semibold text-xs lg:text-sm text-indigo-400 hover:text-indigo-600 duration-300">
-                    Profile
+                  <button
+                    className="flex py-2 px-4 font-semibold text-xs text-start
+                               lg:text-sm text-indigo-400 hover:text-indigo-600 
+                             hover:bg-gray-100 w-full duration-100 rounded-lg"
+                  >
+                    {session.user.name}
                   </button>
                 </Link>
                 <button
                   onClick={() => signOut()}
-                  className="flex items-center py-2 px-4 font-semibold text-xs lg:text-sm text-indigo-400 hover:text-indigo-600 duration-300"
+                  className="flex py-2 px-4 font-semibold text-xs text-start lg:text-sm
+                           text-indigo-400 hover:text-indigo-600 rounded-lg
+                           hover:bg-gray-100 w-full duration-100"
                 >
                   <img
                     src="/logout.svg"
@@ -78,7 +85,9 @@ export default function Component() {
       <>
         <Link
           href="/account/login"
-          className="mr-5 self-center py-1.5 px-2 font-semibold text-xs lg:text-sm text-indigo-400 hover:text-indigo-600 duration-300"
+          className="md:mr-5 self-center py-1.5 px-4 font-semibold text-xs 
+                     lg:text-sm text-indigo-400 hover:text-indigo-600 
+                    hover:bg-gray-100 rounded-lg duration-300"
         >
           Sign in
         </Link>

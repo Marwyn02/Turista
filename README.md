@@ -1,8 +1,8 @@
-This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+## Welcome to Turista
 
-## Getting Started
+About
 
-First, run the development server:
+Our website application contains information about the places and services of the local businesses in the country. Visit and connect with the community of our website.
 
 ```bash
 npm run dev
