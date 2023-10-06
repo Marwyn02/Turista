@@ -10,7 +10,7 @@ export default function AddPost() {
   const { data: session } = useSession();
   const router = useRouter();
 
-  const [images, setImages] = useState([]);
+  // const [images, setImages] = useState([]);
   const [imageData, setImageData] = useState([]);
 
   const amenitiesRef = useRef([]);
@@ -18,7 +18,15 @@ export default function AddPost() {
   const descriptionInputRef = useRef();
   const locationInputRef = useRef();
   const titleInputRef = useRef();
-  const imageInputRef = useRef([]);
+
+  const [imageOnePreview, setImageOnePreview] = useState(null);
+  const [imageTwoPreview, setImageTwoPreview] = useState(null);
+  const [imageThreePreview, setImageThreePreview] = useState(null);
+  const [selectedImages, setSelectedImages] = useState([]);
+
+  const imageOneInputRef = useRef();
+  const imageTwoInputRef = useRef();
+  const imageThreeInputRef = useRef();
 
   const [showContinue, setShowContinue] = useState(false);
   const [loading, setLoading] = useState(false);
@@ -37,17 +45,18 @@ export default function AddPost() {
   };
 
   // Image handler
-  const handleImageChange = async (e) => {
-    const image = e.target.files[0];
+  const handleImageChange = async (e, setImagePreview) => {
+    const imageFile = e.target.files[0];
 
-    if (image && images.length < 3) {
+    if (imageFile) {
       const reader = new FileReader();
 
       reader.onload = (e) => {
-        const newImage = [...images, { url: e.target.result }];
-        setImages(newImage);
+        setSelectedImages((prevImages) => [...prevImages, imageFile]);
+        setImagePreview(e.target.result);
       };
-      reader.readAsDataURL(image);
+
+      reader.readAsDataURL(imageFile);
     }
   };
 
@@ -56,34 +65,49 @@ export default function AddPost() {
     e.preventDefault();
     setLoading(true);
 
-    const newImageDataArray = [];
-
-    for (let i = 0; i < imageInputRef.current.files.length; i++) {
-      const file = imageInputRef.current.files[i];
-
-      const data = new FormData();
-      data.append("file", file);
-      data.append("upload_preset", "Turista-Uploads");
+    for (const images of selectedImages) {
+      const form = new FormData();
+      form.append("file", images);
+      form.append("upload_preset", "Turista-Uploads");
 
       const response = await fetch(
         "https://api.cloudinary.com/v1_1/dgzsmdvo4/image/upload",
         {
           method: "POST",
-          body: data,
+          body: form,
         }
       ).then((r) => r.json());
 
       console.log(response);
-
-      const newImageData = {
-        image: response.secure_url,
-        public_id: response.public_id,
-      };
-      newImageDataArray.push(newImageData);
     }
+    // const newImageDataArray = [];
 
-    setImageData(newImageDataArray);
-    setShowContinue(true);
+    // for (let i = 0; i < imageInputRef.current.files.length; i++) {
+    //   const file = imageInputRef.current.files[i];
+
+    //   const data = new FormData();
+    //   data.append("file", file);
+    //   data.append("upload_preset", "Turista-Uploads");
+
+    //   const response = await fetch(
+    //     "https://api.cloudinary.com/v1_1/dgzsmdvo4/image/upload",
+    //     {
+    //       method: "POST",
+    //       body: data,
+    //     }
+    //   ).then((r) => r.json());
+
+    //   console.log(response);
+
+    //   const newImageData = {
+    //     image: response.secure_url,
+    //     public_id: response.public_id,
+    //   };
+    //   newImageDataArray.push(newImageData);
+    // }
+
+    // setImageData(newImageDataArray);
+    // setShowContinue(true);
     setLoading(false);
   };
 
@@ -118,26 +142,28 @@ export default function AddPost() {
       user: session.user._id,
     };
 
-    try {
-      const response = await fetch("/api/post/create", {
-        method: "POST",
-        headers: {
-          "Content-type": "application/json",
-        },
-        body: JSON.stringify(postData),
-      });
+    console.log(postData);
 
-      if (response.ok) {
-        const res = await response.json();
-        console.log(res.message);
-        router.push(res.redirect);
-        setLoading(false);
-      } else {
-        throw new Error(res.message);
-      }
-    } catch (error) {
-      throw new Error("Error in Create Post Submit Handler: ", error);
-    }
+    // try {
+    //   const response = await fetch("/api/post/create", {
+    //     method: "POST",
+    //     headers: {
+    //       "Content-type": "application/json",
+    //     },
+    //     body: JSON.stringify(postData),
+    //   });
+
+    //   if (response.ok) {
+    //     const res = await response.json();
+    //     console.log(res.message);
+    //     router.push(res.redirect);
+    //     setLoading(false);
+    //   } else {
+    //     throw new Error(res.message);
+    //   }
+    // } catch (error) {
+    //   throw new Error("Error in Create Post Submit Handler: ", error);
+    // }
   };
   return (
     <form className="bg-white sm:my-4" onSubmit={submitInputHandler}>
@@ -201,7 +227,168 @@ export default function AddPost() {
             <p className="text-xs text-gray-500 mb-3">
               Choose three (3) images/files to save
             </p>
-            <>
+
+            {!imageOnePreview && (
+              <div
+                className="mt-2 flex justify-center rounded-lg border 
+                            border-dashed border-gray-900/25 px-6 py-10"
+              >
+                <div className="text-center">
+                  <div className="mt-4 flex text-sm leading-6 text-gray-600">
+                    <label
+                      htmlFor="file-upload-1"
+                      className="relative cursor-pointer rounded-md bg-white 
+                               font-semibold text-indigo-600 hover:text-indigo-500"
+                    >
+                      <span>Upload a file</span>
+                      <input
+                        id="file-upload-1"
+                        name="file-upload-1"
+                        type="file"
+                        accept="image/*"
+                        className="sr-only"
+                        onChange={(e) =>
+                          handleImageChange(e, setImageOnePreview)
+                        }
+                        ref={imageOneInputRef}
+                      />
+                    </label>
+                    <p className="pl-1">or drag and drop</p>
+                  </div>
+                  <p className="text-xs leading-5 text-gray-600">
+                    PNG, JPG, GIF up to 10MB
+                  </p>
+                </div>
+              </div>
+            )}
+
+            {imageOnePreview && (
+              <img
+                src={imageOnePreview}
+                alt="Preview 1"
+                className="mt-4 rounded-lg"
+              />
+            )}
+
+            {/* Secondary images  */}
+            <div
+              className={`grid ${
+                !imageTwoPreview ? "grid-cols-1" : "grid-cols-1 md:grid-cols-2"
+              }`}
+            >
+              {!imageTwoPreview && imageOnePreview && (
+                <div
+                  className="mt-2 flex justify-center rounded-lg border border-dashed 
+                            border-gray-900/25 px-6 py-10"
+                >
+                  <div className="text-center">
+                    <div className="mt-4 flex text-sm leading-6 text-gray-600">
+                      <label
+                        htmlFor="file-upload-2"
+                        className="relative cursor-pointer rounded-md bg-white 
+                                 font-semibold text-indigo-600 hover:text-indigo-500"
+                      >
+                        <span>Upload a file</span>
+                        <input
+                          id="file-upload-2"
+                          name="file-upload-2"
+                          type="file"
+                          accept="image/*"
+                          className="sr-only"
+                          onChange={(e) =>
+                            handleImageChange(e, setImageTwoPreview)
+                          }
+                          ref={imageTwoInputRef}
+                        />
+                      </label>
+                      <p className="pl-1">or drag and drop</p>
+                    </div>
+                    <p className="text-xs leading-5 text-gray-600">
+                      PNG, JPG, GIF up to 10MB
+                    </p>
+                  </div>
+                </div>
+              )}
+
+              {imageTwoPreview && (
+                <img
+                  src={imageTwoPreview}
+                  alt="Preview 2"
+                  className="mt-4 rounded-lg"
+                />
+              )}
+
+              {/* If there's no image two preview then show the input file */}
+              {!imageThreePreview && imageTwoPreview && (
+                <div
+                  className="mt-2 flex justify-center rounded-lg border border-dashed
+                            border-gray-900/25 px-6 py-10"
+                >
+                  <div className="text-center">
+                    <div className="mt-4 flex text-sm leading-6 text-gray-600">
+                      <label
+                        htmlFor="file-upload-3"
+                        className="relative cursor-pointer rounded-md bg-white 
+                                 font-semibold text-indigo-600 hover:text-indigo-500"
+                      >
+                        <span>Upload a file</span>
+                        <input
+                          id="file-upload-3"
+                          name="file-upload-3"
+                          type="file"
+                          accept="image/*"
+                          className="sr-only"
+                          onChange={(e) =>
+                            handleImageChange(e, setImageThreePreview)
+                          }
+                          ref={imageThreeInputRef}
+                        />
+                      </label>
+                      <p className="pl-1">or drag and drop</p>
+                    </div>
+                    <p className="text-xs leading-5 text-gray-600">
+                      PNG, JPG, GIF up to 10MB
+                    </p>
+                  </div>
+                </div>
+              )}
+
+              {imageThreePreview && (
+                <img
+                  src={imageThreePreview}
+                  alt="Preview 3"
+                  className="mt-4 rounded-lg"
+                />
+              )}
+            </div>
+
+            {/* Will clear all preview images and the array state for the cloudinary */}
+            {imageOnePreview && (
+              <button
+                onClick={(e) => {
+                  setSelectedImages([]);
+                  setImageOnePreview(null);
+                  setImageTwoPreview(null);
+                  setImageThreePreview(null);
+                  e.preventDefault();
+                }}
+                className="bg-gray-100 text-xs border rounded-full px-1.5 py-0.5 text-gray-700"
+              >
+                Clear image(s)
+              </button>
+            )}
+
+            {/* Will save the image to the cloudinary */}
+            {selectedImages && selectedImages.length === 3 && (
+              <button
+                onClick={handleImageSubmit}
+                className="text-sm bg-green-300 text-gray-800 px-3 py-1 rounded-full my-2"
+              >
+                Save Images
+              </button>
+            )}
+
+            {/* <>
               {images.length < 3 && (
                 <input
                   id="image"
@@ -254,7 +441,7 @@ export default function AddPost() {
                     Save Images
                   </button>
                 )}
-            </>
+            </> */}
           </div>
 
           {/* Title Input  */}
