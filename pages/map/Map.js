@@ -118,6 +118,7 @@ const Map = (props) => {
         </button>
       ) : (
         <button
+          type="button"
           className="w-full py-1.5 mt-3 text-sm border border-black/50 rounded 
                 hover:bg-indigo-500 hover:border-indigo-500 hover:text-white 
                   duration-300"

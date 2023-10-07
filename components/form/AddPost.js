@@ -7,10 +7,10 @@ import { useSession } from "next-auth/react";
 import AmenitiesBox from "../ui/AmenitiesBox";
 
 export default function AddPost() {
+  const CLOUDINARY_URL = process.env.CLOUDINARY_URL;
   const { data: session } = useSession();
   const router = useRouter();
 
-  // const [images, setImages] = useState([]);
   const [imageData, setImageData] = useState([]);
 
   const amenitiesRef = useRef([]);
@@ -65,49 +65,28 @@ export default function AddPost() {
     e.preventDefault();
     setLoading(true);
 
+    const newImageDataArray = [];
+
     for (const images of selectedImages) {
       const form = new FormData();
       form.append("file", images);
       form.append("upload_preset", "Turista-Uploads");
 
-      const response = await fetch(
-        "https://api.cloudinary.com/v1_1/dgzsmdvo4/image/upload",
-        {
-          method: "POST",
-          body: form,
-        }
-      ).then((r) => r.json());
+      const response = await fetch(CLOUDINARY_URL, {
+        method: "POST",
+        body: form,
+      }).then((r) => r.json());
 
       console.log(response);
+
+      const newImageData = {
+        image: response.secure_url,
+        public_id: response.public_id,
+      };
+      newImageDataArray.push(newImageData);
     }
-    // const newImageDataArray = [];
-
-    // for (let i = 0; i < imageInputRef.current.files.length; i++) {
-    //   const file = imageInputRef.current.files[i];
-
-    //   const data = new FormData();
-    //   data.append("file", file);
-    //   data.append("upload_preset", "Turista-Uploads");
-
-    //   const response = await fetch(
-    //     "https://api.cloudinary.com/v1_1/dgzsmdvo4/image/upload",
-    //     {
-    //       method: "POST",
-    //       body: data,
-    //     }
-    //   ).then((r) => r.json());
-
-    //   console.log(response);
-
-    //   const newImageData = {
-    //     image: response.secure_url,
-    //     public_id: response.public_id,
-    //   };
-    //   newImageDataArray.push(newImageData);
-    // }
-
-    // setImageData(newImageDataArray);
-    // setShowContinue(true);
+    setImageData(newImageDataArray);
+    setShowContinue(true);
     setLoading(false);
   };
 
@@ -142,28 +121,26 @@ export default function AddPost() {
       user: session.user._id,
     };
 
-    console.log(postData);
+    try {
+      const response = await fetch("/api/post/create", {
+        method: "POST",
+        headers: {
+          "Content-type": "application/json",
+        },
+        body: JSON.stringify(postData),
+      });
 
-    // try {
-    //   const response = await fetch("/api/post/create", {
-    //     method: "POST",
-    //     headers: {
-    //       "Content-type": "application/json",
-    //     },
-    //     body: JSON.stringify(postData),
-    //   });
-
-    //   if (response.ok) {
-    //     const res = await response.json();
-    //     console.log(res.message);
-    //     router.push(res.redirect);
-    //     setLoading(false);
-    //   } else {
-    //     throw new Error(res.message);
-    //   }
-    // } catch (error) {
-    //   throw new Error("Error in Create Post Submit Handler: ", error);
-    // }
+      if (response.ok) {
+        const res = await response.json();
+        console.log(res.message);
+        router.push(res.redirect);
+        setLoading(false);
+      } else {
+        throw new Error(res.message);
+      }
+    } catch (error) {
+      throw new Error("Error in Create Post Submit Handler: ", error);
+    }
   };
   return (
     <form className="bg-white sm:my-4" onSubmit={submitInputHandler}>
@@ -363,7 +340,7 @@ export default function AddPost() {
             </div>
 
             {/* Will clear all preview images and the array state for the cloudinary */}
-            {imageOnePreview && (
+            {imageOnePreview && !showContinue && (
               <button
                 onClick={(e) => {
                   setSelectedImages([]);
@@ -372,7 +349,9 @@ export default function AddPost() {
                   setImageThreePreview(null);
                   e.preventDefault();
                 }}
-                className="bg-gray-100 text-xs border rounded-full px-1.5 py-0.5 text-gray-700"
+                className="bg-gray-100 text-xs border rounded-full px-1.5 py-0.5 
+                             duration-300 text-gray-700"
+                disabled={loading}
               >
                 Clear image(s)
               </button>
@@ -382,66 +361,27 @@ export default function AddPost() {
             {selectedImages && selectedImages.length === 3 && (
               <button
                 onClick={handleImageSubmit}
-                className="text-sm bg-green-300 text-gray-800 px-3 py-1 rounded-full my-2"
+                className="text-sm bg-indigo-200 text-gray-900 px-5 py-1.5 rounded-lg my-2 duration-300"
+                disabled={showContinue || loading}
               >
-                Save Images
+                {loading ? (
+                  "Saving..."
+                ) : showContinue ? (
+                  <div className="flex items-center">
+                    Saved{" "}
+                    <img
+                      src="/check-photo.svg"
+                      alt="saved"
+                      height={20}
+                      width={20}
+                      className="ml-1"
+                    />
+                  </div>
+                ) : (
+                  "Save selected images"
+                )}
               </button>
             )}
-
-            {/* <>
-              {images.length < 3 && (
-                <input
-                  id="image"
-                  name="image"
-                  type="file"
-                  className="block w-full text-sm text-slate-500 mt-1 mb-2.5
-                        file:mr-4 file:py-2 file:px-4
-                        file:rounded-full file:border-0
-                        file:text-sm file:font-semibold
-                        file:bg-indigo-50 file:text-indigo-500
-                        hover:file:bg-indigo-100"
-                  accept="image/*"
-                  onChange={handleImageChange}
-                  ref={imageInputRef}
-                  multiple
-                />
-              )}
-              {images && (
-                <>
-                  {images.map((img, index) => (
-                    <img
-                      key={index}
-                      src={img.url}
-                      alt="Selected Image"
-                      className="h-[200px] w-full rounded-lg my-2"
-                    />
-                  ))}
-                </>
-              )}
-              {images.length <= 3 && images.length !== 0 ? (
-                <button
-                  onClick={(e) => {
-                    setImages([]);
-                    e.preventDefault();
-                  }}
-                  className="bg-gray-100 text-xs border rounded-full px-1.5 py-0.5 text-gray-700"
-                >
-                  Clear image(s)
-                </button>
-              ) : (
-                ""
-              )}
-              {imageInputRef.current &&
-                imageInputRef.current.files &&
-                imageInputRef.current.files.length === 3 && (
-                  <button
-                    onClick={handleImageSubmit}
-                    className="text-sm bg-green-300 text-gray-800 px-3 py-1 rounded-full my-2"
-                  >
-                    Save Images
-                  </button>
-                )}
-            </> */}
           </div>
 
           {/* Title Input  */}
