@@ -1,25 +1,29 @@
-export default async function deleteImage(req, res) {
-  console.log(req);
+import Post from "@/models/Post";
 
-  const cloud_name = process.env.CLOUD_NAME;
-  const api_key = process.env.CLOUD_API_KEY;
+const cloudinary = require("cloudinary").v2;
+cloudinary.config({
+  cloud_name: "dgzsmdvo4",
+  api_key: "298783929249649",
+  api_secret: "F_DuneWNgxWGN_-cX3MfRHQ-RT4",
+});
 
-  const baseUrl = `https://api.cloudinary.com/v1_1/${cloud_name}/image/destroy`;
+export default async function Delete(req, res) {
+  try {
+    const { id, image } = req.body;
 
-  const deleteRequests = req.map(async (reqs) => {
-    const url = `${baseUrl}?public_id=${reqs.public_id}&api_key=${api_key}`;
+    const post = await Post.findById(id);
 
-    const response = await fetch(url, {
-      method: "DELETE",
-    });
+    const imageIndex = post.image.findIndex(
+      (img) => img.public_id === image.public_id
+    );
+    post.image.splice(imageIndex, 1);
+    post.save();
 
-    if (response.ok) {
-      console.log(`Image with public_id ${reqs} deleted successfully`);
-    } else {
-      console.error(`Failed to delete image with public_id ${reqs}`);
-    }
-  });
-  await Promise.all(deleteRequests);
+    await cloudinary.uploader.destroy(image.public_id);
 
-  console.log("All images deleted successfully");
+    console.log("Image deleted");
+    res.status(200).json({ message: "Image deleted successfully" });
+  } catch (error) {
+    throw new Error(error);
+  }
 }

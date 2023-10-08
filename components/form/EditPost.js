@@ -69,7 +69,7 @@ export default function EditPost(props) {
         <div>
           {/* Image Input  */}
           <div className="sm:col-span-6">
-            <EditPostImage image={image} title={title} />
+            <EditPostImage id={id} image={image} title={title} />
           </div>
 
           <div className="mt-10 grid grid-cols-1 gap-x-6 gap-y-8 px-5 sm:grid-cols-6">
