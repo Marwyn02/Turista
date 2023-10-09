@@ -7,7 +7,6 @@ import { useSession } from "next-auth/react";
 import AmenitiesBox from "../ui/AmenitiesBox";
 
 export default function AddPost() {
-  const CLOUDINARY_URL = process.env.CLOUDINARY_URL;
   const { data: session } = useSession();
   const router = useRouter();
 
@@ -72,12 +71,15 @@ export default function AddPost() {
       form.append("file", images);
       form.append("upload_preset", "Turista-Uploads");
 
-      const response = await fetch(CLOUDINARY_URL, {
-        method: "POST",
-        body: form,
-      }).then((r) => r.json());
+      const response = await fetch(
+        "https://api.cloudinary.com/v1_1/dgzsmdvo4/image/upload",
+        {
+          method: "POST",
+          body: form,
+        }
+      ).then((r) => r.json());
 
-      console.log(response);
+      console.log("Response: ", response);
 
       const newImageData = {
         image: response.secure_url,

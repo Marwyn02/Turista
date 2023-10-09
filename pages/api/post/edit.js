@@ -2,10 +2,11 @@ import Post from "@/models/Post";
 
 export default async function edit(req, res) {
   try {
-    const { id, title, location, description, amenities } = req.body;
+    const { id, image, title, location, description, amenities } = req.body;
     const result = await Post.findByIdAndUpdate(id, {
       $set: {
         title: title,
+        image: image,
         location: location,
         description: description,
         amenities: amenities,
@@ -19,12 +20,10 @@ export default async function edit(req, res) {
       redirect: `/${id}`,
     });
   } catch (error) {
-    return res
-      .status(500)
-      .json({
-        success: false,
-        message: `Post ID:${id} updation failed, `,
-        error,
-      });
+    return res.status(500).json({
+      success: false,
+      message: `Post ID:${id} updation failed, `,
+      error,
+    });
   }
 }

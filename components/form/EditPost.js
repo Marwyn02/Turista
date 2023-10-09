@@ -9,6 +9,7 @@ export default function EditPost(props) {
   const router = useRouter();
   const { id, title, location, image, description, amenities } = props;
 
+  const [newImage, setNewImage] = useState([]);
   const [newTitle, setNewTitle] = useState(title);
   const [newDescription, setNewDescription] = useState(description);
   const [newLocation, setNewLocation] = useState(location);
@@ -20,6 +21,13 @@ export default function EditPost(props) {
     setNewAmenities(amenity);
   };
 
+  const updateImageData = (newImageData) => {
+    // Update the image state with the new data
+    setNewImage(newImageData);
+  };
+
+  console.log("New image data: ", newImage);
+
   // Update the current post data
   const handleEditSubmit = async (e) => {
     e.preventDefault();
@@ -27,6 +35,7 @@ export default function EditPost(props) {
 
     const updatedPost = {
       id: id,
+      image: newImage,
       title: newTitle,
       location: newLocation,
       description: newDescription,
@@ -69,7 +78,12 @@ export default function EditPost(props) {
         <div>
           {/* Image Input  */}
           <div className="sm:col-span-6">
-            <EditPostImage id={id} image={image} title={title} />
+            <EditPostImage
+              id={id}
+              image={image}
+              title={title}
+              updateImageData={updateImageData}
+            />
           </div>
 
           <div className="mt-10 grid grid-cols-1 gap-x-6 gap-y-8 px-5 sm:grid-cols-6">

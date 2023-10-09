@@ -1,13 +1,7 @@
 import Post from "@/models/Post";
+import cloudinary from "@/utils/cloudinary/cloudinary";
 
-const cloudinary = require("cloudinary").v2;
-cloudinary.config({
-  cloud_name: "dgzsmdvo4",
-  api_key: "298783929249649",
-  api_secret: "F_DuneWNgxWGN_-cX3MfRHQ-RT4",
-});
-
-export default async function Delete(req, res) {
+export default async function remove(req, res) {
   try {
     const { id, image } = req.body;
 

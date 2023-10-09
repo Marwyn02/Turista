@@ -1,7 +1,7 @@
 import Image from "next/image";
 import { useState, useRef } from "react";
 
-export default function EditPostImage({ id, image, title }) {
+export default function EditPostImage({ id, image, title, updateImageData }) {
   const [selectedImages, setSelectedImages] = useState([]);
 
   const [imageOnePreview, setImageOnePreview] = useState(null);
@@ -31,6 +31,36 @@ export default function EditPostImage({ id, image, title }) {
     }
   };
 
+  const submitImageHandler = async (e) => {
+    e.preventDefault();
+
+    const updatedImages = [...image];
+
+    for (const images of editedImages) {
+      const form = new FormData();
+      form.append("file", images);
+      form.append("upload_preset", "Turista-Uploads");
+
+      const response = await fetch(
+        "https://api.cloudinary.com/v1_1/dgzsmdvo4/image/upload",
+        {
+          method: "POST",
+          body: form,
+        }
+      ).then((r) => r.json());
+
+      console.log("Response: ", response);
+
+      const newImageData = {
+        image: response.secure_url,
+        public_id: response.public_id,
+      };
+      updatedImages.push(newImageData);
+    }
+
+    updateImageData(updatedImages);
+  };
+
   // Filtering the selected images
   const toggleImageSelection = (index) => {
     const imageToSelect = image[index];
@@ -49,7 +79,7 @@ export default function EditPostImage({ id, image, title }) {
     e.preventDefault();
     setEditLoading(true);
     const deletePromises = selectedImages.map(async (image) => {
-      const response = await fetch("/api/post/deleteImage", {
+      const response = await fetch("/api/post/remove", {
         method: "DELETE",
         headers: {
           "Content-type": "application/json",
@@ -267,6 +297,7 @@ export default function EditPostImage({ id, image, title }) {
             className="px-5 py-1.5 text-sm bg-red-200 duration-100 
               rounded-lg mt-2 hover:bg-red-300 hover:text-white"
             disabled={editLoading}
+            onClick={submitImageHandler}
           >
             {editLoading ? "Saving images..." : "Save Image(s)"}
           </button>
