@@ -21,12 +21,10 @@ export default function EditPost(props) {
     setNewAmenities(amenity);
   };
 
+  // Update the image state with the new data
   const updateImageData = (newImageData) => {
-    // Update the image state with the new data
     setNewImage(newImageData);
   };
-
-  console.log("New image data: ", newImage);
 
   // Update the current post data
   const handleEditSubmit = async (e) => {
@@ -63,7 +61,6 @@ export default function EditPost(props) {
       throw new Error("Error in Edit Post Submit Handler: " + error);
     }
   };
-
   return (
     <form onSubmit={handleEditSubmit} className="bg-white sm:my-4">
       <div className="space-y-10 md:px-2">
@@ -182,7 +179,13 @@ export default function EditPost(props) {
             <div className="flex justify-between md:justify-normal items-center gap-x-1.5 py-3">
               <div>
                 <Link href={`/${id}`}>
-                  <button className="bg-white text-gray-900 border border-black text-sm px-5 py-1.5 w-full rounded hover:bg-gray-900 hover:text-white duration-200">
+                  <button
+                    type="button"
+                    className="bg-white text-gray-900 border 
+                        border-black text-sm px-5 py-1.5 w-full rounded hover:bg-gray-900 
+                        hover:text-white duration-200"
+                    disabled={loading}
+                  >
                     Cancel
                   </button>
                 </Link>
@@ -190,7 +193,8 @@ export default function EditPost(props) {
               <div>
                 <button
                   type="submit"
-                  className="bg-indigo-500 text-white text-sm px-5 py-1.5 w-full border border-transparent rounded hover:bg-indigo-200 hover:text-gray-600 duration-200"
+                  className="bg-indigo-500 text-white text-sm px-5 py-1.5 w-full border 
+                      border-transparent rounded hover:bg-indigo-200 hover:text-gray-600 duration-200"
                   disabled={loading}
                 >
                   {!loading ? "Save" : "Saving..."}

@@ -16,7 +16,9 @@ export default async function remove(req, res) {
     await cloudinary.uploader.destroy(image.public_id);
 
     console.log("Image deleted");
-    res.status(200).json({ message: "Image deleted successfully" });
+    res
+      .status(200)
+      .json({ message: `Image: ${image.public_id} deleted successfully` });
   } catch (error) {
     throw new Error(error);
   }

@@ -138,6 +138,7 @@ export default function AddPost() {
         router.push(res.redirect);
         setLoading(false);
       } else {
+        setLoading(false);
         throw new Error(res.message);
       }
     } catch (error) {
@@ -447,7 +448,11 @@ export default function AddPost() {
           <div className="flex gap-x-1.5 pt-5">
             <div>
               <Link href="/">
-                <button className="bg-gray-200 text-sm py-1 px-1.5 w-max rounded text-gray-900">
+                <button
+                  type="button"
+                  className="bg-gray-200 text-sm py-1 px-1.5 w-max rounded text-gray-900"
+                  disabled={loading}
+                >
                   Cancel
                 </button>
               </Link>

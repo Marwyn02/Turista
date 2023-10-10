@@ -31,34 +31,42 @@ export default function EditPostImage({ id, image, title, updateImageData }) {
     }
   };
 
+  // Save image to cloudinary
   const submitImageHandler = async (e) => {
     e.preventDefault();
+    setEditLoading(true);
 
-    const updatedImages = [...image];
+    try {
+      const updatedImages = [...image];
 
-    for (const images of editedImages) {
-      const form = new FormData();
-      form.append("file", images);
-      form.append("upload_preset", "Turista-Uploads");
+      for (const images of editedImages) {
+        const form = new FormData();
+        form.append("file", images);
+        form.append("upload_preset", "Turista-Uploads");
 
-      const response = await fetch(
-        "https://api.cloudinary.com/v1_1/dgzsmdvo4/image/upload",
-        {
-          method: "POST",
-          body: form,
-        }
-      ).then((r) => r.json());
+        const response = await fetch(
+          "https://api.cloudinary.com/v1_1/dgzsmdvo4/image/upload",
+          {
+            method: "POST",
+            body: form,
+          }
+        ).then((r) => r.json());
 
-      console.log("Response: ", response);
+        console.log("Response: ", response);
 
-      const newImageData = {
-        image: response.secure_url,
-        public_id: response.public_id,
-      };
-      updatedImages.push(newImageData);
+        const newImageData = {
+          image: response.secure_url,
+          public_id: response.public_id,
+        };
+        updatedImages.push(newImageData);
+      }
+
+      updateImageData(updatedImages);
+      setEditLoading(false);
+    } catch (error) {
+      setEditLoading(false);
+      console.error("Error updating image data", error);
     }
-
-    updateImageData(updatedImages);
   };
 
   // Filtering the selected images
@@ -77,23 +85,30 @@ export default function EditPostImage({ id, image, title, updateImageData }) {
   // Delete and remove the image to the post and the database
   const deleteSelectedImages = async (e) => {
     e.preventDefault();
-    setEditLoading(true);
-    const deletePromises = selectedImages.map(async (image) => {
-      const response = await fetch("/api/post/remove", {
-        method: "DELETE",
-        headers: {
-          "Content-type": "application/json",
-        },
-        body: JSON.stringify({ id, image }),
+    try {
+      setEditLoading(true);
+      const deletePromises = selectedImages.map(async (image) => {
+        const response = await fetch("/api/post/remove", {
+          method: "DELETE",
+          headers: {
+            "Content-type": "application/json",
+          },
+          body: JSON.stringify({ id, image }),
+        });
+
+        if (!response.ok) {
+          console.error(`Failed to delete image: ${image.public_id}`);
+        }
+        const res = await response.json();
+        console.log(res.message);
       });
+      await Promise.all(deletePromises);
 
-      if (!response.ok) {
-        console.error(`Failed to delete image: ${image.public_id}`);
-      }
-    });
-    await Promise.all(deletePromises);
-
-    setEditLoading(false);
+      setEditLoading(false);
+    } catch (error) {
+      setEditLoading(false);
+      console.error("Failed to delete image", error);
+    }
   };
   return (
     <>
