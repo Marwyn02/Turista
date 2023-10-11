@@ -8,10 +8,13 @@ export default function PostReview(props) {
 
   const [inputError, setInputError] = useState(false);
 
+  const [loading, setLoading] = useState(false);
+
   const reviewDescriptionRef = useRef();
 
   const submitReviewHandler = async (e) => {
     e.preventDefault();
+    setLoading(true);
 
     const enteredDescription = reviewDescriptionRef.current.value;
 
@@ -52,6 +55,7 @@ export default function PostReview(props) {
         throw new Error("Error in create review: " + error);
       }
 
+      setLoading(false);
       reviewDescriptionRef.current.value = "";
     }
   };
@@ -68,8 +72,8 @@ export default function PostReview(props) {
           cols="30"
           className={
             !inputError
-              ? `border border-gray-300 p-2 text-sm w-full mt-1 rounded-xl`
-              : `border border-red-500 p-2 text-sm w-full mt-1 rounded-xl`
+              ? `resize-none border border-gray-300 p-2 text-sm w-full mt-1 rounded-xl`
+              : `resize-none border border-red-500 p-2 text-sm w-full mt-1 rounded-xl`
           }
           placeholder="Is it fun right?"
           ref={reviewDescriptionRef}
@@ -84,9 +88,11 @@ export default function PostReview(props) {
         )}
         <button
           type="submit"
-          className="border rounded-lg border-gray-400 text-sm px-2 py-1 w-full my-2 tracking-wide hover:bg-indigo-500 hover:text-white duration-300"
+          className="border rounded-lg border-gray-400 text-sm px-2 py-1 w-full 
+          my-2 tracking-wide hover:bg-indigo-400 hover:text-white duration-300"
+          disabled={loading}
         >
-          Submit
+          {loading ? "Submitting your review..." : "Submit"}
         </button>
       </form>
     </>

@@ -5,9 +5,10 @@ export default function PostsItem({ id, image, location }) {
   const router = useRouter();
   return (
     <section>
-      <main key={id} className="pt-[100%] relative rounded-xl duration-300">
+      <main key={id} className="pt-[100%] relative rounded-lg duration-300">
         <Image
-          className="absolute inset-0 h-full w-full cursor-pointer object-cover rounded-lg border border-transparent hover:border-gray-500 duration-300"
+          className="absolute inset-0 h-full w-full cursor-pointer object-cover rounded-lg 
+          hover:brightness-90 duration-100"
           src={image}
           height={100}
           width={200}

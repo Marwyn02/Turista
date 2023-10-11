@@ -1,6 +1,7 @@
 import mongoose from "mongoose";
 import { connectMongoDB } from "@/lib/connectMongoDB";
 
+// import CategoryNavigation from "@/components/navigation/CategoryNavigation";
 import MainLayout from "@/components/layout/MainLayout";
 import PostsList from "@/components/turistaPosts/PostsList";
 import { Suspense } from "react";
@@ -14,6 +15,7 @@ export default function Home(props) {
         <meta property="og:title" content="Turista Home Page" key="homeTitle" />
       </Head>
       <Suspense fallback={<p className="text-center">Loading posts...</p>}>
+        {/* <CategoryNavigation /> */}
         <PostsList posts={props.posts} />
       </Suspense>
     </MainLayout>

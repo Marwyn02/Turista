@@ -1,12 +1,6 @@
 import Post from "@/models/Post";
 import Review from "@/models/Review";
-
-const cloudinary = require("cloudinary").v2;
-cloudinary.config({
-  cloud_name: "dgzsmdvo4",
-  api_key: "298783929249649",
-  api_secret: "F_DuneWNgxWGN_-cX3MfRHQ-RT4",
-});
+import cloudinary from "@/utils/cloudinary/cloudinary";
 
 export default async function Delete(req, res) {
   const id = req.body.postId;

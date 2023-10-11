@@ -9,7 +9,8 @@ const UserPostList = ({ posts }) => {
           <div key={post.id} className="relative bg-gray-200 pt-[100%]">
             <Link href={`/${post.id}`}>
               <Image
-                className="rounded-lg absolute inset-0 w-full h-full object-cover hover:brightness-90 duration-100"
+                className="rounded-lg absolute inset-0 w-full h-full 
+                object-cover hover:brightness-90 duration-100"
                 src={post.image}
                 width={200}
                 height={200}

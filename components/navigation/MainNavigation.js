@@ -3,10 +3,39 @@ import { usePathname } from "next/navigation";
 import { useSession } from "next-auth/react";
 
 import LoginNavProfile from "../auth/LoginNavProfile";
+import { useEffect } from "react";
 
 const MainNavigation = () => {
   const { data: session } = useSession();
   const pathname = usePathname();
+
+  useEffect(() => {
+    if (session) {
+      const userId = session.user._id;
+      console.log(userId);
+      const restrictPosting = async () => {
+        try {
+          const response = await fetch("/api/user/restrictPosting", {
+            method: "POST", // Specify the HTTP method as POST
+            headers: {
+              "Content-type": "application/json",
+            },
+            body: JSON.stringify({ userId: userId }),
+          });
+
+          if (response.ok) {
+            const data = await response.json();
+            console.log("Okay", data);
+          } else {
+            console.log("Not okay");
+          }
+        } catch (error) {
+          console.error("Error:", error);
+        }
+      };
+      restrictPosting();
+    }
+  }, [session]);
 
   return (
     <nav className="fixed z-10 w-full bg-white border-b">
@@ -14,7 +43,7 @@ const MainNavigation = () => {
         {/* Show back button if its not in the home page */}
         {pathname.length > 1 ? (
           <h1 className="text-xs lg:text-sm text-gray-500 font-semibold ml-5 lg:ml-0 flex items-center hover:text-black">
-            <Link href="/"> Back </Link>
+            <Link href="/">Back</Link>
           </h1>
         ) : (
           <h1 className="text-indigo-600 font-extrabold text-2xl italic hover:text-indigo-500 hidden md:block">
@@ -27,7 +56,12 @@ const MainNavigation = () => {
           <div className="lg:grid lg:place-content-center">
             {session ? (
               <Link href={"/create"}>
-                <button className="border rounded-full px-5 py-2 text-sm font-medium text-center text-gray-600 hover:text-black hover:border-black duration-500">
+                <button
+                  type="button"
+                  className="border rounded-full px-5 py-2 text-sm 
+                font-medium text-center text-gray-600 hover:text-black 
+                hover:border-black duration-500"
+                >
                   Create post
                 </button>
               </Link>
