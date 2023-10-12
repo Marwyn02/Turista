@@ -12,7 +12,7 @@ export default function index(props) {
     return (
       <Suspense fallback={<p>Loading content...</p>}>
         <Head>
-          <title>Edit post</title>
+          <title>Edit {props.postData.title}</title>
         </Head>
         <FormLayout>
           <EditPost
