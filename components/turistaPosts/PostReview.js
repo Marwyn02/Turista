@@ -36,7 +36,7 @@ export default function PostReview(props) {
       };
 
       try {
-        const response = await fetch("/api/post/create", {
+        const response = await fetch("/api/review/create", {
           method: "POST",
           headers: {
             "Content-type": "application/json",
@@ -49,6 +49,7 @@ export default function PostReview(props) {
           console.log(res.message);
           router.push(res.redirect);
         } else {
+          const res = await response.json();
           throw new Error(res.message);
         }
       } catch (error) {

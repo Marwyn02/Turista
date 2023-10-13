@@ -2,14 +2,14 @@ import mongoose from "mongoose";
 import { connectMongoDB } from "@/lib/connectMongoDB";
 
 // import CategoryNavigation from "@/components/navigation/CategoryNavigation";
-import MainLayout from "@/components/layout/MainLayout";
+import MainPageLayout from "../components/layout/MainPageLayout";
 import PostsList from "@/components/turistaPosts/PostsList";
 import { Suspense } from "react";
 import Head from "next/head";
 
 export default function Home(props) {
   return (
-    <MainLayout>
+    <MainPageLayout>
       <Head>
         <title>Home</title>
         <meta property="og:title" content="Turista Home Page" key="homeTitle" />
@@ -18,7 +18,7 @@ export default function Home(props) {
         {/* <CategoryNavigation /> */}
         <PostsList posts={props.posts} />
       </Suspense>
-    </MainLayout>
+    </MainPageLayout>
   );
 }
 

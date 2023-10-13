@@ -1,9 +1,18 @@
-import { Suspense, useState } from "react";
+import React, { FC, Suspense, useState } from "react";
 import Head from "next/head";
 import UserPostList from "./UI/UserPostList";
 import UserReviewList from "./UI/UserReviewList";
 
-const UserProfile = ({
+interface UserProps {
+  name: string;
+  image: string;
+  postCount: number;
+  reviewCount: number;
+  posts: any[];
+  reviews: any[];
+}
+
+const User: FC<UserProps> = ({
   name,
   image,
   postCount,
@@ -11,11 +20,11 @@ const UserProfile = ({
   posts,
   reviews,
 }) => {
-  const [showPost, setShowPost] = useState(true);
-  const [showReview, setShowReview] = useState(false);
+  const [showPost, setShowPost] = useState<Boolean>(true);
+  const [showReview, setShowReview] = useState<Boolean>(false);
 
   // Toggler function of post and review
-  const toggleHandler = (show) => {
+  const toggleHandler = (show: string): void => {
     setShowPost(show === "post");
     setShowReview(show === "review");
   };
@@ -97,4 +106,4 @@ const UserProfile = ({
   );
 };
 
-export default UserProfile;
+export default User;

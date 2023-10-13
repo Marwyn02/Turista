@@ -4,12 +4,12 @@ import { Suspense } from "react";
 
 import Post from "@/models/Post";
 import Review from "@/models/Review";
-import User from "@/models/User";
+import UserModel from "@/models/User";
 
 import CountData from "../api/user/countData";
 import FindUser from "../api/user/findUser";
 
-import UserProfile from "@/components/profile/UserProfile";
+import User from "../../components/profile/User";
 
 export async function getStaticPaths() {
   try {
@@ -57,7 +57,7 @@ export async function getStaticProps(context) {
 
     const reviews = await Promise.all(
       userReviews.map(async (review) => {
-        const user = await User.findById(review.user);
+        const user = await UserModel.findById(review.user);
         const { name } = user;
         return {
           id: review._id.toString(),
@@ -95,7 +95,7 @@ export async function getStaticProps(context) {
 export default function userId(props) {
   return (
     <Suspense fallback={<p>Loading content...</p>}>
-      <UserProfile
+      <User
         name={props.userData.name}
         image={props.userData.image}
         postCount={props.userData.postCount}
