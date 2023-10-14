@@ -1,11 +1,11 @@
+import { Suspense } from "react";
+import Head from "next/head";
 import mongoose from "mongoose";
 import { connectMongoDB } from "@/lib/connectMongoDB";
 
 // import CategoryNavigation from "@/components/navigation/CategoryNavigation";
 import MainPageLayout from "../components/layout/MainPageLayout";
 import PostsList from "@/components/turistaPosts/PostsList";
-import { Suspense } from "react";
-import Head from "next/head";
 
 export default function Home(props) {
   return (

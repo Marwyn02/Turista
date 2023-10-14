@@ -1,11 +1,12 @@
+import { Suspense } from "react";
 import mongoose from "mongoose";
 import Head from "next/head";
 import { connectMongoDB } from "@/lib/connectMongoDB";
-import FindOne from "@/pages/api/post/findOne";
+
+import Find from "@/pages/api/post/find";
 
 import EditPost from "@/components/form/EditPost";
 import FormLayout from "@/components/layout/FormLayout";
-import { Suspense } from "react";
 
 export default function index(props) {
   try {
@@ -50,7 +51,7 @@ export async function getStaticPaths() {
 export async function getStaticProps(context) {
   try {
     const postId = context.params.id;
-    const { selectedResult, selectedUser } = await FindOne(postId);
+    const { selectedResult, selectedUser } = await Find(postId);
 
     if (!selectedResult && !selectedUser) {
       return { notFound: true }; // Return a 404 page

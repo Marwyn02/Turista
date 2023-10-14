@@ -1,8 +1,9 @@
 import { Suspense } from "react";
 import { connectMongoDB } from "../../lib/connectMongoDB";
 import mongoose from "mongoose";
-import FindOne from "../api/post/findOne";
-import GetOne from "../api/review/getOne";
+import User from "@/models/User";
+
+import Find from "../api/post/find";
 
 import PostsDetail from "@/components/turistaPosts/PostsDetail";
 
@@ -41,7 +42,7 @@ export async function getStaticPaths() {
 export async function getStaticProps(context) {
   try {
     const postId = context.params.postId;
-    const { selectedResult, selectedUser } = await FindOne(postId);
+    const { selectedResult, selectedUser } = await Find(postId);
 
     if (!selectedResult && !selectedUser) {
       return {
@@ -52,7 +53,8 @@ export async function getStaticProps(context) {
     // Return a user name of every review in a specific post
     const reviewUser = await Promise.all(
       selectedResult.reviews.map(async (review) => {
-        const { name, image } = await GetOne(review.user);
+        const user = await User.findById(review.user);
+        const { name, image } = user;
         return {
           id: review._id.toString(),
           postId: review.post.toString(),

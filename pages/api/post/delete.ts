@@ -1,9 +1,10 @@
+import { Request, Response } from "express";
 import Post from "@/models/Post";
 import Review from "@/models/Review";
 import cloudinary from "@/utils/cloudinary/cloudinary";
 
-export default async function Delete(req, res) {
-  const id = req.body.postId;
+export default async function Delete(req: Request, res: Response): Promise<Response> {
+  const id: string = req.body.postId;
   try {
     const post = await Post.findById(id);
     const { image } = post;
@@ -23,7 +24,7 @@ export default async function Delete(req, res) {
       message: `Post ID:${id} has been deleted successfully!`,
       redirect: "/",
     });
-  } catch (error) {
+  } catch (error: any) {
     return res.status(500).json({
       success: false,
       message: `Deleting Post ID:${id} failed, `,

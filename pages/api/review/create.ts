@@ -29,7 +29,7 @@ export default async function create(
       message: "Review created",
       redirect: `/${postId}`,
     });
-  } catch (error) {
+  } catch (error: any) {
     return res
       .status(500)
       .json({ success: false, message: "Review creation failed: ", error });

@@ -83,8 +83,10 @@ export default function MainNavigation() {
           >
             <Link href="/">Turista</Link>
           </h1>
+        ) : !userHasCreatedPost ? (
+          <div className="hidden"></div>
         ) : (
-          <div className="hidden md:block"></div>
+          <div></div>
         )}
 
         {/* Show empty div if pathname is equal to /account/login page */}

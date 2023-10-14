@@ -1,9 +1,13 @@
+import { Request, Response } from "express";
 import Post from "@/models/Post";
 import Review from "@/models/Review";
 
-export default async function Delete(req, res) {
-  const reviewId = req.body.id;
-  const postId = req.body.postId;
+export default async function Delete(
+  req: Request,
+  res: Response
+): Promise<Response> {
+  const reviewId: string = req.body.id;
+  const postId: string = req.body.postId;
   try {
     // Find the post then update the reviews array to by pulling out the review object
     await Post.findByIdAndUpdate(
@@ -19,7 +23,7 @@ export default async function Delete(req, res) {
       message: `Review ID:${reviewId} is deleted!`,
       redirect: `/${postId}`,
     });
-  } catch (error) {
+  } catch (error: any) {
     return res.status(500).json({
       success: false,
       message: `Deleting Review ID:${reviewId} failed, ` + error,

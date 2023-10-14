@@ -88,7 +88,7 @@ export default function EditPostImage({ id, image, title, updateImageData }) {
     try {
       setEditLoading(true);
       const deletePromises = selectedImages.map(async (image) => {
-        const response = await fetch("/api/post/remove", {
+        const response = await fetch("/api/image/remove", {
           method: "DELETE",
           headers: {
             "Content-type": "application/json",
