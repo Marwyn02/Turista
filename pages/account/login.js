@@ -1,7 +1,7 @@
 import { getProviders, getSession, useSession } from "next-auth/react";
 import { useRouter } from "next/router";
 
-import SignupButtons from "@/components/ui/SignupButtons";
+import Buttons from "@/components/auth/UI/Buttons";
 
 const login = ({ provider, session }) => {
   const router = useRouter();
@@ -26,7 +26,7 @@ const login = ({ provider, session }) => {
       <div className="border border-gray-300 rounded-md col-span-2 my-8 lg:my-10 mx-3.5 lg:mx-5 h-fit">
         <div className="py-6 px-8">
           {/* Working button provider  */}
-          <SignupButtons providers={provider} />
+          <Buttons providers={provider} />
 
           {/* On going auth project  */}
           <div className="flex justify-center -mt-2">

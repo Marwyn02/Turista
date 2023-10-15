@@ -40,7 +40,7 @@ const User: FC<UserProps> = ({
         <div className="-mt-5 md:px-10 justify-items-center md:flex md:justify-items-start">
           <img
             src={image}
-            alt="lel"
+            alt={name}
             className="h-14 md:h-20 rounded-full mx-auto md:mx-0"
           />
           <p className="text-lg md:text-xl text-center ml-4 mt-0.5 md:mt-2 text-indigo-600 font-semibold tracking-wide">

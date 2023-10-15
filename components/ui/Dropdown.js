@@ -26,11 +26,12 @@ const Dropdown = (props) => {
         body: JSON.stringify({ postId }),
       });
 
-      const res = await response.json();
       if (response.ok) {
+        const res = await response.json();
         console.log(res.message);
         router.push(res.redirect);
       } else {
+        const res = await response.json();
         throw new Error(res.message);
       }
     } catch (error) {

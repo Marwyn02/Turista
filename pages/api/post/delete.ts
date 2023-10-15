@@ -3,16 +3,27 @@ import Post from "@/models/Post";
 import Review from "@/models/Review";
 import cloudinary from "@/utils/cloudinary/cloudinary";
 
-export default async function Delete(req: Request, res: Response): Promise<Response> {
+interface Image {
+  image: string;
+  public_id: string;
+}
+
+export default async function Delete(
+  req: Request,
+  res: Response
+): Promise<Response> {
   const id: string = req.body.postId;
   try {
     const post = await Post.findById(id);
-    const { image } = post;
+    const { image }: { image: Image[] } = post;
 
     for (const img of image) {
       // This should delete the image from cloudinary
       await cloudinary.uploader.destroy(img.public_id);
     }
+
+    console.log("Image deleted successfully");
+
     // Delete the post
     await Post.findByIdAndDelete(id);
 

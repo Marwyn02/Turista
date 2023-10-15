@@ -6,7 +6,7 @@ import Head from "next/head";
 
 import PostReview from "./PostReview";
 import PostImages from "./PostUI/PostImages";
-import ReviewList from "./ReviewList";
+import ReviewList from "../review/ReviewList";
 import Dropdown from "../ui/Dropdown";
 
 export default function PostsDetail(props) {
@@ -97,7 +97,7 @@ export default function PostsDetail(props) {
 
       <aside className="bg-white py-3 px-5 md:px-0 rounded-b-xl md:rounded-none overflow-y-auto">
         <Suspense fallback={<p className="text-center">Loading reviews...</p>}>
-          <ReviewList reviewData={props.reviews} />
+          <ReviewList reviews={props.reviews} />
         </Suspense>
       </aside>
     </section>

@@ -29,7 +29,6 @@ export default async function Edit(
     return res.status(200).json({
       success: true,
       message: `Review ID:${id} has been updated!`,
-      redirect: `/${postId}`,
     });
   } catch (error: any) {
     return res.status(500).json({

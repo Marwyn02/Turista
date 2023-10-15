@@ -1,7 +1,19 @@
 import Link from "next/link";
 import Image from "next/image";
+import { FC } from "react";
 
-const UserReviewList = ({ reviews }) => {
+interface UserReviewsListProps {
+  reviews: {
+    id: string;
+    description: string;
+    image: string;
+    username: string;
+    user: string;
+    post: string;
+  }[];
+}
+
+const UserReviewList: FC<UserReviewsListProps> = ({ reviews }) => {
   return (
     <>
       <div className="grid md:grid-cols-2 gap-y-1 lg:gap-y-4 pb-5 md:pb-10 pt-3 lg:pt-6 mt-5">
@@ -15,7 +27,7 @@ const UserReviewList = ({ reviews }) => {
                     src={review.image}
                     width={100}
                     height={100}
-                    alt="lel"
+                    alt={review.image}
                     quality={10}
                   />
                 </Link>

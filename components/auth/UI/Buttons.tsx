@@ -1,6 +1,19 @@
 import { signIn } from "next-auth/react";
+import React, { FC } from "react";
 
-const SignupButtons = ({ providers }) => {
+interface ProvidersObject {
+  [key: string]: Provider;
+}
+
+interface Provider {
+  id: string;
+  name: string;
+  type: string;
+  signinUrl: string;
+  callbackUrl: string;
+}
+
+const SignupButtons: FC<ProvidersObject> = ({ providers }) => {
   const provider = Object.values(providers);
 
   return (

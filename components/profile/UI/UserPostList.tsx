@@ -1,7 +1,17 @@
 import Link from "next/link";
 import Image from "next/image";
+import { FC } from "react";
 
-const UserPostList = ({ posts }) => {
+interface UserPostsListProps {
+  posts: {
+    id: string;
+    title: string;
+    location: string;
+    image: string;
+  }[];
+}
+
+const UserPostList: FC<UserPostsListProps> = ({ posts }) => {
   return (
     <>
       <div className="pb-4 mt-4 my-5 grid grid-cols-1 sm:grid-cols-3 gap-4">
@@ -10,11 +20,11 @@ const UserPostList = ({ posts }) => {
             <Link href={`/${post.id}`}>
               <Image
                 className="rounded-lg absolute inset-0 w-full h-full 
-                object-cover hover:brightness-90 duration-100"
+                            object-cover hover:brightness-90 duration-100"
                 src={post.image}
                 width={200}
                 height={200}
-                alt="lel"
+                alt={post.title}
               />
             </Link>
           </div>

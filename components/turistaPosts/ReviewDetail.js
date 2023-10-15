@@ -1,5 +1,6 @@
 import Link from "next/link";
 
+// This file is being use for navigating through specific review, but its not being rendered or use.
 const ReviewDetail = ({ description, postId, username }) => {
   return (
     <div className="grid h-screen">

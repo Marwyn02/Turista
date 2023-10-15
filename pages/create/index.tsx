@@ -1,8 +1,9 @@
+import React, { FC } from "react";
 import FormLayout from "@/components/layout/FormLayout";
 import AddPost from "@/components/form/AddPost";
 import Head from "next/head";
 
-export default function index() {
+const index: FC = () => {
   return (
     <FormLayout>
       <Head>
@@ -11,4 +12,6 @@ export default function index() {
       <AddPost />
     </FormLayout>
   );
-}
+};
+
+export default index;

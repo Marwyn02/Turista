@@ -1,20 +1,37 @@
+import React, { useState, useEffect, useRef, FC, FormEvent } from "react";
 import { useSession } from "next-auth/react";
-import Link from "next/link";
 import { useRouter } from "next/router";
-import { useState, useEffect, useRef } from "react";
+import Link from "next/link";
 
-const ReviewCard = ({ id, postId, description, image, name, userId }) => {
+interface ReviewCardProps {
+  id: string;
+  name: string;
+  image: string;
+  description: string;
+  postId: string;
+  userId: string;
+}
+
+const ReviewCard: FC<ReviewCardProps> = ({
+  id,
+  name,
+  image,
+  description,
+  postId,
+  userId,
+}) => {
   const { data: session } = useSession();
   const router = useRouter();
-  const dropdownRef = useRef();
-  const buttonRef = useRef();
-  const [activeSession, setActiveSession] = useState(false);
-  const [dropdown, setDropdown] = useState(false);
-  const [editReview, setEditReview] = useState(false);
+  const dropdownRef = useRef<HTMLDivElement>(null);
+  const buttonRef = useRef<HTMLImageElement>(null);
+  const [activeSession, setActiveSession] = useState<boolean>(false);
+  const [dropdown, setDropdown] = useState<boolean>(false);
+  const [editReview, setEditReview] = useState<boolean>(false);
 
-  const [newDescription, setNewDescription] = useState(description);
+  const [newDescription, setNewDescription] = useState<string>(description);
 
-  const deleteReviewHandler = async () => {
+  // Deletes review
+  const deleteReviewHandler = async (): Promise<void> => {
     try {
       const response = await fetch(`/api/review/delete`, {
         method: "DELETE",
@@ -29,14 +46,18 @@ const ReviewCard = ({ id, postId, description, image, name, userId }) => {
         console.log(res.message);
         router.push(res.redirect);
       } else {
+        const res = await response.json();
         throw new Error(res.message);
       }
-    } catch (error) {
+    } catch (error: any) {
       throw new Error("Error in Delete Review Handler: ", error);
     }
   };
 
-  const reviewHandlerSubmit = async (e) => {
+  // Submit edited review
+  const reviewHandlerSubmit = async (
+    e: FormEvent<HTMLFormElement>
+  ): Promise<void> => {
     e.preventDefault();
 
     const updatedReview = {
@@ -57,29 +78,31 @@ const ReviewCard = ({ id, postId, description, image, name, userId }) => {
       if (response.ok) {
         const res = await response.json();
         console.log(res.message);
+        location.reload();
         setEditReview(false);
-        router.push(res.redirect);
       } else {
+        const res = await response.json();
         throw new Error(res.message);
       }
-    } catch (error) {
+    } catch (error: any) {
       throw new Error("Error in Edit Review Handler: ", error);
     }
   };
 
-  const showHideDropdown = () => {
+  // Dropdown functions
+  const showHideDropdown = (): void => {
     setEditReview(!editReview);
     setDropdown(false);
   };
 
   // Hide the dropdown when the user clicks outside the dropdown
   useEffect(() => {
-    function handleClickOutside(event) {
+    function handleClickOutside(event: MouseEvent): void {
       if (
         dropdownRef.current &&
-        !dropdownRef.current.contains(event.target) &&
+        !dropdownRef.current.contains(event.target as Node) &&
         buttonRef.current &&
-        !buttonRef.current.contains(event.target)
+        !buttonRef.current.contains(event.target as Node)
       ) {
         setDropdown(false);
       }
@@ -92,7 +115,7 @@ const ReviewCard = ({ id, postId, description, image, name, userId }) => {
 
   // Check if the user active is same with review creator
   useEffect(() => {
-    if (session && session.user._id === userId) {
+    if (session && (session.user as { _id: string })._id === userId) {
       setActiveSession(true);
     }
   }, [session, userId]);
@@ -124,7 +147,8 @@ const ReviewCard = ({ id, postId, description, image, name, userId }) => {
               <ul className="text-sm text-slate-700">
                 <li
                   onClick={() => setEditReview(!editReview)}
-                  className="hover:bg-gray-200 hover:text-black py-1.5 pl-2 flex duration-300"
+                  className="cursor-pointer hover:bg-gray-200 hover:text-black 
+                            py-1.5 pl-2 flex duration-300"
                 >
                   <img
                     src="/pen.svg"
@@ -137,7 +161,8 @@ const ReviewCard = ({ id, postId, description, image, name, userId }) => {
                 </li>
                 <li
                   onClick={deleteReviewHandler}
-                  className="hover:bg-gray-200 hover:text-black py-1.5 pl-2 flex duration-300"
+                  className="cursor-pointer hover:bg-gray-200 hover:text-black 
+                            py-1.5 pl-2 flex duration-300"
                 >
                   <img
                     src="/trash.svg"
@@ -156,23 +181,28 @@ const ReviewCard = ({ id, postId, description, image, name, userId }) => {
             onSubmit={reviewHandlerSubmit}
             className="w-full rounded-lg p-1.5"
           >
-            <div className="">
+            <div>
               <textarea
-                type="text"
                 id="description"
                 name="description"
                 placeholder="Edit your review here"
-                cols="20"
-                rows="2"
+                cols={20}
+                rows={2}
                 onChange={(e) => setNewDescription(e.target.value)}
                 value={newDescription}
-                className="w-full py-2.5 px-3 rounded-t-lg text-sm text-gray-900 bg-white focus:ring-0 dark:placeholder-gray-400"
+                className="w-full py-2.5 px-3 rounded-t-lg text-sm 
+                        text-gray-900 bg-white focus:ring-0 
+                        dark:placeholder-gray-400"
               ></textarea>
             </div>
-            <div className="flex items-center justify-between px-3 py-2 bg-gray-700 rounded-b-lg -mt-2">
+            <div
+              className="flex items-center justify-between px-3 py-2 
+                            bg-gray-700 rounded-b-lg -mt-2"
+            >
               <button
                 type="submit"
-                className="bg-gray-700 text-white px-4 text-sm hover:text-gray-200 duration-300"
+                className="bg-gray-700 text-white px-4 text-sm 
+                            hover:text-gray-200 duration-300"
               >
                 Save
               </button>

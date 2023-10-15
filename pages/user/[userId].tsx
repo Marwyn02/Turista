@@ -1,15 +1,54 @@
 import { connectMongoDB } from "@/lib/connectMongoDB";
 import mongoose from "mongoose";
-import { Suspense } from "react";
+import React, { FC, Suspense } from "react";
 
 import Post from "@/models/Post";
 import Review from "@/models/Review";
 import UserModel from "@/models/User";
 
-import CountData from "../api/user/countData";
-import FindUser from "../api/user/findUser";
+import CountData from "../api/user/count";
+import FindUser from "../api/user/find";
 
 import User from "../../components/profile/User";
+import { GetStaticPropsContext } from "next";
+
+interface UserData {
+  name: string;
+  image: string;
+  postCount: number;
+  reviewCount: number;
+  posts: {
+    id: string;
+    title: string;
+    location: string;
+    image: string;
+  }[];
+  reviews: {
+    id: string;
+    username: string;
+    description: string;
+    post: string;
+    user: string;
+    image: string;
+  }[];
+}
+
+const userId: FC<{ userData: UserData }> = (props) => {
+  return (
+    <Suspense fallback={<p>Loading content...</p>}>
+      <User
+        name={props.userData.name}
+        image={props.userData.image}
+        postCount={props.userData.postCount}
+        reviewCount={props.userData.reviewCount}
+        posts={props.userData.posts}
+        reviews={props.userData.reviews}
+      />
+    </Suspense>
+  );
+};
+
+export default userId;
 
 export async function getStaticPaths() {
   try {
@@ -22,17 +61,29 @@ export async function getStaticPaths() {
         params: { userId: user._id.toString() },
       })),
     };
-  } catch (error) {
+  } catch (error: any) {
     throw new Error("Error in users getStaticPaths: ", error);
   }
 }
 
-export async function getStaticProps(context) {
+export async function getStaticProps(
+  context: GetStaticPropsContext
+): Promise<
+  { props: { userData: UserData }; revalidate: number } | { notFound: boolean }
+> {
   try {
-    const userId = context.params.userId;
-    const { name, image } = await FindUser(userId);
+    if (!context.params) {
+      throw new Error("No params in context");
+    }
 
-    const PostReviewCount = await CountData(userId);
+    const userId: string = context.params.userId as string;
+
+    const { name, image }: { name: string; image: string } = await FindUser(
+      userId
+    );
+
+    const PostReviewCount: { PostCount: number; ReviewCount: number } =
+      await CountData(userId);
 
     const userPosts = await Post.find({ user: userId }).sort({ _id: -1 });
 
@@ -58,7 +109,7 @@ export async function getStaticProps(context) {
     const reviews = await Promise.all(
       userReviews.map(async (review) => {
         const user = await UserModel.findById(review.user);
-        const { name } = user;
+        const { name }: { name: string } = user;
         return {
           id: review._id.toString(),
           username: name,
@@ -82,27 +133,19 @@ export async function getStaticProps(context) {
       },
       revalidate: 1,
     };
-  } catch (error) {
+  } catch (error: any) {
     return {
       props: {
-        userData: [],
+        userData: {
+          name: "",
+          image: "",
+          postCount: 0,
+          reviewCount: 0,
+          posts: [],
+          reviews: [],
+        },
       },
       revalidate: 1,
     };
   }
-}
-
-export default function userId(props) {
-  return (
-    <Suspense fallback={<p>Loading content...</p>}>
-      <User
-        name={props.userData.name}
-        image={props.userData.image}
-        postCount={props.userData.postCount}
-        reviewCount={props.userData.reviewCount}
-        posts={props.userData.posts}
-        reviews={props.userData.reviews}
-      />
-    </Suspense>
-  );
 }
