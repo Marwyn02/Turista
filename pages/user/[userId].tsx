@@ -13,27 +13,39 @@ import User from "../../components/profile/User";
 import { GetStaticPropsContext } from "next";
 
 interface UserData {
-  name: string;
-  image: string;
-  postCount: number;
-  reviewCount: number;
-  posts: {
-    id: string;
-    title: string;
-    location: string;
+  userData: {
+    name: string;
     image: string;
-  }[];
-  reviews: {
-    id: string;
-    username: string;
-    description: string;
-    post: string;
-    user: string;
-    image: string;
-  }[];
+    postCount: number;
+    reviewCount: number;
+    posts: {
+      id: string;
+      title: string;
+      location: string;
+      image: string;
+    }[];
+    reviews: {
+      id: string;
+      username: string;
+      description: string;
+      post: string;
+      user: string;
+      image: string;
+    }[];
+  };
 }
 
-const userId: FC<{ userData: UserData }> = (props) => {
+interface User {
+  name: string;
+  image: string;
+}
+
+interface Count {
+  PostCount: number;
+  ReviewCount: number;
+}
+
+const userId: FC<UserData> = (props) => {
   return (
     <Suspense fallback={<p>Loading content...</p>}>
       <User
@@ -68,9 +80,7 @@ export async function getStaticPaths() {
 
 export async function getStaticProps(
   context: GetStaticPropsContext
-): Promise<
-  { props: { userData: UserData }; revalidate: number } | { notFound: boolean }
-> {
+): Promise<{ props: UserData; revalidate: number } | { notFound: boolean }> {
   try {
     if (!context.params) {
       throw new Error("No params in context");
@@ -78,12 +88,9 @@ export async function getStaticProps(
 
     const userId: string = context.params.userId as string;
 
-    const { name, image }: { name: string; image: string } = await FindUser(
-      userId
-    );
+    const { name, image }: User = await FindUser(userId);
 
-    const PostReviewCount: { PostCount: number; ReviewCount: number } =
-      await CountData(userId);
+    const PostReviewCount: Count = await CountData(userId);
 
     const userPosts = await Post.find({ user: userId }).sort({ _id: -1 });
 
@@ -95,6 +102,7 @@ export async function getStaticProps(
       };
     }
 
+    // Fetch all user's posts
     const posts = await Promise.all(
       userPosts.map(async (post) => {
         return {
@@ -106,6 +114,7 @@ export async function getStaticProps(
       })
     );
 
+    // Fetch all user's reviews
     const reviews = await Promise.all(
       userReviews.map(async (review) => {
         const user = await UserModel.findById(review.user);
@@ -120,6 +129,7 @@ export async function getStaticProps(
         };
       })
     );
+
     return {
       props: {
         userData: {

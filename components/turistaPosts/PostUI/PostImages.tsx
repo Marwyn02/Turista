@@ -1,6 +1,14 @@
 import Image from "next/image";
+import { FC } from "react";
 
-export default function PostImages({ images }) {
+interface PostImagesProps {
+  images: {
+    image: string;
+    public_id: string;
+  }[];
+}
+
+const PostImages: FC<PostImagesProps> = ({ images }) => {
   return (
     <div className="md:grid md:grid-rows-4 md:grid-cols-3 md:gap-4">
       {images[0] ? (
@@ -44,4 +52,6 @@ export default function PostImages({ images }) {
       )}
     </div>
   );
-}
+};
+
+export default PostImages;

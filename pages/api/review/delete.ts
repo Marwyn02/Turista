@@ -21,7 +21,6 @@ export default async function Delete(
     return res.status(200).json({
       success: true,
       message: `Review ID:${reviewId} is deleted!`,
-      redirect: `/${postId}`,
     });
   } catch (error: any) {
     return res.status(500).json({

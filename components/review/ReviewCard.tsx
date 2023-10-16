@@ -12,6 +12,13 @@ interface ReviewCardProps {
   userId: string;
 }
 
+//
+//
+// - This component is responsible for displaying the reviews to review cards
+// Edit and delete the specific review in a post
+//
+//
+
 const ReviewCard: FC<ReviewCardProps> = ({
   id,
   name,
@@ -30,7 +37,7 @@ const ReviewCard: FC<ReviewCardProps> = ({
 
   const [newDescription, setNewDescription] = useState<string>(description);
 
-  // Deletes review
+  // This function will delete review from the post
   const deleteReviewHandler = async (): Promise<void> => {
     try {
       const response = await fetch(`/api/review/delete`, {
@@ -39,22 +46,20 @@ const ReviewCard: FC<ReviewCardProps> = ({
           "Content-type": "application/json",
         },
         body: JSON.stringify({ id, postId }),
-      });
+      }).then((r) => r.json());
 
-      if (response.ok) {
-        const res = await response.json();
-        console.log(res.message);
-        router.push(res.redirect);
-      } else {
-        const res = await response.json();
-        throw new Error(res.message);
+      if (!response.success) {
+        throw new Error(response.message);
       }
+
+      location.reload();
+      console.log(response.message);
     } catch (error: any) {
       throw new Error("Error in Delete Review Handler: ", error);
     }
   };
 
-  // Submit edited review
+  // Submitting the edited review
   const reviewHandlerSubmit = async (
     e: FormEvent<HTMLFormElement>
   ): Promise<void> => {
@@ -73,29 +78,27 @@ const ReviewCard: FC<ReviewCardProps> = ({
           "Content-type": "application/json",
         },
         body: JSON.stringify(updatedReview),
-      });
+      }).then((r) => r.json());
 
-      if (response.ok) {
-        const res = await response.json();
-        console.log(res.message);
-        location.reload();
-        setEditReview(false);
-      } else {
-        const res = await response.json();
-        throw new Error(res.message);
+      if (!response.success) {
+        throw new Error(response.message);
       }
+
+      setEditReview(false);
+      console.log(response.message);
+      location.reload();
     } catch (error: any) {
       throw new Error("Error in Edit Review Handler: ", error);
     }
   };
 
-  // Dropdown functions
+  // This function is to show and hide the dropdown menu
   const showHideDropdown = (): void => {
     setEditReview(!editReview);
     setDropdown(false);
   };
 
-  // Hide the dropdown when the user clicks outside the dropdown
+  // This feature hides the dropdown when the user clicks outside the dropdown
   useEffect(() => {
     function handleClickOutside(event: MouseEvent): void {
       if (
@@ -113,7 +116,8 @@ const ReviewCard: FC<ReviewCardProps> = ({
     };
   }, []);
 
-  // Check if the user active is same with review creator
+  // This function checks if the user active is same with review creator
+  // To show the edit and delete buttons, only for the creator
   useEffect(() => {
     if (session && (session.user as { _id: string })._id === userId) {
       setActiveSession(true);

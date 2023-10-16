@@ -4,7 +4,7 @@ import dynamic from "next/dynamic";
 import Link from "next/link";
 import Head from "next/head";
 
-import PostReview from "./PostReview";
+import PostsReview from "./PostsReview";
 import PostImages from "./PostUI/PostImages";
 import ReviewList from "../review/ReviewList";
 import Dropdown from "../ui/Dropdown";
@@ -90,7 +90,7 @@ export default function PostsDetail(props) {
               checkLat={props.coordinate.lat}
               checkLng={props.coordinate.lng}
             />
-            {session && <PostReview postId={props.id} />}
+            {session && <PostsReview postId={props.id} />}
           </div>
         </div>
       </div>

@@ -1,4 +1,5 @@
-import { Suspense } from "react";
+import React, { FC, Suspense } from "react";
+import { GetStaticPropsContext } from "next";
 import { connectMongoDB } from "../../lib/connectMongoDB";
 import mongoose from "mongoose";
 import User from "@/models/User";
@@ -7,7 +8,54 @@ import Find from "../api/post/find";
 
 import PostsDetail from "@/components/turistaPosts/PostsDetail";
 
-export default function index(props) {
+interface ImageArray {
+  image: string;
+  public_id: string;
+}
+
+interface AmenityArray {
+  description: string;
+  checked: boolean;
+  id: string;
+}
+
+interface ReviewArray {
+  id: string;
+  postId: string;
+  description: string;
+  image: string;
+  userId: string;
+}
+
+interface Review {
+  _id: string;
+  post: string;
+  description: string;
+  image: string;
+  name: string;
+  user: string;
+}
+
+interface PostData {
+  postData: {
+    id: string;
+    title: string;
+    coordinate: {
+      lng: number;
+      lat: number;
+    };
+    location: string;
+    image: ImageArray[];
+    description: string;
+    amenities: AmenityArray[];
+    user: string;
+    userId: string;
+    userImage: string;
+    reviews: ReviewArray[];
+  };
+}
+
+const index: FC<PostData> = (props) => {
   return (
     <Suspense fallback={<p>Loading content...</p>}>
       <PostsDetail
@@ -25,7 +73,9 @@ export default function index(props) {
       />
     </Suspense>
   );
-}
+};
+
+export default index;
 
 export async function getStaticPaths() {
   await connectMongoDB();
@@ -39,9 +89,18 @@ export async function getStaticPaths() {
   };
 }
 
-export async function getStaticProps(context) {
+export async function getStaticProps(
+  context: GetStaticPropsContext
+): Promise<{ props: PostData; revalidate: number } | { notFound: boolean }> {
   try {
-    const postId = context.params.postId;
+    if (!context.params) {
+      throw new Error("No params in context");
+    }
+
+    // Take a param as context to postId
+    const postId: string = context.params.postId as string;
+
+    // Get the selected post and user's data
     const { selectedResult, selectedUser } = await Find(postId);
 
     if (!selectedResult && !selectedUser) {
@@ -52,7 +111,7 @@ export async function getStaticProps(context) {
 
     // Return a user name of every review in a specific post
     const reviewUser = await Promise.all(
-      selectedResult.reviews.map(async (review) => {
+      selectedResult.reviews.map(async (review: Review) => {
         const user = await User.findById(review.user);
         const { name, image } = user;
         return {
@@ -76,16 +135,18 @@ export async function getStaticProps(context) {
             lat: selectedResult.coordinate.lat,
           },
           location: selectedResult.location,
-          image: selectedResult.image.map((i) => ({
-            image: i.image,
-            public_id: i.public_id,
+          image: (selectedResult.image || []).map((img: ImageArray) => ({
+            image: img.image,
+            public_id: img.public_id,
           })),
           description: selectedResult.description,
-          amenities: selectedResult.amenities.map((amenity) => ({
-            name: amenity.name,
-            checked: amenity.checked,
-            id: amenity.id,
-          })),
+          amenities: (selectedResult.amenities || []).map(
+            (amenity: AmenityArray) => ({
+              description: amenity.description,
+              checked: amenity.checked,
+              id: amenity.id,
+            })
+          ),
           user: selectedUser.name,
           userId: selectedUser._id.toString(),
           userImage: selectedUser.image,
@@ -94,10 +155,25 @@ export async function getStaticProps(context) {
       },
       revalidate: 1,
     };
-  } catch (error) {
+  } catch (error: any) {
     return {
       props: {
-        postData: [],
+        postData: {
+          id: "",
+          title: "",
+          coordinate: {
+            lng: 0,
+            lat: 0,
+          },
+          location: "",
+          image: [],
+          description: "",
+          amenities: [],
+          user: "",
+          userId: "",
+          userImage: "",
+          reviews: [],
+        },
       },
       revalidate: 1,
     };

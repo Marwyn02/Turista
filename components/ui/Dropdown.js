@@ -24,16 +24,14 @@ const Dropdown = (props) => {
           "Content-type": "application/json",
         },
         body: JSON.stringify({ postId }),
-      });
+      }).then((r) => r.json());
 
-      if (response.ok) {
-        const res = await response.json();
-        console.log(res.message);
-        router.push(res.redirect);
-      } else {
-        const res = await response.json();
-        throw new Error(res.message);
+      if (!response.success) {
+        throw new Error(response.message);
       }
+
+      console.log(response.message);
+      router.push(response.redirect);
     } catch (error) {
       throw new Error("Error in Delete Post Handler, ", error);
     }

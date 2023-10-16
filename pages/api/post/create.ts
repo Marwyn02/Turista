@@ -8,6 +8,7 @@ export default async function create(
   try {
     const result = new Post(req.body);
     await result.save();
+
     return res
       .status(200)
       .json({ success: true, message: "Post created", redirect: "/" });

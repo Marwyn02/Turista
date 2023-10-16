@@ -46,6 +46,7 @@ export default async function Edit(
     });
 
     await result.save();
+
     return res.status(200).json({
       success: true,
       message: `Post ID:${id} has been updated successfully!`,

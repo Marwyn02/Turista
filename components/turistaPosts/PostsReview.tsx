@@ -1,24 +1,33 @@
+import React, { useRef, useState } from "react";
 import { useSession } from "next-auth/react";
-import { useRef, useState } from "react";
-import { useRouter } from "next/router";
 
-export default function PostReview(props) {
+interface PostsReviewProps {
+  postId: string;
+}
+
+//
+//
+// * This component serves for creating a review to a certain post
+//
+//
+
+const PostsReview = (props: PostsReviewProps) => {
   const { data: session } = useSession();
-  const router = useRouter();
 
-  const [inputError, setInputError] = useState(false);
+  const [inputError, setInputError] = useState<boolean>(false);
+  const [loading, setLoading] = useState<boolean>(false);
 
-  const [loading, setLoading] = useState(false);
+  const reviewDescriptionRef = useRef<HTMLTextAreaElement>(null);
 
-  const reviewDescriptionRef = useRef();
-
-  const submitReviewHandler = async (e) => {
+  const submitReviewHandler = async (
+    e: React.FormEvent<HTMLFormElement>
+  ): Promise<void> => {
     e.preventDefault();
     setLoading(true);
 
-    const enteredDescription = reviewDescriptionRef.current.value;
+    const enteredDescription = reviewDescriptionRef.current?.value;
 
-    if (reviewDescriptionRef.current.value.trim() === "") {
+    if (reviewDescriptionRef.current?.value.trim() === "") {
       let showError = setInterval(() => {
         setInputError(true);
       });
@@ -26,13 +35,14 @@ export default function PostReview(props) {
       setTimeout(() => {
         clearInterval(showError);
         setInputError(false);
+        setLoading(false);
       }, 5000);
     } else {
       const reviewData = {
         post: props.postId,
         description: enteredDescription,
-        image: session.user.image,
-        user: session.user._id,
+        image: session?.user?.image,
+        user: (session?.user as { _id: string })._id,
       };
 
       try {
@@ -42,22 +52,20 @@ export default function PostReview(props) {
             "Content-type": "application/json",
           },
           body: JSON.stringify(reviewData),
-        });
+        }).then((r) => r.json());
 
-        if (response.ok) {
-          const res = await response.json();
-          console.log(res.message);
-          router.push(res.redirect);
-        } else {
-          const res = await response.json();
-          throw new Error(res.message);
+        if (!response.success) {
+          throw new Error(response.message);
         }
-      } catch (error) {
+
+        location.reload();
+        console.log(response.message);
+      } catch (error: any) {
         throw new Error("Error in create review: " + error);
       }
 
       setLoading(false);
-      reviewDescriptionRef.current.value = "";
+      reviewDescriptionRef.current!.value = "";
     }
   };
   return (
@@ -68,9 +76,8 @@ export default function PostReview(props) {
       >
         <h2 className="font-semibold text-gray-700">Write your review</h2>
         <textarea
-          type="text"
-          rows="4"
-          cols="30"
+          rows={4}
+          cols={30}
           className={
             !inputError
               ? `resize-none border border-gray-300 p-2 text-sm w-full mt-1 rounded-xl`
@@ -98,4 +105,6 @@ export default function PostReview(props) {
       </form>
     </>
   );
-}
+};
+
+export default PostsReview;

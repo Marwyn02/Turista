@@ -47,16 +47,16 @@ export default function EditPost(props) {
           "Content-type": "application/json",
         },
         body: JSON.stringify(updatedPost),
-      });
+      }).then((r) => r.json());
 
-      const res = await response.json();
-      if (response.ok) {
-        console.log(res.message);
-        router.push(res.redirect);
+      if (!response.success) {
         setLoading(false);
-      } else {
-        throw new Error(res.message);
+        throw new Error(response.message);
       }
+
+      console.log(response.message);
+      router.push(response.redirect);
+      setLoading(false);
     } catch (error) {
       throw new Error("Error in Edit Post Submit Handler: " + error);
     }

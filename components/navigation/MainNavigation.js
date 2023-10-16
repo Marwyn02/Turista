@@ -2,7 +2,7 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useSession } from "next-auth/react";
 
-import LoginNavProfile from "../auth/LoginNavProfile";
+import AuthNavigation from "../auth/AuthNavigation";
 import { useState, useEffect } from "react";
 
 export default function MainNavigation() {
@@ -94,7 +94,7 @@ export default function MainNavigation() {
           <div></div>
         ) : (
           <div className="grid place-content-end">
-            <LoginNavProfile />
+            <AuthNavigation />
           </div>
         )}
       </div>

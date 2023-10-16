@@ -1,22 +1,29 @@
+import React, { useState, useEffect, useRef } from "react";
 import { signOut, useSession } from "next-auth/react";
-import Link from "next/link";
-import { useState, useEffect, useRef } from "react";
 import { usePathname } from "next/navigation";
+import Link from "next/link";
+
+//
+//
+// - This component is responsible for displaying the user's profile image
+// - User can sign out through the signOut button below
+//
+//
 
 export default function Component() {
   const { data: session } = useSession();
   const pathname = usePathname();
-  const buttonRef = useRef();
-  const dropdownRef = useRef();
-  const [dropdown, setDropdown] = useState(false);
+  const userImageRef = useRef<HTMLImageElement>(null);
+  const dropdownRef = useRef<HTMLDivElement>(null);
+  const [dropdown, setDropdown] = useState<boolean>(false);
 
   useEffect(() => {
-    function handleClickOutside(event) {
+    function handleClickOutside(event: MouseEvent) {
       if (
         dropdownRef.current &&
-        !dropdownRef.current.contains(event.target) &&
-        buttonRef.current &&
-        !buttonRef.current.contains(event.target)
+        !dropdownRef.current.contains(event.target as Node) &&
+        userImageRef.current &&
+        !userImageRef.current.contains(event.target as Node)
       ) {
         setDropdown(false);
       }
@@ -32,9 +39,9 @@ export default function Component() {
       <div className="flex relative">
         {/* User's image */}
         <img
-          src={session.user.image}
+          src={session.user?.image ?? ""}
           alt="Profile Image"
-          ref={buttonRef}
+          ref={userImageRef}
           onClick={() => setDropdown(!dropdown)}
           className="rounded-full h-8 w-8 md:h-10 md:w-10 border-2 hover:opacity-90 duration-150 cursor-pointer"
         />
@@ -48,13 +55,13 @@ export default function Component() {
           >
             {session && (
               <div>
-                <Link href={`/user/${session.user._id}`}>
+                <Link href={`/user/${(session.user as { _id: string })._id}`}>
                   <button
                     className="flex py-2 px-4 font-semibold text-xs text-start
                                lg:text-sm text-indigo-400 hover:text-indigo-600 
                              hover:bg-gray-100 w-full duration-100 rounded-lg"
                   >
-                    {session.user.name}
+                    {session.user?.name}
                   </button>
                 </Link>
                 <button
@@ -79,6 +86,7 @@ export default function Component() {
       </div>
     );
   }
+
   // Show sign in button only if the user is not in the /account/login page
   if (pathname !== "/account/login") {
     return (

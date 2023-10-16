@@ -92,7 +92,7 @@ export default function AddPost() {
     setLoading(false);
   };
 
-  // Submit the input
+  // Submit the input to database
   const submitInputHandler = async (e) => {
     e.preventDefault();
     setLoading(true);
@@ -130,17 +130,16 @@ export default function AddPost() {
           "Content-type": "application/json",
         },
         body: JSON.stringify(postData),
-      });
+      }).then((r) => r.json());
 
-      if (response.ok) {
-        const res = await response.json();
-        console.log(res.message);
-        router.push(res.redirect);
+      if (!response.success) {
         setLoading(false);
-      } else {
-        setLoading(false);
-        throw new Error(res.message);
+        throw new Error(response.message);
       }
+
+      console.log(response.message);
+      router.push(response.redirect);
+      setLoading(false);
     } catch (error) {
       throw new Error("Error in Create Post Submit Handler: ", error);
     }

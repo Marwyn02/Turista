@@ -12,6 +12,12 @@ interface ReviewListProps {
   }[];
 }
 
+//
+//
+// - This component is responsible for listing or mapping the reviews to a review card
+//
+//
+
 const ReviewList: FC<ReviewListProps> = (props) => {
   return (
     <>
