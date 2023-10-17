@@ -8,19 +8,21 @@ import Find from "../api/post/find";
 
 import PostsDetail from "@/components/turistaPosts/PostsDetail";
 
-interface ImageArray {
+interface ImageProps {
   image: string;
   public_id: string;
 }
 
-interface AmenityArray {
+interface AmenityProps {
+  name: string;
   description: string;
   checked: boolean;
   id: string;
 }
 
-interface ReviewArray {
+interface ReviewProps {
   id: string;
+  name: string;
   postId: string;
   description: string;
   image: string;
@@ -45,13 +47,13 @@ interface PostData {
       lat: number;
     };
     location: string;
-    image: ImageArray[];
+    image: ImageProps[];
     description: string;
-    amenities: AmenityArray[];
+    amenities: AmenityProps[];
     user: string;
     userId: string;
     userImage: string;
-    reviews: ReviewArray[];
+    reviews: ReviewProps[];
   };
 }
 
@@ -135,13 +137,14 @@ export async function getStaticProps(
             lat: selectedResult.coordinate.lat,
           },
           location: selectedResult.location,
-          image: (selectedResult.image || []).map((img: ImageArray) => ({
+          image: (selectedResult.image || []).map((img: ImageProps) => ({
             image: img.image,
             public_id: img.public_id,
           })),
           description: selectedResult.description,
           amenities: (selectedResult.amenities || []).map(
-            (amenity: AmenityArray) => ({
+            (amenity: AmenityProps) => ({
+              name: amenity.name,
               description: amenity.description,
               checked: amenity.checked,
               id: amenity.id,

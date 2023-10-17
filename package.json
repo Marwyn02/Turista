@@ -27,6 +27,7 @@
   },
   "devDependencies": {
     "@types/express": "^4.17.19",
+    "@types/mapbox-gl": "^2.7.16",
     "@types/react": "18.2.28",
     "typescript": "^5.2.2"
   }

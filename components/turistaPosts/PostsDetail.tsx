@@ -1,4 +1,4 @@
-import { Suspense } from "react";
+import { FC, Suspense } from "react";
 import { useSession } from "next-auth/react";
 import dynamic from "next/dynamic";
 import Link from "next/link";
@@ -9,11 +9,49 @@ import PostImages from "./PostUI/PostImages";
 import ReviewList from "../review/ReviewList";
 import Dropdown from "../ui/Dropdown";
 
-export default function PostsDetail(props) {
+interface Images {
+  image: string;
+  public_id: string;
+}
+
+interface Amenities {
+  name: string;
+  description: string;
+  checked: boolean;
+  id: string;
+}
+
+interface Reviews {
+  id: string;
+  name: string;
+  image: string;
+  description: string;
+  postId: string;
+  userId: string;
+}
+
+interface PostsDetailProps {
+  id: string;
+  title: string;
+  coordinate: {
+    lng: number;
+    lat: number;
+  };
+  location: string;
+  image: Images[];
+  description: string;
+  amenities: Amenities[];
+  user: string;
+  userId: string;
+  userImage: string;
+  reviews: Reviews[];
+}
+
+const PostsDetail: FC<PostsDetailProps> = (props) => {
   const { data: session } = useSession();
 
   const Map = dynamic(() => import("@/pages/map/Map"), {
-    loading: () => "Loading...",
+    loading: () => <p>Loading...</p>,
     ssr: false,
   });
 
@@ -102,4 +140,6 @@ export default function PostsDetail(props) {
       </aside>
     </section>
   );
-}
+};
+
+export default PostsDetail;
