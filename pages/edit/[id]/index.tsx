@@ -1,13 +1,13 @@
+import { GetStaticPropsContext } from "next";
+import { connectMongoDB } from "@/lib/connectMongoDB";
 import React, { Suspense, FC } from "react";
 import mongoose from "mongoose";
 import Head from "next/head";
-import { connectMongoDB } from "@/lib/connectMongoDB";
 
 import Find from "@/pages/api/post/find";
 
 import EditPost from "@/components/form/EditPost";
 import FormLayout from "@/components/layout/FormLayout";
-import { GetStaticPropsContext } from "next";
 
 interface PostData {
   postData: {

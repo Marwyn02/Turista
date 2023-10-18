@@ -50,7 +50,7 @@ interface PostsDetailProps {
 const PostsDetail: FC<PostsDetailProps> = (props) => {
   const { data: session } = useSession();
 
-  const Map = dynamic(() => import("@/pages/map/Map"), {
+  const PostsMap = dynamic(() => import("./PostUI/PostsMap"), {
     loading: () => <p>Loading...</p>,
     ssr: false,
   });
@@ -124,7 +124,7 @@ const PostsDetail: FC<PostsDetailProps> = (props) => {
 
           {/* Map and Create Review */}
           <div className="basis-auto lg:basis-5/12">
-            <Map
+            <PostsMap
               checkLat={props.coordinate.lat}
               checkLng={props.coordinate.lng}
             />

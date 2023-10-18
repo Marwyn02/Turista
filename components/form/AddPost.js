@@ -14,9 +14,9 @@ export default function AddPost() {
 
   const amenitiesRef = useRef([]);
   const coordinatesRef = useRef({ lng: 0, lat: 0 });
-  const descriptionInputRef = useRef();
-  const locationInputRef = useRef();
-  const titleInputRef = useRef();
+  const descriptionInputRef = useRef(null);
+  const locationInputRef = useRef(null);
+  const titleInputRef = useRef(null);
 
   const [imageOnePreview, setImageOnePreview] = useState(null);
   const [imageTwoPreview, setImageTwoPreview] = useState(null);
@@ -34,8 +34,8 @@ export default function AddPost() {
     coordinatesRef.current = { lng, lat };
   };
 
-  const Map = dynamic(() => import("@/pages/map/Map"), {
-    loading: () => "Loading...",
+  const AddMap = dynamic(() => import("./UI/AddMap"), {
+    loading: () => <p>Loading Map...</p>,
     ssr: false,
   });
 
@@ -158,7 +158,7 @@ export default function AddPost() {
         <div className="mt-10 grid grid-cols-1 gap-x-6 gap-y-8 px-5 sm:grid-cols-6">
           {/* Map Input  */}
           <div className="sm:col-span-6">
-            <Map onMarkerClick={coordinates} />
+            <AddMap onMarkerClick={coordinates} />
           </div>
 
           {/* Location Input  */}

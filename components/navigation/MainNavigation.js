@@ -9,14 +9,14 @@ export default function MainNavigation() {
   const { data: session } = useSession();
   const pathname = usePathname();
 
-  const [userHasCreatedPost, setUserHasCreatedPost] = useState(false);
+  const [userHasNoCreatedPost, setUserHasNoCreatedPost] = useState(false);
 
   useEffect(() => {
     if (session) {
       const userId = session.user._id;
       const fetchUserPostStatus = async () => {
         try {
-          const response = await fetch("/api/user/restrictPosting", {
+          const response = await fetch("/api/user/restrict", {
             method: "POST",
             headers: {
               "Content-type": "application/json",
@@ -26,7 +26,7 @@ export default function MainNavigation() {
 
           if (response.ok) {
             const data = await response.json();
-            setUserHasCreatedPost(data.userHasCreatedPost);
+            setUserHasNoCreatedPost(data.userHasNoCreatedPost);
           }
         } catch (error) {
           console.error("Error:", error);
@@ -40,7 +40,7 @@ export default function MainNavigation() {
     <nav className="fixed z-10 w-full bg-white border-b">
       <div
         className={`grid grid-cols-2 ${
-          userHasCreatedPost ? "lg:grid-cols-3" : ""
+          userHasNoCreatedPost ? "lg:grid-cols-3" : ""
         } items-center w-full px-3 lg:px-32 py-3 lg:py-4`}
       >
         {/* Show back button if its not in the home page */}
@@ -55,7 +55,7 @@ export default function MainNavigation() {
         )}
 
         {/* Show create post if its only in the home page */}
-        {pathname.length <= 1 && userHasCreatedPost ? (
+        {pathname.length <= 1 && userHasNoCreatedPost ? (
           <div className="lg:grid lg:place-content-center">
             {session ? (
               <Link href={"/create"}>
@@ -83,10 +83,10 @@ export default function MainNavigation() {
           >
             <Link href="/">Turista</Link>
           </h1>
-        ) : !userHasCreatedPost ? (
+        ) : !userHasNoCreatedPost ? (
           <div className="hidden"></div>
         ) : (
-          <div></div>
+          <div className="hidden md:block"></div>
         )}
 
         {/* Show empty div if pathname is equal to /account/login page */}

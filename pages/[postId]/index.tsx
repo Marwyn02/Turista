@@ -1,7 +1,8 @@
-import React, { FC, Suspense } from "react";
 import { GetStaticPropsContext } from "next";
 import { connectMongoDB } from "../../lib/connectMongoDB";
+import React, { FC, Suspense } from "react";
 import mongoose from "mongoose";
+
 import User from "@/models/User";
 
 import Find from "../api/post/find";

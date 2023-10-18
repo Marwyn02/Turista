@@ -1,7 +1,8 @@
+import Head from "next/head";
 import React, { FC } from "react";
+
 import FormLayout from "@/components/layout/FormLayout";
 import AddPost from "@/components/form/AddPost";
-import Head from "next/head";
 
 const index: FC = () => {
   return (

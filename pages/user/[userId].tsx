@@ -1,3 +1,4 @@
+import { GetStaticPropsContext } from "next";
 import { connectMongoDB } from "@/lib/connectMongoDB";
 import mongoose from "mongoose";
 import React, { FC, Suspense } from "react";
@@ -10,7 +11,6 @@ import CountData from "../api/user/count";
 import FindUser from "../api/user/find";
 
 import User from "../../components/profile/User";
-import { GetStaticPropsContext } from "next";
 
 interface UserData {
   userData: {

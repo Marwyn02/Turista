@@ -8,7 +8,7 @@ if (process.env.NEXT_PUBLIC_MAPBOX_TOKEN) {
 interface MapProps {
   checkLng?: number;
   checkLat?: number;
-  // onMarkerClick: (coordinates: { lng: number; lat: number }) => void;
+  onMarkerClick: (coordinates: { lng: number; lat: number }) => void;
 }
 
 const Map: FC<MapProps> = (props) => {
@@ -89,34 +89,15 @@ const Map: FC<MapProps> = (props) => {
     setLng(parseFloat(newLng));
   }, [coordinatesRef]);
 
-  // useEffect(() => {
-  //   if (!mapInstance || !markers) return;
-
-  //   markers.map((marker) => {
-  //     new mapboxgl.Marker()
-  //       .setLngLat([marker.lng, marker.lat])
-  //       .addTo(mapInstance);
-  //     return true;
-  //   });
-  // }, [mapInstance, markers]);
-
   //
   //
   //
   // This only for the marking the location for the map
 
-  // const handleMapCoordinates = () => {
-  //   setMarked(true);
-  //   props.onMarkerClick(coordinatesRef.current);
-  // };
-
-  if (props.checkLat && props.checkLng) {
-    return (
-      <>
-        <div ref={mapContainerRef} className="map-container" />
-      </>
-    );
-  }
+  const handleMapCoordinates = () => {
+    setMarked(true);
+    props.onMarkerClick(coordinatesRef.current);
+  };
 
   return (
     <>
@@ -135,10 +116,10 @@ const Map: FC<MapProps> = (props) => {
           className="w-full py-1.5 mt-3 text-sm border border-black/50 rounded 
                 hover:bg-indigo-500 hover:border-indigo-500 hover:text-white 
                   duration-300"
-          // onClick={(e) => {
-          //   e.preventDefault();
-          //   handleMapCoordinates();
-          // }}
+          onClick={(e) => {
+            e.preventDefault();
+            handleMapCoordinates();
+          }}
         >
           Mark location
         </button>

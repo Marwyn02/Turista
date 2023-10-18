@@ -1,7 +1,7 @@
+import { connectMongoDB } from "@/lib/connectMongoDB";
 import React, { FC, Suspense } from "react";
 import Head from "next/head";
 import mongoose from "mongoose";
-import { connectMongoDB } from "@/lib/connectMongoDB";
 
 // import CategoryNavigation from "@/components/navigation/CategoryNavigation";
 import MainPageLayout from "../components/layout/MainPageLayout";
