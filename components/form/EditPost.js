@@ -21,9 +21,12 @@ export default function EditPost(props) {
     setNewAmenities(amenity);
   };
 
-  // Update the image state with the new data
+  // Update the image state with the new data from the EditPostImage component
   const updateImageData = (newImageData) => {
-    setNewImage(newImageData);
+    if (newImageData.length !== 0) {
+      setNewImage(newImageData); // 1
+      console.log("Updated image data");
+    }
   };
 
   // Update the current post data
@@ -31,14 +34,34 @@ export default function EditPost(props) {
     e.preventDefault();
     setLoading(true);
 
-    const updatedPost = {
-      id: id,
-      image: newImage,
-      title: newTitle,
-      location: newLocation,
-      description: newDescription,
-      amenities: newAmenities,
-    };
+    let updatedPost;
+
+    // Check if the new image array is not empty
+    if (newImage.length === 0) {
+      updatedPost = {
+        id: id,
+        image: image, // old image data
+        title: newTitle,
+        location: newLocation,
+        description: newDescription,
+        amenities: newAmenities,
+      };
+    } else {
+      updatedPost = {
+        id: id,
+        image: newImage, // updatedimage data
+        title: newTitle,
+        location: newLocation,
+        description: newDescription,
+        amenities: newAmenities,
+      };
+    }
+
+    if (updatedPost) {
+      console.log("POST: ", updatedPost);
+    } else {
+      console.log("No updated post");
+    }
 
     try {
       const response = await fetch(`/api/post/edit`, {
@@ -111,9 +134,7 @@ export default function EditPost(props) {
                     type="text"
                     name="title"
                     id="title"
-                    className="flex-1 border rounded-lg shadow-sm py-2.5 px-3 pl-3 text-gray-600 
-                            placeholder:text-gray-300 sm:text-sm sm:leading-6 focus:ring-1 
-                             focus:ring-indigo-600 focus:border-indigo-600 focus:outline-none"
+                    className="add_edit_title"
                     placeholder="My travel post title"
                     onChange={(e) => setNewTitle(e.target.value)}
                     value={newTitle}
@@ -137,9 +158,7 @@ export default function EditPost(props) {
                     type="text"
                     name="location"
                     id="location"
-                    className="flex-1 border rounded-lg shadow-sm py-2.5 px-3 pl-3 text-gray-600 
-                            placeholder:text-gray-300 sm:text-sm sm:leading-6 focus:ring-1 
-                            focus:ring-indigo-600 focus:border-indigo-600 focus:outline-none"
+                    className="add_edit_location"
                     placeholder="Where it was street, country name"
                     onChange={(e) => setNewLocation(e.target.value)}
                     value={newLocation}
@@ -164,9 +183,7 @@ export default function EditPost(props) {
                     rows="5"
                     name="description"
                     id="description"
-                    className="resize-none flex-1 border rounded-lg shadow-sm py-2.5 px-3 pl-3 text-gray-600 
-                             placeholder:text-gray-300 sm:text-sm sm:leading-6 focus:ring-1 
-                             focus:ring-indigo-600 focus:border-indigo-600 focus:outline-none"
+                    className="add_edit_description"
                     placeholder="Is it fun? Maybe not"
                     onChange={(e) => setNewDescription(e.target.value)}
                     value={newDescription}

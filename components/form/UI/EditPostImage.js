@@ -309,8 +309,8 @@ export default function EditPostImage({ id, image, title, updateImageData }) {
         {imageThreePreview && (
           <button
             type="button"
-            className="px-5 py-1.5 text-sm bg-red-200 duration-100 
-              rounded-lg mt-2 hover:bg-red-300 hover:text-white"
+            className="px-5 py-1.5 text-sm bg-green-200 duration-100 text-gray-600
+              rounded-lg mt-2 hover:bg-green-300 hover:text-white"
             disabled={editLoading}
             onClick={submitImageHandler}
           >

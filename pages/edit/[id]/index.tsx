@@ -20,6 +20,7 @@ interface PostData {
     }[];
     description: string;
     amenities: {
+      name: string;
       description: string;
       checked: boolean;
     }[];
@@ -32,6 +33,7 @@ interface ImageArray {
 }
 
 interface AmenityArray {
+  name: string;
   description: string;
   checked: boolean;
 }
@@ -100,6 +102,7 @@ export async function getStaticProps(
           description: selectedResult.description,
           amenities: (selectedResult.amenities || []).map(
             (item: AmenityArray) => ({
+              name: item.name,
               description: item.description,
               checked: item.checked,
             })

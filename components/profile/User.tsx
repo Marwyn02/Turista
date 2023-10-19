@@ -43,20 +43,18 @@ const User: FC<UserProps> = ({
             alt={name}
             className="h-14 md:h-20 rounded-full mx-auto md:mx-0"
           />
-          <p className="text-lg md:text-xl text-center ml-4 mt-0.5 md:mt-2 text-indigo-600 font-semibold tracking-wide">
-            {name}
-          </p>
+          <p className="user_name">{name}</p>
         </div>
 
         {/* User's profile datas */}
-        <div className="bg-indigo-600 py-3 px-5 my-3 md:my-8 rounded-lg text-white text-xs text-center font-semibold">
-          <div className="grid grid-cols-4 gap-x-2">
+        <div className="bg-indigo-600 py-3 px-5 my-3 md:my-8 rounded-lg text-white text-xs ">
+          <div className="grid grid-cols-4 gap-x-2 text-center font-semibold">
             <p>Posts</p>
             <p>Following</p>
             <p>Followers</p>
             <p>Reviews</p>
           </div>
-          <div className="grid grid-cols-4 gap-x-2 mt-1 ">
+          <div className="grid grid-cols-4 gap-x-2 mt-1 text-center font-semibold">
             <p>{postCount}</p>
             <p>0</p>
             <p>0</p>

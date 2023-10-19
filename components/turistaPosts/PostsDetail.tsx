@@ -70,16 +70,12 @@ const PostsDetail: FC<PostsDetailProps> = (props) => {
           <div className="basis-auto lg:basis-7/12 lg:pr-14 relative">
             {/* Title and Dropdown */}
             <div className="flex justify-between">
-              <h1 className="capitalize text-zinc-700 font-semibold text-2xl lg:text-4xl lg:tracking-wide">
-                {props.title}
-              </h1>
+              <h1 className="post_title">{props.title}</h1>
               <Dropdown user={{ userId: props.userId, postId: props.id }} />
             </div>
 
             {/* Location   */}
-            <p className="capitalize text-sm lg:text-xl mt-2 text-black font-medium">
-              {props.location}
-            </p>
+            <p className="post_location">{props.location}</p>
 
             {/* User */}
             <div className="flex items-center mt-5 border-y py-5">
@@ -117,9 +113,7 @@ const PostsDetail: FC<PostsDetailProps> = (props) => {
             </div>
 
             {/* Description */}
-            <p className="capitalize text-black text-base font-light border-t py-5 mb-8">
-              {props.description}
-            </p>
+            <p className="post_description">{props.description}</p>
           </div>
 
           {/* Map and Create Review */}

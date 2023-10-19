@@ -93,9 +93,9 @@ export default function Component() {
       <>
         <Link
           href="/account/login"
-          className="md:mr-5 self-center py-1.5 px-4 font-semibold text-xs 
-                     lg:text-sm text-indigo-400 hover:text-indigo-600 
-                    hover:bg-gray-100 rounded-lg duration-300"
+          className="self-center py-1.5 px-4 font-semibold text-xs 
+                     lg:text-sm text-indigo-400 rounded-lg 
+                    hover:bg-gray-100 hover:text-indigo-600 duration-300"
         >
           Sign in
         </Link>

@@ -1,4 +1,4 @@
-export default function CategoryNavigation(params) {
+const CategoryNavigation = () => {
   return (
     <nav>
       <div className="flex justify-evenly">
@@ -8,4 +8,6 @@ export default function CategoryNavigation(params) {
       </div>
     </nav>
   );
-}
+};
+
+export default CategoryNavigation;

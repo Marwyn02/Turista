@@ -176,10 +176,7 @@ export default function AddPost() {
                   name="location"
                   id="location"
                   autoComplete="location"
-                  className="flex-1 border rounded-lg shadow-sm py-2.5 px-3 pl-3 
-                           text-gray-600 placeholder:text-gray-300
-                             sm:text-sm sm:leading-6 focus:ring-1 focus:ring-indigo-600
-                           focus:border-indigo-600 focus:outline-none"
+                  className="add_edit_location"
                   placeholder="Where it was street, country name"
                   ref={locationInputRef}
                   required
@@ -402,10 +399,7 @@ export default function AddPost() {
                     name="title"
                     id="title"
                     autoComplete="title"
-                    className="flex-1 border rounded-lg shadow-sm py-2.5 px-3 pl-3 
-                          text-gray-600 placeholder:text-gray-300
-                            sm:text-sm sm:leading-6 focus:ring-1 focus:ring-indigo-600
-                          focus:border-indigo-600 focus:outline-none"
+                    className="add_edit_title"
                     placeholder="My travel post title"
                     ref={titleInputRef}
                     required
@@ -432,9 +426,7 @@ export default function AddPost() {
                     type="text"
                     name="description"
                     id="description"
-                    className="resize-none flex-1 border rounded-lg shadow-sm py-2.5 px-3 pl-3 text-gray-600 
-                          placeholder:text-gray-300 sm:text-sm sm:leading-6 focus:ring-1 
-                          focus:ring-indigo-600 focus:border-indigo-600 focus:outline-none"
+                    className="add_edit_description"
                     placeholder="Is it fun? Maybe not..."
                     ref={descriptionInputRef}
                   ></textarea>

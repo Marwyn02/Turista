@@ -14,8 +14,7 @@ const PostsItem: FC<PostsItemProps> = ({ id, image, location }) => {
     <section>
       <main key={id} className="pt-[100%] relative rounded-lg duration-300">
         <Image
-          className="absolute inset-0 h-full w-full cursor-pointer object-cover rounded-lg 
-          hover:brightness-90 duration-100"
+          className="displayed_image"
           src={image}
           height={100}
           width={200}

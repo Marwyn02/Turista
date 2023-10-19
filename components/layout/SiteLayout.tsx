@@ -1,8 +1,12 @@
-import { Fragment } from "react";
+import React, { FC, Fragment, ReactNode } from "react";
 
 import MainNavigation from "../navigation/MainNavigation";
 
-const SiteLayout = (props) => {
+interface SiteLayoutProps {
+  children: ReactNode;
+}
+
+const SiteLayout: FC<SiteLayoutProps> = (props) => {
   return (
     <Fragment>
       <section className="relative">
