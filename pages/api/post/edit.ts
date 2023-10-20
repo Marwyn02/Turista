@@ -16,6 +16,10 @@ interface EditedPostObject {
   id: string;
   image: ImageArray[];
   title: string;
+  coordinate: {
+    lng: number;
+    lat: number;
+  };
   location: string;
   description: string;
   amenities: AmenityArray[];
@@ -29,6 +33,7 @@ export default async function Edit(
     id,
     image,
     title,
+    coordinate,
     location,
     description,
     amenities,
@@ -39,6 +44,7 @@ export default async function Edit(
       $set: {
         title: title,
         image: image,
+        coordinate: coordinate,
         location: location,
         description: description,
         amenities: amenities,

@@ -122,7 +122,7 @@ export default function EditPostImage({ id, image, title, updateImageData }) {
             alt={title}
             name="image"
             id="image"
-            className={`w-full md:rounded-lg duration-100 pt-2
+            className={`w-full md:rounded-lg duration-100 mt-2 hover:brightness-90
                   ${
                     selectedImages.includes(image[0])
                       ? "border-4 border-red-400"
@@ -181,7 +181,7 @@ export default function EditPostImage({ id, image, title, updateImageData }) {
             alt={title}
             name="image"
             id="image"
-            className={`w-full md:rounded-lg duration-100 pt-2
+            className={`w-full md:rounded-lg duration-100 mt-2 hover:brightness-90
                       ${
                         selectedImages.includes(image[1])
                           ? "border-4 border-red-400"
@@ -240,7 +240,7 @@ export default function EditPostImage({ id, image, title, updateImageData }) {
             alt={title}
             name="image"
             id="image"
-            className={`w-full md:rounded-lg duration-100 pt-2
+            className={`w-full md:rounded-lg duration-100 mt-2 hover:brightness-90
                       ${
                         selectedImages.includes(image[2])
                           ? "border-4 border-red-400"

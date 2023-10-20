@@ -11,7 +11,7 @@ interface MapProps {
   onMarkerClick: (coordinates: { lng: number; lat: number }) => void;
 }
 
-const Map: FC<MapProps> = (props) => {
+const AddMap: FC<MapProps> = (props) => {
   const coordinatesRef = useRef<{ lng: number; lat: number }>({
     lng: 0,
     lat: 0,
@@ -92,7 +92,7 @@ const Map: FC<MapProps> = (props) => {
   //
   //
   //
-  // This only for the marking the location for the map
+  // This only for adding marking the location for the map
 
   const handleMapCoordinates = () => {
     setMarked(true);
@@ -128,4 +128,4 @@ const Map: FC<MapProps> = (props) => {
   );
 };
 
-export default Map;
+export default AddMap;

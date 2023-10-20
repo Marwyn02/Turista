@@ -13,17 +13,14 @@ interface PostData {
   postData: {
     id: string;
     title: string;
+    coordinate: {
+      lng: number;
+      lat: number;
+    };
     location: string;
-    image: {
-      image: string;
-      public_id: string;
-    }[];
+    image: ImageArray[];
     description: string;
-    amenities: {
-      name: string;
-      description: string;
-      checked: boolean;
-    }[];
+    amenities: AmenityArray[];
   };
 }
 
@@ -48,6 +45,7 @@ const index: FC<PostData> = (props) => {
         <EditPost
           id={props.postData.id}
           title={props.postData.title}
+          coordinate={props.postData.coordinate}
           location={props.postData.location}
           image={props.postData.image}
           description={props.postData.description}
@@ -94,6 +92,10 @@ export async function getStaticProps(
         postData: {
           id: selectedResult._id.toString(),
           title: selectedResult.title,
+          coordinate: {
+            lng: selectedResult.coordinate.lng,
+            lat: selectedResult.coordinate.lat,
+          },
           location: selectedResult.location,
           image: (selectedResult.image || []).map((i: ImageArray) => ({
             image: i.image,
@@ -117,6 +119,10 @@ export async function getStaticProps(
         postData: {
           id: "",
           title: "",
+          coordinate: {
+            lng: 0,
+            lat: 0,
+          },
           location: "",
           image: [],
           description: "",

@@ -4,18 +4,28 @@ import { useRouter } from "next/router";
 
 import AmenitiesBox from "../ui/AmenitiesBox";
 import EditPostImage from "./UI/EditPostImage";
+import EditMap from "./UI/EditMap";
 
 export default function EditPost(props) {
   const router = useRouter();
-  const { id, title, location, image, description, amenities } = props;
+  const { id, title, coordinate, location, image, description, amenities } =
+    props;
 
   const [newImage, setNewImage] = useState([]);
   const [newTitle, setNewTitle] = useState(title);
+  const [newCoordinates, setNewCoordinates] = useState({
+    lng: coordinate.lng,
+    lat: coordinate.lat,
+  });
   const [newDescription, setNewDescription] = useState(description);
   const [newLocation, setNewLocation] = useState(location);
   const [newAmenities, setNewAmenities] = useState(amenities);
 
   const [loading, setLoading] = useState(false);
+
+  const editCoordinates = ({ lng, lat }) => {
+    setNewCoordinates({ lng: lng, lat: lat });
+  };
 
   const amenitiesChecked = (amenity) => {
     setNewAmenities(amenity);
@@ -42,6 +52,7 @@ export default function EditPost(props) {
         id: id,
         image: image, // old image data
         title: newTitle,
+        coordinate: newCoordinates,
         location: newLocation,
         description: newDescription,
         amenities: newAmenities,
@@ -51,6 +62,7 @@ export default function EditPost(props) {
         id: id,
         image: newImage, // updatedimage data
         title: newTitle,
+        coordinate: newCoordinates,
         location: newLocation,
         description: newDescription,
         amenities: newAmenities,
@@ -107,8 +119,20 @@ export default function EditPost(props) {
           </div>
 
           <div className="mt-10 grid grid-cols-1 gap-x-6 gap-y-8 px-5 sm:grid-cols-6">
-            {/* Amenities Input  */}
+            {/* Map  */}
             <div className="sm:col-span-6 border-t pt-10">
+              <h2 className="text-sm font-medium leading-6 text-gray-600">
+                Map
+              </h2>
+              <EditMap
+                checkLat={coordinate.lat}
+                checkLng={coordinate.lng}
+                onEditMarkerClick={editCoordinates}
+              />
+            </div>
+
+            {/* Amenities Input  */}
+            <div className="sm:col-span-6">
               <h2 className="text-sm font-medium leading-6 text-gray-600">
                 Amenities
               </h2>
