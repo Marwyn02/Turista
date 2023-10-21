@@ -9,28 +9,28 @@ import PostImages from "./PostUI/PostImages";
 import ReviewList from "../review/ReviewList";
 import Dropdown from "../ui/Dropdown";
 
-interface Images {
+type Images = {
   image: string;
   public_id: string;
-}
+};
 
-interface Amenities {
+type Amenities = {
   name: string;
   description: string;
   checked: boolean;
   id: string;
-}
+};
 
-interface Reviews {
+type Reviews = {
   id: string;
   name: string;
   image: string;
   description: string;
   postId: string;
   userId: string;
-}
+};
 
-interface PostsDetailProps {
+type PostsDetailProps = {
   id: string;
   title: string;
   coordinate: {
@@ -45,7 +45,7 @@ interface PostsDetailProps {
   userId: string;
   userImage: string;
   reviews: Reviews[];
-}
+};
 
 const PostsDetail: FC<PostsDetailProps> = (props) => {
   const { data: session } = useSession();

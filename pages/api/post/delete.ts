@@ -22,8 +22,6 @@ export default async function Delete(
       await cloudinary.uploader.destroy(img.public_id);
     }
 
-    console.log("Image deleted successfully");
-
     // Delete the post
     await Post.findByIdAndDelete(id);
 

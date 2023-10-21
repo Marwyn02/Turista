@@ -85,19 +85,23 @@ export default function EditPostImage({ id, image, title, updateImageData }) {
   // Delete and remove the image to the post and the database
   const deleteSelectedImages = async (e) => {
     e.preventDefault();
+
     try {
       setEditLoading(true);
-      const deletePromises = selectedImages.map(async (image) => {
+
+      console.log(selectedImages);
+
+      const deletePromises = selectedImages.map(async (img) => {
         const response = await fetch("/api/image/remove", {
           method: "DELETE",
           headers: {
             "Content-type": "application/json",
           },
-          body: JSON.stringify({ id, image }),
+          body: JSON.stringify({ id, img }),
         });
 
         if (!response.ok) {
-          console.error(`Failed to delete image: ${image.public_id}`);
+          console.error(`Failed to delete image: ${img.public_id}`);
         }
         const res = await response.json();
         console.log(res.message);
@@ -105,6 +109,7 @@ export default function EditPostImage({ id, image, title, updateImageData }) {
       await Promise.all(deletePromises);
 
       setEditLoading(false);
+      location.reload();
     } catch (error) {
       setEditLoading(false);
       console.error("Failed to delete image", error);

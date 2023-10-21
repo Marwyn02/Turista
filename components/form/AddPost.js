@@ -10,34 +10,32 @@ export default function AddPost() {
   const { data: session } = useSession();
   const router = useRouter();
 
+  // Form data
+  const titleInputRef = useRef(null);
+  const locationInputRef = useRef(null);
+  const descriptionInputRef = useRef(null);
   const [imageData, setImageData] = useState([]);
-
   const amenitiesRef = useRef([]);
   const coordinatesRef = useRef({ lng: 0, lat: 0 });
-  const descriptionInputRef = useRef(null);
-  const locationInputRef = useRef(null);
-  const titleInputRef = useRef(null);
 
+  // Image data
   const [imageOnePreview, setImageOnePreview] = useState(null);
   const [imageTwoPreview, setImageTwoPreview] = useState(null);
   const [imageThreePreview, setImageThreePreview] = useState(null);
+
   const [selectedImages, setSelectedImages] = useState([]);
 
   const imageOneInputRef = useRef();
   const imageTwoInputRef = useRef();
   const imageThreeInputRef = useRef();
 
+  // Loading states
   const [showContinue, setShowContinue] = useState(false);
   const [loading, setLoading] = useState(false);
 
   const coordinates = ({ lat, lng }) => {
     coordinatesRef.current = { lng, lat };
   };
-
-  const AddMap = dynamic(() => import("./UI/AddMap"), {
-    loading: () => <p>Loading Map...</p>,
-    ssr: false,
-  });
 
   const amenitiesChecked = (amenity) => {
     amenitiesRef.current = amenity;
@@ -97,31 +95,29 @@ export default function AddPost() {
     e.preventDefault();
     setLoading(true);
 
-    const enteredTitle = titleInputRef.current.value;
-    const enteredLocation = locationInputRef.current.value;
-    const enteredDescription = descriptionInputRef.current.value;
-    const selectedCheckbox = amenitiesRef.current.map((check) => ({
-      name: check.name,
-      description: check.description,
-      checked: check.checked,
-    }));
-    const img = imageData.map((i) => ({
-      image: i.image,
-      public_id: i.public_id,
-    }));
-
     const postData = {
-      image: img,
-      title: enteredTitle.charAt(0).toUpperCase() + enteredTitle.slice(1),
-      location: enteredLocation,
+      image: imageData.map((i) => ({
+        image: i.image,
+        public_id: i.public_id,
+      })),
+      title:
+        titleInputRef.current.value.charAt(0).toUpperCase() +
+        titleInputRef.current.value.slice(1),
+      location: locationInputRef.current.value,
       coordinate: {
         lng: coordinatesRef.current.lng,
         lat: coordinatesRef.current.lat,
       },
-      amenities: selectedCheckbox,
-      description: enteredDescription,
+      amenities: amenitiesRef.current.map((check) => ({
+        name: check.name,
+        description: check.description,
+        checked: check.checked,
+      })),
+      description: descriptionInputRef.current.value,
       user: session.user._id,
     };
+
+    console.log("Response: ", postData);
 
     try {
       const response = await fetch("/api/post/create", {
@@ -144,6 +140,11 @@ export default function AddPost() {
       throw new Error("Error in Create Post Submit Handler: ", error);
     }
   };
+
+  const AddMap = dynamic(() => import("./UI/AddMap"), {
+    loading: () => <p>Loading Map...</p>,
+    ssr: false,
+  });
   return (
     <form className="bg-white sm:my-4" onSubmit={submitInputHandler}>
       <div className="space-y-10 md:px-2">

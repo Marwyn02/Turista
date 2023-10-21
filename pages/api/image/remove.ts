@@ -16,11 +16,20 @@ export default async function remove(
 
     const post = await Post.findById(id);
 
+    if (!post) {
+      return res.status(404).json({ message: "Post not found" });
+    }
+
     const imageIndex: number = post.image.findIndex(
       (img: { public_id: string }) => img.public_id === image.public_id
     );
+
+    if (imageIndex === -1) {
+      return res.status(404).json({ message: "Image not found in the post" });
+    }
+
     post.image.splice(imageIndex, 1);
-    post.save();
+    await post.save();
 
     await cloudinary.uploader.destroy(image.public_id);
 
@@ -31,6 +40,6 @@ export default async function remove(
   } catch (error: any) {
     return res
       .status(500)
-      .json({ success: false, message: "Post creation failed: " + error });
+      .json({ success: false, message: "Image deletion failed: " + error });
   }
 }
