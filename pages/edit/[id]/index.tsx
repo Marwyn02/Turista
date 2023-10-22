@@ -2,7 +2,6 @@ import { GetStaticPropsContext } from "next";
 import { connectMongoDB } from "@/lib/connectMongoDB";
 import React, { Suspense, FC } from "react";
 import mongoose from "mongoose";
-import Head from "next/head";
 
 import Find from "@/pages/api/post/find";
 
@@ -38,9 +37,6 @@ interface AmenityArray {
 const index: FC<PostData> = (props) => {
   return (
     <Suspense fallback={<p>Loading content...</p>}>
-      <Head>
-        <title>Edit {props.postData.title}</title>
-      </Head>
       <FormLayout>
         <EditPost
           id={props.postData.id}

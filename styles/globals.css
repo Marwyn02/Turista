@@ -38,7 +38,7 @@ body {
     @apply capitalize text-sm lg:text-xl mt-2 text-black font-medium;
   }
   .post_description {
-    @apply capitalize text-black text-base font-light border-t py-5 mb-8;
+    @apply text-black text-base font-light border-t py-5 mb-8;
   }
 
   .user_name {

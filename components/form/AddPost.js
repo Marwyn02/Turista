@@ -202,7 +202,7 @@ export default function AddPost() {
               Image
             </label>
             <p className="text-xs text-gray-500 mb-3">
-              Choose three (3) images/files to save
+              Choose three (3) images to save
             </p>
 
             {!imageOnePreview && (
@@ -250,7 +250,9 @@ export default function AddPost() {
             {/* Secondary images  */}
             <div
               className={`grid ${
-                !imageTwoPreview ? "grid-cols-1" : "grid-cols-1 md:grid-cols-2"
+                !imageTwoPreview
+                  ? "grid-cols-1"
+                  : "grid-cols-1 md:grid-cols-2 md:gap-x-2"
               }`}
             >
               {!imageTwoPreview && imageOnePreview && (
@@ -339,49 +341,57 @@ export default function AddPost() {
               )}
             </div>
 
-            {/* Will clear all preview images and the array state for the cloudinary */}
-            {imageOnePreview && !showContinue && (
-              <button
-                onClick={(e) => {
-                  setSelectedImages([]);
-                  setImageOnePreview(null);
-                  setImageTwoPreview(null);
-                  setImageThreePreview(null);
-                  e.preventDefault();
-                }}
-                className="bg-gray-100 text-xs border rounded-full px-1.5 py-0.5 
-                             duration-300 text-gray-700"
-                disabled={loading}
-              >
-                Clear image(s)
-              </button>
-            )}
+            {/* Images Buttons  */}
+            <div className="flex gap-x-2 md:mt-2">
+              {/* Will clear all preview images and the array state for the cloudinary */}
+              {imageOnePreview && !showContinue && loading && (
+                <button
+                  onClick={(e) => {
+                    setSelectedImages([]);
+                    setImageOnePreview(null);
+                    setImageTwoPreview(null);
+                    setImageThreePreview(null);
+                    e.preventDefault();
+                  }}
+                  className="px-4 py-2 text-xs md:text-sm bg-gray-200 text-gray-500 duration-300 
+                          rounded mt-2 hover:bg-gray-300 hover:text-gray-600"
+                  disabled={loading}
+                >
+                  Clear image(s)
+                </button>
+              )}
 
-            {/* Will save the image to the cloudinary */}
-            {selectedImages && selectedImages.length === 3 && (
-              <button
-                onClick={handleImageSubmit}
-                className="text-sm bg-indigo-200 text-gray-900 px-5 py-1.5 rounded-lg my-2 duration-300"
-                disabled={showContinue || loading}
-              >
-                {loading ? (
-                  "Saving..."
-                ) : showContinue ? (
-                  <div className="flex items-center">
-                    Saved{" "}
-                    <img
-                      src="/check-photo.svg"
-                      alt="saved"
-                      height={20}
-                      width={20}
-                      className="ml-1"
-                    />
-                  </div>
-                ) : (
-                  "Save selected images"
-                )}
-              </button>
-            )}
+              {/* Will save the image to the cloudinary */}
+              {selectedImages && selectedImages.length === 3 && (
+                <button
+                  onClick={handleImageSubmit}
+                  className={`px-8 py-2 text-xs md:text-sm  duration-300 
+                  rounded mt-2  ${
+                    showContinue
+                      ? "bg-gray-300"
+                      : "bg-indigo-500 text-white hover:bg-indigo-600 hover:text-white"
+                  }`}
+                  disabled={showContinue || loading}
+                >
+                  {loading ? (
+                    "Saving..."
+                  ) : showContinue ? (
+                    <div className="flex items-center">
+                      Saved{" "}
+                      <img
+                        src="/check-photo.svg"
+                        alt="saved"
+                        height={20}
+                        width={20}
+                        className="ml-1"
+                      />
+                    </div>
+                  ) : (
+                    "Save selected images"
+                  )}
+                </button>
+              )}
+            </div>
           </div>
 
           {/* Title Input  */}
@@ -442,7 +452,8 @@ export default function AddPost() {
               <Link href="/">
                 <button
                   type="button"
-                  className="bg-gray-200 text-sm py-1 px-1.5 w-max rounded text-gray-900"
+                  className="bg-gray-200 text-sm py-1.5 px-4 w-max rounded text-gray-900
+                  hover:bg-gray-300 duration-300"
                   disabled={loading}
                 >
                   Cancel
@@ -453,7 +464,7 @@ export default function AddPost() {
               <div>
                 <button
                   type="submit"
-                  className="bg-indigo-500 text-sm py-1 px-1.5 w-max rounded text-gray-100"
+                  className="bg-indigo-500 text-sm py-1.5 px-4 w-max rounded text-gray-100"
                   disabled={loading}
                 >
                   {!loading ? "Create a new post" : "Creating your post"}

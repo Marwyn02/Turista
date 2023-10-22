@@ -80,7 +80,8 @@ const PostsReview = (props: PostsReviewProps) => {
           cols={30}
           className={
             !inputError
-              ? `resize-none border border-gray-300 p-2 text-sm w-full mt-1 rounded-xl`
+              ? `resize-none border border-gray-300 p-2 text-sm w-full mt-1 rounded-xl 
+              focus:ring-1 focus:ring-violet-500 focus:border-violet-500 focus:outline-none`
               : `resize-none border border-red-500 p-2 text-sm w-full mt-1 rounded-xl`
           }
           placeholder="Is it fun right?"
@@ -96,8 +97,8 @@ const PostsReview = (props: PostsReviewProps) => {
         )}
         <button
           type="submit"
-          className="border rounded-lg border-gray-400 text-sm px-2 py-1 w-full 
-          my-2 tracking-wide hover:bg-indigo-400 hover:text-white duration-300"
+          className="rounded-lg text-sm px-2 py-2.5 w-full my-2 tracking-wide bg-violet-100 
+           text-white hover:bg-violet-400 duration-300"
           disabled={loading}
         >
           {loading ? "Submitting your review..." : "Submit"}

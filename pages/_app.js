@@ -1,6 +1,7 @@
 import SiteLayout from "@/components/layout/SiteLayout";
 import "@/styles/globals.css";
 import { SessionProvider } from "next-auth/react";
+import Head from "next/head";
 
 export default function App({
   Component,
@@ -8,6 +9,9 @@ export default function App({
 }) {
   return (
     <SessionProvider session={session}>
+      <Head>
+        <title>Turista</title>
+      </Head>
       <SiteLayout>
         <Component {...pageProps} />
       </SiteLayout>

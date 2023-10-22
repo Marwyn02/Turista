@@ -19,7 +19,7 @@ const index: FC<IndexProps> = (props) => {
   return (
     <MainPageLayout>
       <Head>
-        <title>Home</title>
+        <title>Turista</title>
         <meta property="og:title" content="Turista Home Page" key="homeTitle" />
       </Head>
       <Suspense fallback={<p className="text-center">Loading posts...</p>}>

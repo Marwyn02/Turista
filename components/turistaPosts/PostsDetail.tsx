@@ -2,12 +2,12 @@ import { FC, Suspense } from "react";
 import { useSession } from "next-auth/react";
 import dynamic from "next/dynamic";
 import Link from "next/link";
-import Head from "next/head";
 
 import PostsReview from "./PostsReview";
 import PostImages from "./PostUI/PostImages";
 import ReviewList from "../review/ReviewList";
-import Dropdown from "../ui/Dropdown";
+// import Dropdown from "../ui/Dropdown";
+import PostsDetailNavigation from "./PostUI/PostsDetailNavigation";
 
 type Images = {
   image: string;
@@ -57,11 +57,9 @@ const PostsDetail: FC<PostsDetailProps> = (props) => {
 
   return (
     <section key={props.id} className="md:px-32 pt-5 md:pt-20">
-      <Head>
-        <title>{props.title}</title>
-        <meta property="og:title" content="Turista post detail" key="title" />
-      </Head>
-      <div className="bg-white rounded-t-xl lg:rounded-xl">
+      <main>
+        <PostsDetailNavigation userId={props.userId} postId={props.id} />
+
         {/* Image */}
         <PostImages images={props.image} />
 
@@ -71,7 +69,7 @@ const PostsDetail: FC<PostsDetailProps> = (props) => {
             {/* Title and Dropdown */}
             <div className="flex justify-between">
               <h1 className="post_title">{props.title}</h1>
-              <Dropdown user={{ userId: props.userId, postId: props.id }} />
+              {/* <Dropdown user={{ userId: props.userId, postId: props.id }} /> */}
             </div>
 
             {/* Location   */}
@@ -88,9 +86,11 @@ const PostsDetail: FC<PostsDetailProps> = (props) => {
               </Link>
               <p className="text-base font-medium text-black/80 ml-4">
                 Posted by{" "}
-                <span className="text-indigo-600">
-                  {props.user ? props.user : "Anonymous"}
-                </span>
+                <Link href={`/user/${props.userId}`}>
+                  <span className="text-violet-500">
+                    {props.user ? props.user : "Anonymous"}
+                  </span>
+                </Link>
               </p>
             </div>
 
@@ -125,7 +125,7 @@ const PostsDetail: FC<PostsDetailProps> = (props) => {
             {session && <PostsReview postId={props.id} />}
           </div>
         </div>
-      </div>
+      </main>
 
       <aside className="bg-white py-3 px-5 md:px-0 rounded-b-xl md:rounded-none overflow-y-auto">
         <Suspense fallback={<p className="text-center">Loading reviews...</p>}>

@@ -14,6 +14,7 @@ export default function EditPostImage({ id, image, title, updateImageData }) {
   const imageThreeInputRef = useRef();
 
   const [editLoading, setEditLoading] = useState(false);
+  const [editSaved, setEditSaved] = useState(false);
 
   // File reader to preview the inputted file
   const handleImageChange = async (e, setImagePreview, position) => {
@@ -62,6 +63,7 @@ export default function EditPostImage({ id, image, title, updateImageData }) {
       }
 
       updateImageData(updatedImages);
+      setEditSaved(true);
       setEditLoading(false);
     } catch (error) {
       setEditLoading(false);
@@ -172,8 +174,8 @@ export default function EditPostImage({ id, image, title, updateImageData }) {
         {imageOnePreview && (
           <img
             src={imageOnePreview}
-            alt="Preview 2"
-            className="rounded-lg pt-3 "
+            alt="Preview 1"
+            className="md:rounded-lg hover:brightness-90"
           />
         )}
 
@@ -232,7 +234,7 @@ export default function EditPostImage({ id, image, title, updateImageData }) {
           <img
             src={imageTwoPreview}
             alt="Preview 2"
-            className="rounded-lg pt-3 "
+            className="md:rounded-lg mt-0.5 md:mt-3 hover:brightness-90"
           />
         )}
 
@@ -291,38 +293,72 @@ export default function EditPostImage({ id, image, title, updateImageData }) {
           <img
             src={imageThreePreview}
             alt="Preview 3"
-            className="rounded-lg pt-3 "
+            className="md:rounded-lg mt-0.5 md:mt-3 hover:brightness-90"
           />
         )}
       </div>
 
       {/* Button navigations  */}
-      <div className="flex justify-between items-center">
-        {selectedImages.length >= 1 ? (
+      <div className="flex justify-between items-center px-2 lg:px-0">
+        <div className="flex gap-x-1">
+          {selectedImages.length >= 1 && !editSaved ? (
+            <button
+              type="button"
+              className="px-8 py-2 text-xs md:text-sm bg-red-400 text-white duration-300 
+                       rounded mt-2 hover:bg-red-500"
+              onClick={deleteSelectedImages}
+              disabled={editLoading}
+            >
+              {editLoading ? "Removing..." : "Remove"}
+            </button>
+          ) : (
+            <div></div>
+          )}
+
+          {imageOnePreview || imageTwoPreview || imageThreePreview ? (
+            <button
+              type="button"
+              className="px-4 py-2 text-xs md:text-sm bg-gray-200 text-gray-500 duration-300 
+              rounded mt-2 hover:bg-gray-300 hover:text-gray-600"
+              onClick={() => {
+                setImageOnePreview(null);
+                setImageTwoPreview(null);
+                setImageThreePreview(null);
+              }}
+            >
+              Clear added images
+            </button>
+          ) : null}
+        </div>
+
+        {imageThreePreview && !editSaved && (
           <button
             type="button"
-            className="px-5 py-1.5 text-sm bg-red-200 duration-100 
-                       rounded-lg mt-2 hover:bg-red-300 hover:text-white"
-            onClick={deleteSelectedImages}
-            disabled={editLoading}
-          >
-            {editLoading ? "Removing images..." : "Remove Image(s)"}
-          </button>
-        ) : (
-          <div></div>
-        )}
-        {imageThreePreview && (
-          <button
-            type="button"
-            className="px-5 py-1.5 text-sm bg-green-200 duration-100 text-gray-600
-              rounded-lg mt-2 hover:bg-green-300 hover:text-white"
+            className="px-8 py-2 text-xs md:text-sm bg-indigo-500 text-white duration-300 
+              rounded mt-2 hover:bg-indigo-600 hover:text-white"
             disabled={editLoading}
             onClick={submitImageHandler}
           >
-            {editLoading ? "Saving images..." : "Save Image(s)"}
+            {editLoading ? "Saving..." : "Save Changes"}
+          </button>
+        )}
+
+        {editSaved && (
+          <button
+            type="button"
+            className="px-5 py-1.5 text-sm bg-green-200 duration-100 text-gray-600
+            rounded-lg mt-2 hover:bg-green-300 hover:text-white"
+            disabled
+          >
+            Saved
           </button>
         )}
       </div>
+      {imageThreePreview && !editSaved && (
+        <p className="px-5 text-xs text-gray-400 mt-5">
+          Note: Save the images here.
+        </p>
+      )}
     </>
   );
 }

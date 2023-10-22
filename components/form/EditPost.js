@@ -2,7 +2,7 @@ import Link from "next/link";
 import { useState } from "react";
 import { useRouter } from "next/router";
 
-import AmenitiesBox from "../ui/AmenitiesBox";
+import AmenitiesBox from "./UI/EditAmenityBox";
 import EditPostImage from "./UI/EditPostImage";
 import EditMap from "./UI/EditMap";
 
