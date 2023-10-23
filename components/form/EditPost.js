@@ -223,7 +223,7 @@ export default function EditPost(props) {
                   <button
                     type="button"
                     className="bg-white text-gray-900 border 
-                        border-black text-sm px-5 py-1.5 w-full rounded hover:bg-gray-900 
+                        border-gray-700 text-sm px-5 py-1.5 w-full rounded hover:bg-gray-800 
                         hover:text-white duration-200"
                     disabled={loading}
                   >
@@ -234,8 +234,8 @@ export default function EditPost(props) {
               <div>
                 <button
                   type="submit"
-                  className="bg-indigo-500 text-white text-sm px-5 py-1.5 w-full border 
-                      border-transparent rounded hover:bg-indigo-200 hover:text-gray-600 duration-200"
+                  className="bg-violet-400 text-white text-sm px-5 py-1.5 w-full border 
+                      border-transparent rounded hover:bg-violet-500 duration-200"
                   disabled={loading}
                 >
                   {!loading ? "Save" : "Saving..."}

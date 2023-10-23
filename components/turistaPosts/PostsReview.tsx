@@ -97,11 +97,11 @@ const PostsReview = (props: PostsReviewProps) => {
         )}
         <button
           type="submit"
-          className="rounded-lg text-sm px-2 py-2.5 w-full my-2 tracking-wide bg-violet-100 
+          className="rounded text-sm px-2 py-2.5 w-full my-2 tracking-wide bg-violet-100 
            text-white hover:bg-violet-400 duration-300"
           disabled={loading}
         >
-          {loading ? "Submitting your review..." : "Submit"}
+          {loading ? "Submitting..." : "Submit"}
         </button>
       </form>
     </>

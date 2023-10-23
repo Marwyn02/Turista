@@ -49,7 +49,7 @@ export default function MainNavigation() {
             <Link href="/">Back</Link>
           </h1>
         ) : (
-          <h1 className="text-indigo-600 font-extrabold text-2xl italic hover:text-indigo-500 hidden md:block">
+          <h1 className="text-violet-500 font-extrabold text-2xl italic hover:text-violet-600 hidden md:block">
             <Link href="/">Turista</Link>
           </h1>
         )}
@@ -69,7 +69,7 @@ export default function MainNavigation() {
                 </button>
               </Link>
             ) : pathname.length <= 1 ? (
-              <h1 className="ml-2 text-indigo-600 font-extrabold text-2xl italic hover:text-indigo-500">
+              <h1 className="ml-2 text-violet-500 font-extrabold text-2xl italic hover:text-violet-600">
                 <Link href="/">Turista</Link>
               </h1>
             ) : (
@@ -78,7 +78,7 @@ export default function MainNavigation() {
           </div>
         ) : pathname.length <= 1 ? (
           <h1
-            className="text-indigo-600 font-extrabold text-2xl italic hover:text-indigo-500
+            className="text-violet-500 font-extrabold text-2xl italic hover:text-violet-600
           md:hidden"
           >
             <Link href="/">Turista</Link>

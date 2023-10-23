@@ -61,7 +61,7 @@ const EditAmenitiesBox: FC<AmenitiesBoxProps> = (props) => {
           key={index}
           className={`relative flex p-2 border-2 rounded-lg h-full w-full cursor-pointer ${
             isChecked[index]
-              ? "border-indigo-400"
+              ? "border-violet-400"
               : "border-gray-200 hover:border-indigo-200 duration-300"
           }`}
         >
@@ -78,8 +78,8 @@ const EditAmenitiesBox: FC<AmenitiesBoxProps> = (props) => {
           <div className="text-sm leading-6">
             <label
               htmlFor={`checkbox-${index}`}
-              className={`font-medium text-indigo-400 duration-300 cursor-pointer ${
-                isChecked[index] ? "text-indigo-800" : ""
+              className={`font-medium text-violet-400 duration-300 cursor-pointer ${
+                isChecked[index] ? "text-violet-800" : ""
               }`}
             >
               {option.name}{" "}

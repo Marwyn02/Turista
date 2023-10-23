@@ -47,7 +47,7 @@ const User: FC<UserProps> = ({
         </div>
 
         {/* User's profile datas */}
-        <div className="bg-indigo-600 py-3 px-5 my-3 md:my-8 rounded-lg text-white text-xs ">
+        <div className="bg-violet-400 py-3 px-5 my-3 md:my-8 rounded-lg text-white text-xs ">
           <div className="grid grid-cols-4 gap-x-2 text-center font-semibold">
             <p>Posts</p>
             <p>Following</p>
@@ -68,8 +68,8 @@ const User: FC<UserProps> = ({
             onClick={() => toggleHandler("post")}
             className={
               showPost
-                ? "border-b-4 border-indigo-600 text-white duration-200 py-3"
-                : "border-b-4 border-transparent hover:border-indigo-600 hover:text-white duration-200 py-3"
+                ? "border-b-4 border-violet-600 text-white duration-200 py-3"
+                : "border-b-4 border-transparent hover:border-violet-400 hover:text-white duration-200 py-3"
             }
           >
             Posts
@@ -78,8 +78,8 @@ const User: FC<UserProps> = ({
             onClick={() => toggleHandler("review")}
             className={
               showReview
-                ? "border-b-4 border-indigo-600 text-white duration-200 py-3"
-                : "border-b-4 border-transparent hover:border-indigo-600 hover:text-white duration-200 py-3"
+                ? "border-b-4 border-violet-600 text-white duration-200 py-3"
+                : "border-b-4 border-transparent hover:border-violet-400 hover:text-white duration-200 py-3"
             }
           >
             Reviews
