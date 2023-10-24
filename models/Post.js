@@ -4,6 +4,9 @@ import Review from "./Review";
 
 const PostSchema = new mongoose.Schema(
   {
+    likes: {
+      type: Number,
+    },
     title: {
       type: String,
       required: [true, "Please enter a title"],

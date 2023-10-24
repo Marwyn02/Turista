@@ -32,6 +32,7 @@ type Reviews = {
 
 type PostsDetailProps = {
   id: string;
+  likes: number;
   title: string;
   coordinate: {
     lng: number;

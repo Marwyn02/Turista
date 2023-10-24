@@ -42,6 +42,7 @@ interface Review {
 interface PostData {
   postData: {
     id: string;
+    likes: number;
     title: string;
     coordinate: {
       lng: number;
@@ -63,6 +64,7 @@ const index: FC<PostData> = (props) => {
     <Suspense fallback={<p>Loading content...</p>}>
       <PostsDetail
         id={props.postData.id}
+        likes={props.postData.likes}
         title={props.postData.title}
         coordinate={props.postData.coordinate}
         location={props.postData.location}
@@ -132,6 +134,7 @@ export async function getStaticProps(
       props: {
         postData: {
           id: selectedResult._id.toString(),
+          likes: selectedResult.likes,
           title: selectedResult.title,
           coordinate: {
             lng: selectedResult.coordinate.lng,
@@ -164,6 +167,7 @@ export async function getStaticProps(
       props: {
         postData: {
           id: "",
+          likes: 0,
           title: "",
           coordinate: {
             lng: 0,

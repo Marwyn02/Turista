@@ -96,6 +96,7 @@ export default function AddPost() {
     setLoading(true);
 
     const postData = {
+      likes: 0,
       image: imageData.map((i) => ({
         image: i.image,
         public_id: i.public_id,
@@ -344,7 +345,7 @@ export default function AddPost() {
             {/* Images Buttons  */}
             <div className="flex gap-x-2 md:mt-2">
               {/* Will clear all preview images and the array state for the cloudinary */}
-              {imageOnePreview && !showContinue && loading && (
+              {imageOnePreview && !showContinue && !loading && (
                 <button
                   onClick={(e) => {
                     setSelectedImages([]);
