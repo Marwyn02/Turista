@@ -8,48 +8,54 @@ type PostsDetailNavigationProps = {
   postId: string;
 };
 
-// type LikePostsProps = {
-//   postId: string;
-//   userId: string;
-//   likes: number;
-// };
-
 const PostsDetailNavigation: FC<PostsDetailNavigationProps> = ({
   userId,
   postId,
 }) => {
   const { data: session } = useSession();
 
+  console.log(userId);
+
   const [activeSession, setActiveSession] = useState<boolean>(false);
-  const [likeCount, setLikeCount] = useState<number>(0);
+  const [liked, setLiked] = useState<boolean>();
 
   const handleLikesHandler = async (e: { preventDefault: () => void }) => {
     e.preventDefault();
 
+    const response = await fetch("/api/post/like", {
+      method: "POST",
+      headers: {
+        "Content-type": "application/json",
+      },
+      body: JSON.stringify({ postId, userId }),
+    }).then((r) => r.json());
     // user havent liked the post yet
-    if (true) {
-    }
+
+    setLiked(response.success); // false if already liked
+    console.log(response.message);
+
+    console.log("Liked!");
   };
 
-  useEffect(() => {
-    const liking = async () => {
-      try {
-        const response = await fetch("/api/post/like", {
-          method: "POST",
-          headers: {
-            "Content-type": "application/json",
-          },
-          body: JSON.stringify({ postId, userId, likeCount }),
-        }).then((r) => r.json());
+  // useEffect(() => {
+  //   const liking = async () => {
+  //     try {
+  //       const response = await fetch("/api/post/like", {
+  //         method: "POST",
+  //         headers: {
+  //           "Content-type": "application/json",
+  //         },
+  //         body: JSON.stringify({ postId, userId }),
+  //       }).then((r) => r.json());
 
-        console.log(response.message);
-      } catch (error: any) {
-        console.error(error);
-      }
-    };
+  //       console.log(response.message);
+  //     } catch (error: any) {
+  //       console.error(error);
+  //     }
+  //   };
 
-    liking();
-  }, [likeCount]);
+  //   liking();
+  // }, [userId]);
 
   // This function checks if the user active is same with post creator
   // To show the edit and delete buttons, only for the creator
@@ -90,6 +96,7 @@ const PostsDetailNavigation: FC<PostsDetailNavigationProps> = ({
         className="px-4 py-3.5 bg-violet-100 duration-300 rounded hover:bg-violet-400"
       >
         <img src="/heart-white.svg" height={18} width={18} alt="Edit" />
+        {liked && <p>Liked</p>}
       </button>
 
       {activeSession && (

@@ -134,7 +134,9 @@ export async function getStaticProps(
       props: {
         postData: {
           id: selectedResult._id.toString(),
-          likes: selectedResult.likes,
+          likes: (selectedResult.likes || []).map((like: any) =>
+            like.toString()
+          ),
           title: selectedResult.title,
           coordinate: {
             lng: selectedResult.coordinate.lng,

@@ -5,18 +5,41 @@ export default async function like(
   req: Request,
   res: Response
 ): Promise<Response> {
-  const { postId, userId, likeCount } = req.body;
+  try {
+    const { postId, userId } = req.body;
 
-  //   console.log(req.body);
+    const post = await Post.findById(postId);
 
-  // Post like + 1
+    if (!post) {
+      return res.status(404).json({
+        success: false,
+        message: "Post not found",
+      });
+    }
 
-  const post = await Post.findById(postId);
+    if (post.likes.includes(userId)) {
+      return res.status(400).json({
+        success: false,
+        message: "User has already liked this post",
+      });
+    }
 
-  // post.likes
+    post.likes.push(userId);
+    await post.save();
 
-  return res.status(200).json({
-    success: true,
-    message: `Like has been successfully sent!`,
-  });
+    console.log("Like: ", post.likes);
+
+    // post.likess
+
+    return res.status(200).json({
+      success: true,
+      message: `Like has been successfully sent!`,
+    });
+  } catch (error: any) {
+    return res.status(500).json({
+      success: false,
+      message: "Failed to send a Like",
+      error,
+    });
+  }
 }
