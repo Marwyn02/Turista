@@ -14,48 +14,47 @@ const PostsDetailNavigation: FC<PostsDetailNavigationProps> = ({
 }) => {
   const { data: session } = useSession();
 
-  console.log(userId);
+  // Store the session.user._id here to a constant so I can use it globally.
+  const userSession = (session?.user as { _id: string })?._id;
 
   const [activeSession, setActiveSession] = useState<boolean>(false);
-  const [liked, setLiked] = useState<boolean>();
+  const [liked, setLiked] = useState<boolean>(false);
 
   const handleLikesHandler = async (e: { preventDefault: () => void }) => {
     e.preventDefault();
 
-    const response = await fetch("/api/post/like", {
+    const response = await fetch("/api/like/like", {
       method: "POST",
       headers: {
         "Content-type": "application/json",
       },
-      body: JSON.stringify({ postId, userId }),
+      body: JSON.stringify({ postId: postId, userId: userSession }),
     }).then((r) => r.json());
     // user havent liked the post yet
 
-    setLiked(response.success); // false if already liked
     console.log(response.message);
-
-    console.log("Liked!");
+    setLiked(response.liked); // false if already liked
   };
 
-  // useEffect(() => {
-  //   const liking = async () => {
-  //     try {
-  //       const response = await fetch("/api/post/like", {
-  //         method: "POST",
-  //         headers: {
-  //           "Content-type": "application/json",
-  //         },
-  //         body: JSON.stringify({ postId, userId }),
-  //       }).then((r) => r.json());
+  useEffect(() => {
+    const checkLikeStatus = async () => {
+      try {
+        const response = await fetch("/api/like/check", {
+          method: "POST",
+          headers: {
+            "Content-type": "application/json",
+          },
+          body: JSON.stringify({ postId: postId, userId: userSession }),
+        }).then((r) => r.json());
 
-  //       console.log(response.message);
-  //     } catch (error: any) {
-  //       console.error(error);
-  //     }
-  //   };
+        setLiked(response.liked);
+      } catch (error: any) {
+        console.error(error);
+      }
+    };
 
-  //   liking();
-  // }, [userId]);
+    checkLikeStatus();
+  }, [postId, userSession]);
 
   // This function checks if the user active is same with post creator
   // To show the edit and delete buttons, only for the creator
@@ -90,13 +89,17 @@ const PostsDetailNavigation: FC<PostsDetailNavigationProps> = ({
   };
 
   return (
-    <section className="flex justify-between items-center pb-2">
+    <section className="flex justify-between items-center pb-1 md:pb-2 px-1">
       <button
         onClick={handleLikesHandler}
         className="px-4 py-3.5 bg-violet-100 duration-300 rounded hover:bg-violet-400"
       >
-        <img src="/heart-white.svg" height={18} width={18} alt="Edit" />
-        {liked && <p>Liked</p>}
+        {!liked && (
+          <img src="/heart-white.svg" height={18} width={18} alt="No-Like" />
+        )}
+        {liked && (
+          <img src="/heart-fill.svg" height={18} width={18} alt="Liked" />
+        )}
       </button>
 
       {activeSession && (

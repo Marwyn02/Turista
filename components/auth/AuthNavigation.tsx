@@ -39,7 +39,7 @@ export default function Component() {
       <div className="flex relative">
         {/* User's image */}
         <img
-          src={session.user?.image ?? ""}
+          src={session.user?.image || ""}
           alt="Profile Image"
           ref={userImageRef}
           onClick={() => setDropdown(!dropdown)}

@@ -9,19 +9,19 @@ import Find from "../api/post/find";
 
 import PostsDetail from "@/components/turistaPosts/PostsDetail";
 
-interface ImageProps {
+interface IImageProps {
   image: string;
   public_id: string;
 }
 
-interface AmenityProps {
+interface IAmenityProps {
   name: string;
   description: string;
   checked: boolean;
   id: string;
 }
 
-interface ReviewProps {
+interface IReviewProps {
   id: string;
   name: string;
   postId: string;
@@ -30,7 +30,7 @@ interface ReviewProps {
   userId: string;
 }
 
-interface Review {
+interface IReview {
   _id: string;
   post: string;
   description: string;
@@ -39,27 +39,27 @@ interface Review {
   user: string;
 }
 
-interface PostData {
+interface IPostData {
   postData: {
     id: string;
-    likes: number;
+    likes: string[];
     title: string;
     coordinate: {
       lng: number;
       lat: number;
     };
     location: string;
-    image: ImageProps[];
+    image: IImageProps[];
     description: string;
-    amenities: AmenityProps[];
+    amenities: IAmenityProps[];
     user: string;
     userId: string;
     userImage: string;
-    reviews: ReviewProps[];
+    reviews: IReviewProps[];
   };
 }
 
-const index: FC<PostData> = (props) => {
+const index: FC<IPostData> = (props) => {
   return (
     <Suspense fallback={<p>Loading content...</p>}>
       <PostsDetail
@@ -96,7 +96,7 @@ export async function getStaticPaths() {
 
 export async function getStaticProps(
   context: GetStaticPropsContext
-): Promise<{ props: PostData; revalidate: number } | { notFound: boolean }> {
+): Promise<{ props: IPostData; revalidate: number } | { notFound: boolean }> {
   try {
     if (!context.params) {
       throw new Error("No params in context");
@@ -116,7 +116,7 @@ export async function getStaticProps(
 
     // Return a user name of every review in a specific post
     const reviewUser = await Promise.all(
-      selectedResult.reviews.map(async (review: Review) => {
+      selectedResult.reviews.map(async (review: IReview) => {
         const user = await User.findById(review.user);
         const { name, image } = user;
         return {
@@ -143,13 +143,13 @@ export async function getStaticProps(
             lat: selectedResult.coordinate.lat,
           },
           location: selectedResult.location,
-          image: (selectedResult.image || []).map((img: ImageProps) => ({
+          image: (selectedResult.image || []).map((img: IImageProps) => ({
             image: img.image,
             public_id: img.public_id,
           })),
           description: selectedResult.description,
           amenities: (selectedResult.amenities || []).map(
-            (amenity: AmenityProps) => ({
+            (amenity: IAmenityProps) => ({
               name: amenity.name,
               description: amenity.description,
               checked: amenity.checked,
@@ -169,7 +169,7 @@ export async function getStaticProps(
       props: {
         postData: {
           id: "",
-          likes: 0,
+          likes: [""],
           title: "",
           coordinate: {
             lng: 0,

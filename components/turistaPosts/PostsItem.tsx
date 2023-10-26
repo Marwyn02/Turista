@@ -16,8 +16,7 @@ const PostsItem: FC<PostsItemProps> = ({ id, image, location }) => {
         <Image
           className="displayed_image"
           src={image}
-          height={100}
-          width={200}
+          fill={true}
           alt={location}
           onClick={() => router.push(`/${id}`)}
         />
