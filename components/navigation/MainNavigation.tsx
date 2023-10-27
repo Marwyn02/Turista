@@ -5,15 +5,17 @@ import { useSession } from "next-auth/react";
 import AuthNavigation from "../auth/AuthNavigation";
 import { useState, useEffect } from "react";
 
-export default function MainNavigation() {
+const MainNavigation = () => {
   const { data: session } = useSession();
   const pathname = usePathname();
 
-  const [userHasNoCreatedPost, setUserHasNoCreatedPost] = useState(false);
+  const [userHasNoCreatedPost, setUserHasNoCreatedPost] =
+    useState<boolean>(false);
 
   useEffect(() => {
     if (session) {
-      const userId = session.user._id;
+      const user_in_session = (session?.user as { _id: string })?._id as string;
+
       const fetchUserPostStatus = async () => {
         try {
           const response = await fetch("/api/user/restrict", {
@@ -21,7 +23,7 @@ export default function MainNavigation() {
             headers: {
               "Content-type": "application/json",
             },
-            body: JSON.stringify({ userId }),
+            body: JSON.stringify({ userId: user_in_session }),
           });
 
           if (response.ok) {
@@ -29,7 +31,7 @@ export default function MainNavigation() {
             setUserHasNoCreatedPost(data.userHasNoCreatedPost);
           }
         } catch (error) {
-          console.error("Error:", error);
+          console.error("Main navigation error:", error);
         }
       };
 
@@ -100,4 +102,6 @@ export default function MainNavigation() {
       </div>
     </nav>
   );
-}
+};
+
+export default MainNavigation;

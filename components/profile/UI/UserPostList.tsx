@@ -2,14 +2,14 @@ import Link from "next/link";
 import Image from "next/image";
 import { FC } from "react";
 
-interface UserPostsListProps {
+type UserPostsListProps = {
   posts: {
     id: string;
     title: string;
     location: string;
     image: string;
   }[];
-}
+};
 
 const UserPostList: FC<UserPostsListProps> = ({ posts }) => {
   return (

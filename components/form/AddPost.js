@@ -1,14 +1,23 @@
 import dynamic from "next/dynamic";
 import Link from "next/link";
 import { useRouter } from "next/router";
-import { useRef, useState } from "react";
+import { useRef, useState, useEffect } from "react";
 import { useSession } from "next-auth/react";
 
 import AmenitiesBox from "../ui/AmenitiesBox";
 
-export default function AddPost() {
+export default function AddPost(props) {
   const { data: session } = useSession();
   const router = useRouter();
+
+  useEffect(() => {
+    if (!session) {
+      router.push("/account/login");
+      return;
+    }
+  }, [session]);
+
+  const URL = props.cloudinary;
 
   // Form data
   const titleInputRef = useRef(null);
@@ -69,13 +78,10 @@ export default function AddPost() {
       form.append("file", images);
       form.append("upload_preset", "Turista-Uploads");
 
-      const response = await fetch(
-        "https://api.cloudinary.com/v1_1/dgzsmdvo4/image/upload",
-        {
-          method: "POST",
-          body: form,
-        }
-      ).then((r) => r.json());
+      const response = await fetch(URL, {
+        method: "POST",
+        body: form,
+      }).then((r) => r.json());
 
       console.log("Response: ", response);
 

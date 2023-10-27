@@ -41,6 +41,8 @@ export default function Component() {
         <img
           src={session.user?.image || ""}
           alt="Profile Image"
+          height={50}
+          width={50}
           ref={userImageRef}
           onClick={() => setDropdown(!dropdown)}
           className="rounded-full h-8 w-8 md:h-10 md:w-10 border-2 hover:opacity-90 duration-150 cursor-pointer"

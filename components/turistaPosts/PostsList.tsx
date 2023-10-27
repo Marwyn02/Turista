@@ -11,7 +11,7 @@ interface PostsItemProps {
 
 const PostsList: FC<PostsItemProps> = (props) => {
   return (
-    <section className="grid md:grid-cols-4 gap-4 px-5 md:px-0">
+    <section className="grid md:grid-cols-4 gap-4 px-3.5 md:px-0">
       {props.posts.map((item) => (
         <PostsItem
           key={item.id}

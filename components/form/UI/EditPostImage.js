@@ -2,6 +2,8 @@ import Image from "next/image";
 import { useState, useRef } from "react";
 
 export default function EditPostImage({ id, image, title, updateImageData }) {
+  // const URL = process.env.NEXT_PUBLIC_CLOUDINARY_URL;
+
   const [selectedImages, setSelectedImages] = useState([]);
 
   const [imageOnePreview, setImageOnePreview] = useState(null);

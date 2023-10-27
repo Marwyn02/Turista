@@ -32,6 +32,7 @@ const PostsReview = (props: PostsReviewProps) => {
         setInputError(true);
       });
 
+      // Timing the review validation
       setTimeout(() => {
         clearInterval(showError);
         setInputError(false);

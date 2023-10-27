@@ -38,9 +38,12 @@ export default async function like(
     post.likes.push(userId);
     await post.save(); // save it here
 
+    const count: number = post.likes.length;
+
     return res.status(200).json({
       success: true,
       liked: true,
+      total_likes: count,
       message: `Like has been successfully sent!`,
     });
   } catch (error: any) {

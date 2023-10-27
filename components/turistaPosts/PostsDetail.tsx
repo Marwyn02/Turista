@@ -6,7 +6,6 @@ import Link from "next/link";
 import PostsReview from "./PostsReview";
 import PostImages from "./PostUI/PostImages";
 import ReviewList from "../review/ReviewList";
-// import Dropdown from "../ui/Dropdown";
 import PostsDetailNavigation from "./PostUI/PostsDetailNavigation";
 
 type Images = {
@@ -55,7 +54,6 @@ const PostsDetail: FC<PostsDetailProps> = (props) => {
     loading: () => <p>Loading...</p>,
     ssr: false,
   });
-
   return (
     <section key={props.id} className="md:px-32 pt-5 md:pt-20">
       <main>
@@ -68,10 +66,7 @@ const PostsDetail: FC<PostsDetailProps> = (props) => {
         <div className="lg:flex lg:flex-row pt-4 md:pt-6 px-5 md:px-0 lg:pt-3">
           <div className="basis-auto lg:basis-7/12 lg:pr-14 relative">
             {/* Title and Dropdown */}
-            <div className="flex justify-between">
-              <h1 className="post_title">{props.title}</h1>
-              {/* <Dropdown user={{ userId: props.userId, postId: props.id }} /> */}
-            </div>
+            <h1 className="post_title">{props.title}</h1>
 
             {/* Location   */}
             <p className="post_location">{props.location}</p>
@@ -80,9 +75,9 @@ const PostsDetail: FC<PostsDetailProps> = (props) => {
             <div className="flex items-center mt-5 border-y py-5">
               <Link href={`/user/${props.userId}`}>
                 <img
-                  src={props.userImage}
-                  alt="lel"
                   className="rounded-full h-10 w-10"
+                  src={props.userImage}
+                  alt="Profile"
                 />
               </Link>
               <p className="text-base font-medium text-black/80 ml-4">
@@ -118,13 +113,13 @@ const PostsDetail: FC<PostsDetailProps> = (props) => {
           </div>
 
           {/* Map and Create Review */}
-          <div className="basis-auto lg:basis-5/12">
+          <section className="basis-auto lg:basis-5/12">
             <PostsMap
               checkLat={props.coordinate.lat}
               checkLng={props.coordinate.lng}
             />
             {session && <PostsReview postId={props.id} />}
-          </div>
+          </section>
         </div>
       </main>
 

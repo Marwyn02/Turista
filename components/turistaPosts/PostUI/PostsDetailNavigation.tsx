@@ -15,25 +15,32 @@ const PostsDetailNavigation: FC<PostsDetailNavigationProps> = ({
   const { data: session } = useSession();
 
   // Store the session.user._id here to a constant so I can use it globally.
-  const userSession = (session?.user as { _id: string })?._id;
+  const user_in_session = (session?.user as { _id: string })?._id as string;
 
   const [activeSession, setActiveSession] = useState<boolean>(false);
   const [liked, setLiked] = useState<boolean>(false);
+  const [totalLikes, setTotalLikes] = useState<number>(0);
 
   const handleLikesHandler = async (e: { preventDefault: () => void }) => {
     e.preventDefault();
+
+    if (!session) {
+      console.log("Not signed in.");
+      router.push("/account/login");
+      return;
+    }
 
     const response = await fetch("/api/like/like", {
       method: "POST",
       headers: {
         "Content-type": "application/json",
       },
-      body: JSON.stringify({ postId: postId, userId: userSession }),
+      body: JSON.stringify({ postId: postId, userId: user_in_session }),
     }).then((r) => r.json());
-    // user havent liked the post yet
 
     console.log(response.message);
     setLiked(response.liked); // false if already liked
+    setTotalLikes(response.total_likes);
   };
 
   useEffect(() => {
@@ -44,22 +51,23 @@ const PostsDetailNavigation: FC<PostsDetailNavigationProps> = ({
           headers: {
             "Content-type": "application/json",
           },
-          body: JSON.stringify({ postId: postId, userId: userSession }),
+          body: JSON.stringify({ postId: postId, userId: user_in_session }),
         }).then((r) => r.json());
 
         setLiked(response.liked);
+        setTotalLikes(response.total_likes);
       } catch (error: any) {
         console.error(error);
       }
     };
 
     checkLikeStatus();
-  }, [postId, userSession]);
+  }, [postId, user_in_session]);
 
   // This function checks if the user active is same with post creator
   // To show the edit and delete buttons, only for the creator
   useEffect(() => {
-    if (session && (session.user as { _id: string })._id === userId) {
+    if (session && user_in_session === userId) {
       setActiveSession(true);
     }
   }, [session, userId]);
@@ -87,20 +95,24 @@ const PostsDetailNavigation: FC<PostsDetailNavigationProps> = ({
       throw new Error("Error in Delete Post Handler, ", error);
     }
   };
-
   return (
     <section className="flex justify-between items-center pb-1 md:pb-2 px-1">
-      <button
-        onClick={handleLikesHandler}
-        className="px-4 py-3.5 bg-violet-100 duration-300 rounded hover:bg-violet-400"
-      >
-        {!liked && (
-          <img src="/heart-white.svg" height={18} width={18} alt="No-Like" />
-        )}
-        {liked && (
-          <img src="/heart-fill.svg" height={18} width={18} alt="Liked" />
-        )}
-      </button>
+      <div className="flex items-center">
+        <button
+          onClick={handleLikesHandler}
+          className="px-2 py-2 md:px-2.5 bg-violet-100 duration-300 rounded hover:bg-violet-400"
+        >
+          {!liked && (
+            <img src="/heart-white.svg" height={18} width={18} alt="No-Like" />
+          )}
+          {liked && (
+            <img src="/heart-fill.svg" height={18} width={18} alt="Liked" />
+          )}
+        </button>
+        <span className="ml-2 text-sm text-gray-600 font-bold">
+          {totalLikes > 1 ? `${totalLikes} likes` : `${totalLikes} like`}
+        </span>
+      </div>
 
       {activeSession && (
         <div className="flex gap-x-2">

@@ -66,7 +66,7 @@ export default NextAuth({
       // session.accessToken = token.accessToken;
       session.user = token.user;
 
-      return session;
+      return Promise.resolve(session);
     },
   },
 
