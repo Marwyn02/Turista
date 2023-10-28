@@ -14,6 +14,7 @@ import User from "../../components/profile/User";
 
 interface UserData {
   userData: {
+    userId: string;
     name: string;
     image: string;
     postCount: number;
@@ -32,12 +33,15 @@ interface UserData {
       user: string;
       image: string;
     }[];
+    followers: string[];
   };
 }
 
-interface User {
+interface IUser {
+  id: string;
   name: string;
   image: string;
+  followers: string[];
 }
 
 interface Count {
@@ -49,12 +53,14 @@ const userId: FC<UserData> = (props) => {
   return (
     <Suspense fallback={<p>Loading content...</p>}>
       <User
+        userId={props.userData.userId}
         name={props.userData.name}
         image={props.userData.image}
         postCount={props.userData.postCount}
         reviewCount={props.userData.reviewCount}
         posts={props.userData.posts}
         reviews={props.userData.reviews}
+        followers={props.userData.followers}
       />
     </Suspense>
   );
@@ -88,7 +94,7 @@ export async function getStaticProps(
 
     const userId: string = context.params.userId as string;
 
-    const { name, image }: User = await FindUser(userId);
+    const { id, name, image, followers }: IUser = await FindUser(userId);
 
     const PostReviewCount: Count = await CountData(userId);
 
@@ -133,12 +139,14 @@ export async function getStaticProps(
     return {
       props: {
         userData: {
+          userId: id,
           name: name,
           image: image,
           postCount: PostReviewCount.PostCount,
           reviewCount: PostReviewCount.ReviewCount,
           posts: posts,
           reviews: reviews,
+          followers: followers,
         },
       },
       revalidate: 1,
@@ -147,12 +155,14 @@ export async function getStaticProps(
     return {
       props: {
         userData: {
+          userId: "",
           name: "",
           image: "",
           postCount: 0,
           reviewCount: 0,
           posts: [],
           reviews: [],
+          followers: [],
         },
       },
       revalidate: 1,

@@ -17,6 +17,9 @@ const UserSchema = new mongoose.Schema(
     provider: {
       type: String,
     },
+    followers: {
+      type: Array,
+    },
   },
   { timestamps: true }
 );

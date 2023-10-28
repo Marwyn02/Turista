@@ -6,18 +6,17 @@ import { useSession } from "next-auth/react";
 
 import AmenitiesBox from "../ui/AmenitiesBox";
 
-export default function AddPost(props) {
+export default function AddPost() {
   const { data: session } = useSession();
   const router = useRouter();
 
+  // This is the firewall for the not authenticated clients
   useEffect(() => {
     if (!session) {
       router.push("/account/login");
       return;
     }
   }, [session]);
-
-  const URL = props.cloudinary;
 
   // Form data
   const titleInputRef = useRef(null);
@@ -42,10 +41,12 @@ export default function AddPost(props) {
   const [showContinue, setShowContinue] = useState(false);
   const [loading, setLoading] = useState(false);
 
+  // Get coordinates
   const coordinates = ({ lat, lng }) => {
     coordinatesRef.current = { lng, lat };
   };
 
+  // Get amenities
   const amenitiesChecked = (amenity) => {
     amenitiesRef.current = amenity;
   };
@@ -78,10 +79,13 @@ export default function AddPost(props) {
       form.append("file", images);
       form.append("upload_preset", "Turista-Uploads");
 
-      const response = await fetch(URL, {
-        method: "POST",
-        body: form,
-      }).then((r) => r.json());
+      const response = await fetch(
+        "https://api.cloudinary.com/v1_1/dgzsmdvo4/image/upload",
+        {
+          method: "POST",
+          body: form,
+        }
+      ).then((r) => r.json());
 
       console.log("Response: ", response);
 
@@ -97,8 +101,7 @@ export default function AddPost(props) {
   };
 
   // Submit the input to database
-  const submitInputHandler = async (e) => {
-    e.preventDefault();
+  const submitInputHandler = async () => {
     setLoading(true);
 
     const postData = {
@@ -144,10 +147,11 @@ export default function AddPost(props) {
       router.push(response.redirect);
       setLoading(false);
     } catch (error) {
-      throw new Error("Error in Create Post Submit Handler: ", error);
+      console.error(error);
     }
   };
 
+  // Map import
   const AddMap = dynamic(() => import("./UI/AddMap"), {
     loading: () => <p>Loading Map...</p>,
     ssr: false,

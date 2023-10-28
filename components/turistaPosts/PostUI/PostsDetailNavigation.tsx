@@ -21,9 +21,11 @@ const PostsDetailNavigation: FC<PostsDetailNavigationProps> = ({
   const [liked, setLiked] = useState<boolean>(false);
   const [totalLikes, setTotalLikes] = useState<number>(0);
 
+  // Add likes to the post function handler
   const handleLikesHandler = async (e: { preventDefault: () => void }) => {
     e.preventDefault();
 
+    // If the client is not authenticated, re-route to sign in page
     if (!session) {
       console.log("Not signed in.");
       router.push("/account/login");
@@ -43,6 +45,7 @@ const PostsDetailNavigation: FC<PostsDetailNavigationProps> = ({
     setTotalLikes(response.total_likes);
   };
 
+  // This checks of how many likes does the post have
   useEffect(() => {
     const checkLikeStatus = async () => {
       try {
@@ -92,7 +95,7 @@ const PostsDetailNavigation: FC<PostsDetailNavigationProps> = ({
       console.log(response.message);
       router.push(response.redirect);
     } catch (error: any) {
-      throw new Error("Error in Delete Post Handler, ", error);
+      console.error(error);
     }
   };
   return (

@@ -26,9 +26,9 @@ export default async function like(
       await post.save();
 
       // if user already liked the post
-      return res.status(400).json({
-        // it returns boolean true to display liked post status
-        success: false,
+      return res.status(200).json({
+        // it returns boolean false to display unliked post status
+        success: true,
         liked: false,
         message: "User unliked the post",
       });

@@ -81,6 +81,7 @@ async function signInWithOAuth({ account, profile }) {
 
   if (account.provider === "facebook") {
     const newUser = new User({
+      followers: [],
       name: profile.name,
       email: profile.email,
       image: profile.picture.data.url,
@@ -91,6 +92,7 @@ async function signInWithOAuth({ account, profile }) {
     return true;
   } else if (account.provider === "google") {
     const newUser = new User({
+      followers: [],
       name: profile.name,
       email: profile.email,
       image: profile.picture,

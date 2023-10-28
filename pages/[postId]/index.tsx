@@ -169,7 +169,7 @@ export async function getStaticProps(
       props: {
         postData: {
           id: "",
-          likes: [""],
+          likes: [],
           title: "",
           coordinate: {
             lng: 0,
