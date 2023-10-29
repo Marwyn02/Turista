@@ -57,7 +57,11 @@ const PostsDetail: FC<PostsDetailProps> = (props) => {
   return (
     <section key={props.id} className="md:px-32 pt-5 md:pt-20">
       <main>
-        <PostsDetailNavigation userId={props.userId} postId={props.id} />
+        <PostsDetailNavigation
+          userId={props.userId}
+          postId={props.id}
+          likes={props.likes}
+        />
 
         {/* Image */}
         <PostImages images={props.image} />

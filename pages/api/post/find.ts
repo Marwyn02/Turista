@@ -2,7 +2,7 @@ import Post from "@/models/Post";
 import User from "@/models/User";
 
 interface FindOneResponse {
-  selectedResult: any;
+  selectedPost: any;
   selectedUser: any;
 }
 
@@ -12,13 +12,13 @@ export default async function FindOne(
   const id: string = postId;
 
   // Get the post data
-  const selectedResult = await Post.findById(id);
+  const selectedPost = await Post.findById(id);
 
   // Get the user id from the post data
-  const user: string = selectedResult.user.toString();
+  const user: string = selectedPost.user.toString();
 
   // Get the user data
   const selectedUser = await User.findById(user);
 
-  return { selectedResult, selectedUser };
+  return { selectedPost, selectedUser };
 }

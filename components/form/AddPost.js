@@ -105,7 +105,7 @@ export default function AddPost() {
     setLoading(true);
 
     const postData = {
-      likes: 0,
+      likes: [], // insert no element array
       image: imageData.map((i) => ({
         image: i.image,
         public_id: i.public_id,

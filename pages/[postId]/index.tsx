@@ -106,9 +106,9 @@ export async function getStaticProps(
     const postId: string = context.params.postId as string;
 
     // Get the selected post and user's data
-    const { selectedResult, selectedUser } = await Find(postId);
+    const { selectedPost, selectedUser } = await Find(postId);
 
-    if (!selectedResult && !selectedUser) {
+    if (!selectedPost && !selectedUser) {
       return {
         notFound: true, // Return a 404 page
       };
@@ -116,7 +116,7 @@ export async function getStaticProps(
 
     // Return a user name of every review in a specific post
     const reviewUser = await Promise.all(
-      selectedResult.reviews.map(async (review: IReview) => {
+      selectedPost.reviews.map(async (review: IReview) => {
         const user = await User.findById(review.user);
         const { name, image } = user;
         return {
@@ -133,22 +133,23 @@ export async function getStaticProps(
     return {
       props: {
         postData: {
-          id: selectedResult._id.toString(),
-          likes: (selectedResult.likes || []).map((like: any) =>
-            like.toString()
-          ),
-          title: selectedResult.title,
+          id: selectedPost._id.toString(),
+          likes: selectedPost.likes,
+          // likes: (selectedPost.likes || []).map((like: any) =>
+          //   like.toString()
+          // ),
+          title: selectedPost.title,
           coordinate: {
-            lng: selectedResult.coordinate.lng,
-            lat: selectedResult.coordinate.lat,
+            lng: selectedPost.coordinate.lng,
+            lat: selectedPost.coordinate.lat,
           },
-          location: selectedResult.location,
-          image: (selectedResult.image || []).map((img: IImageProps) => ({
+          location: selectedPost.location,
+          image: (selectedPost.image || []).map((img: IImageProps) => ({
             image: img.image,
             public_id: img.public_id,
           })),
-          description: selectedResult.description,
-          amenities: (selectedResult.amenities || []).map(
+          description: selectedPost.description,
+          amenities: (selectedPost.amenities || []).map(
             (amenity: IAmenityProps) => ({
               name: amenity.name,
               description: amenity.description,

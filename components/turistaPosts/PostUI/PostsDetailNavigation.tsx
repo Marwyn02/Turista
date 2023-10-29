@@ -6,11 +6,13 @@ import router from "next/router";
 type PostsDetailNavigationProps = {
   userId: string;
   postId: string;
+  likes: string[];
 };
 
 const PostsDetailNavigation: FC<PostsDetailNavigationProps> = ({
   userId,
   postId,
+  likes,
 }) => {
   const { data: session } = useSession();
 
