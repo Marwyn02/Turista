@@ -41,10 +41,6 @@ body {
     @apply text-black text-base font-light border-t py-5 mb-8;
   }
 
-  .user_name {
-    @apply text-lg md:text-xl text-center ml-4 mt-0.5 md:mt-2 text-indigo-600 font-semibold tracking-wide;
-  }
-
   .add_edit_location {
     @apply flex-1 border rounded-lg shadow-sm py-2.5 px-3 pl-3 
     text-gray-600 placeholder:text-gray-300

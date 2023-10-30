@@ -79,12 +79,12 @@ const PostsDetail: FC<PostsDetailProps> = (props) => {
             <div className="flex items-center mt-5 border-y py-5">
               <Link href={`/user/${props.userId}`}>
                 <img
-                  className="rounded-full h-10 w-10"
+                  className="rounded-full h-8 w-8 md:h-10 md:w-10"
                   src={props.userImage}
                   alt="Profile"
                 />
               </Link>
-              <p className="text-base font-medium text-black/80 ml-4">
+              <p className="text-sm md:text-base font-medium text-black/80 ml-2 md:ml-4">
                 Posted by{" "}
                 <Link href={`/user/${props.userId}`}>
                   <span className="text-violet-500">

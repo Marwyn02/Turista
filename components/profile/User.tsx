@@ -85,23 +85,29 @@ const User: FC<IUserProps> = ({
         <title>{name}</title>
         <meta property="og:title" content="Turista user" key="userTitle" />
       </Head>
-      <div className="py-16 md:py-32 px-3 lg:px-32">
+      <div className="py-12 md:py-32 px-3 lg:px-32">
         {/* User's profile image and name */}
-        <div className="-mt-5 md:px-10 flex justify-between items-center">
-          <section className="justify-items-center md:flex md:justify-items-start">
+        <div className="-mt-5 md:px-10 md:flex md:justify-between grid grid-cols-3">
+          <section className="flex items-center md:justify-start md:items-start col-span-1 md:col-span-0">
             <img
               src={image}
               alt={name}
-              className="h-14 md:h-20 rounded-full mx-auto md:mx-0"
+              className="h-[77px] w-[77px] md:h-20 rounded-full mx-auto md:mx-0"
             />
-            <p className="user_name">{name}</p>
+            <p className="hidden md:block text-lg md:text-xl text-center ml-4 mt-0.5 md:mt-2 text-gray-700 font-semibold tracking-wide">
+              {name}
+            </p>
           </section>
           {showFollowBtn && (
-            <section>
+            <section className="py-3 grid col-span-2 md:block md:col-span-0">
+              <p className="md:hidden text-lg mb-5 text-gray-700 font-semibold">
+                {name}
+              </p>
+
               <button
                 type="button"
                 onClick={followingHandler}
-                className="px-5 py-1.5 text-sm text-white bg-violet-500 rounded-full"
+                className="px-2.5 md:px-4 py-1.5 md:py-2 text-sm text-white bg-violet-400 hover:bg-violet-500 rounded-lg"
               >
                 {!followed ? "Follow" : "Followed"}
               </button>

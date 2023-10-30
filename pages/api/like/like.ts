@@ -21,15 +21,19 @@ export default async function like(
     // If the user disliked the post, then this will run
     // to filter the user id and remove the user id from the post database
     if (post.likes.includes(userId)) {
+      // This will remove the user id from the likes array of the client
       post.likes = post.likes.filter((like: string) => like !== userId);
 
       await post.save();
+
+      const count: number = post.likes.length;
 
       // if user already liked the post
       return res.status(200).json({
         // it returns boolean false to display unliked post status
         success: true,
         liked: false,
+        total_likes: count,
         message: "User unliked the post",
       });
     }

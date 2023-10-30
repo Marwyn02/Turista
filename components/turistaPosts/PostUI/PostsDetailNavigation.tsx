@@ -75,7 +75,12 @@ const PostsDetailNavigation: FC<PostsDetailNavigationProps> = ({
     if (session && user_in_session === userId) {
       setActiveSession(true);
     }
-  }, [session, userId]);
+
+    // Simple liking checker, if the client liked or unliked the post
+    if (likes.includes(user_in_session)) {
+      setLiked(true);
+    }
+  }, [session, userId, user_in_session]);
 
   // Deletes the post in the database
   const deleteHandler = async (e: { preventDefault: () => void }) => {
@@ -120,16 +125,16 @@ const PostsDetailNavigation: FC<PostsDetailNavigationProps> = ({
       </div>
 
       {activeSession && (
-        <div className="flex gap-x-2">
+        <div className="flex gap-x-1 md:gap-x-2">
           <button
             onClick={deleteHandler}
-            className="px-4 py-3.5 bg-violet-400 duration-300 rounded hover:bg-violet-500"
+            className="px-2 py-2 md:px-2.5 bg-violet-400 duration-300 rounded hover:bg-violet-400"
           >
             <img src="/trash.svg" height={18} width={18} alt="Delete" />
           </button>
 
           <Link href={`/edit/${postId}`}>
-            <button className="px-4 py-3.5 bg-violet-400 duration-300 rounded hover:bg-violet-500">
+            <button className="px-2 py-2 md:px-2.5 bg-violet-400 duration-300 rounded hover:bg-violet-400">
               <img src="/pencil-white.svg" height={18} width={18} alt="Edit" />
             </button>
           </Link>
