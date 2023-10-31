@@ -1,11 +1,16 @@
-import { Request, Response } from "express";
+import type { NextApiRequest, NextApiResponse } from "next";
 import Post from "@/models/Post";
 import Review from "@/models/Review";
 
+type ResponseData = {
+  success: boolean;
+  message: string;
+};
+
 export default async function create(
-  req: Request,
-  res: Response
-): Promise<Response> {
+  req: NextApiRequest,
+  res: NextApiResponse<ResponseData>
+) {
   try {
     const postId: string = req.body.post; // The post id
 
@@ -31,6 +36,6 @@ export default async function create(
   } catch (error: any) {
     return res
       .status(500)
-      .json({ success: false, message: "Review creation failed: ", error });
+      .json({ success: false, message: "Creating a review failed" });
   }
 }

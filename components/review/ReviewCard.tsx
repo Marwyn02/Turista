@@ -1,6 +1,5 @@
 import React, { useState, useEffect, useRef, FC, FormEvent } from "react";
 import { useSession } from "next-auth/react";
-import { useRouter } from "next/router";
 import Link from "next/link";
 
 interface ReviewCardProps {
@@ -28,7 +27,6 @@ const ReviewCard: FC<ReviewCardProps> = ({
   userId,
 }) => {
   const { data: session } = useSession();
-  const router = useRouter();
   const dropdownRef = useRef<HTMLDivElement>(null);
   const buttonRef = useRef<HTMLImageElement>(null);
   const [activeSession, setActiveSession] = useState<boolean>(false);
@@ -255,7 +253,7 @@ const ReviewCard: FC<ReviewCardProps> = ({
             <ul className="text-sm text-slate-700">
               <li
                 onClick={showHideDropdown}
-                className="hover:bg-gray-200 hover:text-black py-1.5 pl-2 flex duration-300"
+                className="cursor-pointer hover:bg-gray-200 hover:text-black py-1.5 pl-2 flex duration-300"
               >
                 <img
                   src="/pen.svg"
@@ -268,7 +266,7 @@ const ReviewCard: FC<ReviewCardProps> = ({
               </li>
               <li
                 onClick={deleteReviewHandler}
-                className="hover:bg-gray-200 hover:text-black py-1.5 pl-2 flex duration-300"
+                className="cursor-pointer hover:bg-gray-200 hover:text-black py-1.5 pl-2 flex duration-300"
               >
                 <img
                   src="/trash.svg"

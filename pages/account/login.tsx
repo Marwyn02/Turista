@@ -1,10 +1,15 @@
 import { getProviders, getSession, useSession } from "next-auth/react";
-import { useRouter } from "next/router";
+import router from "next/router";
 
 import Buttons from "@/components/auth/UI/Buttons";
+import { FC } from "react";
 
-const login = ({ provider, session }) => {
-  const router = useRouter();
+interface LoginProps {
+  provider: any;
+  session: any;
+}
+
+const login: FC<LoginProps> = ({ provider, session }) => {
   const { data: account } = useSession();
 
   if (account) {
@@ -98,11 +103,14 @@ const login = ({ provider, session }) => {
   );
 };
 
-export async function getStaticProps(context) {
+export async function getStaticProps(context: any) {
+  const provider = await getProviders();
+  const session = await getSession();
+
   return {
     props: {
-      provider: await getProviders(context),
-      session: await getSession(context),
+      provider,
+      session,
     },
   };
 }

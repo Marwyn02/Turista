@@ -1,13 +1,19 @@
-import { Request, Response } from "express";
+import { NextApiRequest, NextApiResponse } from "next";
 import Post from "@/models/Post";
 import Review from "@/models/Review";
 
+type ResponseData = {
+  success: boolean;
+  message: string;
+};
+
 export default async function Delete(
-  req: Request,
-  res: Response
-): Promise<Response> {
-  const reviewId: string = req.body.id;
-  const postId: string = req.body.postId;
+  req: NextApiRequest,
+  res: NextApiResponse<ResponseData>
+) {
+  const { id: reviewId, postId: postId } = req.body;
+  // const reviewId: string = req.body.id;
+  // const postId: string = req.body.postId;
   try {
     // Find the post then update the reviews array to by pulling out the review object
     await Post.findByIdAndUpdate(

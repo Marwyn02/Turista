@@ -1,10 +1,10 @@
 import React, { FC, Suspense, useEffect, useState } from "react";
 import Head from "next/head";
+import router from "next/router";
 import { useSession } from "next-auth/react";
 
 import UserPostList from "./UI/UserPostList";
 import UserReviewList from "./UI/UserReviewList";
-import router from "next/router";
 
 interface IUserProps {
   userId: string;
@@ -94,12 +94,14 @@ const User: FC<IUserProps> = ({
               alt={name}
               className="h-[77px] w-[77px] md:h-20 rounded-full mx-auto md:mx-0"
             />
+            {/* Name in desktop device  */}
             <p className="hidden md:block text-lg md:text-xl text-center ml-4 mt-0.5 md:mt-2 text-gray-700 font-semibold tracking-wide">
               {name}
             </p>
           </section>
           {showFollowBtn && (
             <section className="py-3 grid col-span-2 md:block md:col-span-0">
+              {/* Name for mobile devices */}
               <p className="md:hidden text-lg mb-5 text-gray-700 font-semibold">
                 {name}
               </p>

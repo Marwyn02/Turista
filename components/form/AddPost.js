@@ -1,6 +1,6 @@
 import dynamic from "next/dynamic";
 import Link from "next/link";
-import { useRouter } from "next/router";
+import router from "next/router";
 import { useRef, useState, useEffect } from "react";
 import { useSession } from "next-auth/react";
 
@@ -8,7 +8,6 @@ import AmenitiesBox from "../ui/AmenitiesBox";
 
 export default function AddPost() {
   const { data: session } = useSession();
-  const router = useRouter();
 
   // This is the firewall for the not authenticated clients
   useEffect(() => {
@@ -145,6 +144,7 @@ export default function AddPost() {
 
       console.log(response.message);
       router.push(response.redirect);
+      location.reload();
       setLoading(false);
     } catch (error) {
       console.error(error);
