@@ -1,7 +1,7 @@
+import React, { useRef, useState, useEffect } from "react";
 import dynamic from "next/dynamic";
 import Link from "next/link";
 import router from "next/router";
-import { useRef, useState, useEffect } from "react";
 import { useSession } from "next-auth/react";
 
 import AmenitiesBox from "../ui/AmenitiesBox";

@@ -98,17 +98,18 @@ const PostsDetail: FC<PostsDetailProps> = (props) => {
             <div className="py-6">
               <h3 className="font-medium text-lg">This place has</h3>
               <ul className="mt-2">
-                {props.amenities &&
-                  props.amenities
-                    .filter((item) => item.checked)
-                    .map((item) => (
-                      <li
-                        key={item.id}
-                        className="text-black/80 font-light text-base py-1"
-                      >
-                        - {item.name}
-                      </li>
-                    ))}
+                {props.amenities.length > 0
+                  ? props.amenities
+                      .filter((item) => item.checked)
+                      .map((item) => (
+                        <li
+                          key={item.id}
+                          className="text-black/80 font-light text-base py-1"
+                        >
+                          - {item.name}
+                        </li>
+                      ))
+                  : "No amenities to offer"}
               </ul>
             </div>
 

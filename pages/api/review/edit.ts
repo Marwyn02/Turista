@@ -1,4 +1,4 @@
-import { Request, Response } from "express";
+import type { NextApiRequest, NextApiResponse } from "next";
 import Post from "@/models/Post";
 import Review from "@/models/Review";
 
@@ -8,10 +8,7 @@ interface EditObject {
   description: string;
 }
 
-export default async function Edit(
-  req: Request,
-  res: Response
-): Promise<Response> {
+export default async function Edit(req: NextApiRequest, res: NextApiResponse) {
   const { id, postId, description }: EditObject = req.body;
   try {
     await Review.updateOne(

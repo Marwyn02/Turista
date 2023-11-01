@@ -1,12 +1,14 @@
-import { Request, Response } from "express";
+import type { NextApiRequest, NextApiResponse } from "next";
 import Post from "@/models/Post";
 
-export default async function Check(
-  req: Request,
-  res: Response
-): Promise<Response> {
+type TRequestObject = {
+  postId: string;
+  userId: string;
+};
+
+export default async function Check(req: NextApiRequest, res: NextApiResponse) {
+  const { postId, userId }: TRequestObject = req.body;
   try {
-    const { postId, userId } = req.body;
     const post = await Post.findById(postId);
 
     // get the likes number

@@ -1,4 +1,4 @@
-import { Request, Response } from "express";
+import type { NextApiRequest, NextApiResponse } from "next";
 import Post from "@/models/Post";
 
 interface AmenityArray {
@@ -25,10 +25,7 @@ interface EditedPostObject {
   amenities: AmenityArray[];
 }
 
-export default async function Edit(
-  req: Request,
-  res: Response
-): Promise<Response> {
+export default async function Edit(req: NextApiRequest, res: NextApiResponse) {
   const {
     id,
     image,

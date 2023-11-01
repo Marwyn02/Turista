@@ -1,10 +1,10 @@
-import { Request, Response } from "express";
+import type { NextApiRequest, NextApiResponse } from "next";
 import Post from "@/models/Post";
 
 export default async function create(
-  req: Request,
-  res: Response
-): Promise<Response> {
+  req: NextApiRequest,
+  res: NextApiResponse
+) {
   try {
     const result = new Post(req.body);
     await result.save();

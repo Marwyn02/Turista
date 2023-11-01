@@ -1,10 +1,10 @@
-import { Request, Response } from "express";
+import type { NextApiRequest, NextApiResponse } from "next";
 import Post from "@/models/Post";
 
 export default async function restrict(
-  req: Request,
-  res: Response
-): Promise<Response> {
+  req: NextApiRequest,
+  res: NextApiResponse
+) {
   try {
     const userId: string = req.body.userId;
 

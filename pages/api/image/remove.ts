@@ -1,19 +1,18 @@
-import { Request, Response } from "express";
+import type { NextApiRequest, NextApiResponse } from "next";
 import Post from "@/models/Post";
 import cloudinary from "@/utils/cloudinary/cloudinary";
 
-interface RequestObject {
+type TRequestObject = {
   id: string;
   image: { public_id: string };
-}
+};
 
 export default async function remove(
-  req: Request,
-  res: Response
-): Promise<Response> {
+  req: NextApiRequest,
+  res: NextApiResponse
+) {
+  const { id, image }: TRequestObject = req.body;
   try {
-    const { id, image }: RequestObject = req.body;
-
     const post = await Post.findById(id);
 
     if (!post) {

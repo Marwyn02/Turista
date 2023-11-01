@@ -1,10 +1,10 @@
+import type { NextApiRequest, NextApiResponse } from "next";
 import User from "@/models/User";
-import { Request, Response } from "express";
 
 export default async function follow(
-  req: Request,
-  res: Response
-): Promise<Response> {
+  req: NextApiRequest,
+  res: NextApiResponse
+) {
   const { userId, active_user } = req.body;
   try {
     const user = await User.findById(userId);

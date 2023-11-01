@@ -1,15 +1,10 @@
-import { NextApiRequest, NextApiResponse } from "next";
+import type { NextApiRequest, NextApiResponse } from "next";
 import Post from "@/models/Post";
 import Review from "@/models/Review";
 
-type ResponseData = {
-  success: boolean;
-  message: string;
-};
-
 export default async function Delete(
   req: NextApiRequest,
-  res: NextApiResponse<ResponseData>
+  res: NextApiResponse
 ) {
   const { id: reviewId, postId: postId } = req.body;
   // const reviewId: string = req.body.id;

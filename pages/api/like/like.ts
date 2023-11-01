@@ -1,10 +1,7 @@
-import { Request, Response } from "express";
+import type { NextApiRequest, NextApiResponse } from "next";
 import Post from "@/models/Post";
 
-export default async function like(
-  req: Request,
-  res: Response
-): Promise<Response> {
+export default async function like(req: NextApiRequest, res: NextApiResponse) {
   try {
     const { postId, userId } = req.body;
     const post = await Post.findById(postId);

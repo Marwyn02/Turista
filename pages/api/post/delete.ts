@@ -1,4 +1,4 @@
-import { Request, Response } from "express";
+import { NextApiRequest, NextApiResponse } from "next";
 import Post from "@/models/Post";
 import Review from "@/models/Review";
 import cloudinary from "@/utils/cloudinary/cloudinary";
@@ -9,9 +9,9 @@ interface Image {
 }
 
 export default async function Delete(
-  req: Request,
-  res: Response
-): Promise<Response> {
+  req: NextApiRequest,
+  res: NextApiResponse
+) {
   const id: string = req.body.postId;
   try {
     const post = await Post.findById(id);
