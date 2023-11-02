@@ -1,9 +1,9 @@
+import { useState, useEffect } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useSession } from "next-auth/react";
 
 import AuthNavigation from "../auth/AuthNavigation";
-import { useState, useEffect } from "react";
 
 const MainNavigation = () => {
   const { data: session } = useSession();

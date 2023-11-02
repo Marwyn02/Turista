@@ -1,8 +1,8 @@
+import { FC } from "react";
 import { getProviders, getSession, useSession } from "next-auth/react";
 import router from "next/router";
 
 import Buttons from "@/components/auth/UI/Buttons";
-import { FC } from "react";
 
 interface LoginProps {
   provider: any;

@@ -94,12 +94,16 @@ export async function getStaticProps(
 
     const userId: string = context.params.userId as string;
 
+    // Fetching user data
     const { id, name, image, followers }: IUser = await FindUser(userId);
 
+    // Fetching post annd review count or number
     const PostReviewCount: Count = await CountData(userId);
 
+    // Fetch user's post created
     const userPosts = await Post.find({ user: userId }).sort({ _id: -1 });
 
+    // Fetch user's reviews created
     const userReviews = await Review.find({ user: userId }).sort({ _id: -1 });
 
     if (!name && !image) {

@@ -1,5 +1,4 @@
 import { FC, Suspense } from "react";
-import { useSession } from "next-auth/react";
 import dynamic from "next/dynamic";
 import Link from "next/link";
 
@@ -48,8 +47,6 @@ type PostsDetailProps = {
 };
 
 const PostsDetail: FC<PostsDetailProps> = (props) => {
-  const { data: session } = useSession();
-
   const PostsMap = dynamic(() => import("./PostUI/PostsMap"), {
     loading: () => <p>Loading...</p>,
     ssr: false,
@@ -119,11 +116,14 @@ const PostsDetail: FC<PostsDetailProps> = (props) => {
 
           {/* Map and Create Review */}
           <section className="basis-auto lg:basis-5/12">
+            {/* Post Map display  */}
             <PostsMap
               checkLat={props.coordinate.lat}
               checkLng={props.coordinate.lng}
             />
-            {session && <PostsReview postId={props.id} />}
+
+            {/* Post review create  */}
+            <PostsReview postId={props.id} />
           </section>
         </div>
       </main>

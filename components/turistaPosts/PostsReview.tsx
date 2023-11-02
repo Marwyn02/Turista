@@ -1,5 +1,6 @@
 import React, { useRef, useState } from "react";
 import { useSession } from "next-auth/react";
+import router from "next/router";
 
 interface PostsReviewProps {
   postId: string;
@@ -23,7 +24,16 @@ const PostsReview = (props: PostsReviewProps) => {
     e: React.FormEvent<HTMLFormElement>
   ): Promise<void> => {
     e.preventDefault();
+
     setLoading(true);
+
+    // If the client is not authenticated, re-route to sign in page
+    if (!session) {
+      console.log("Not signed in.");
+      setLoading(false);
+      router.push("/account/login");
+      return;
+    }
 
     const enteredDescription = reviewDescriptionRef.current?.value;
 
@@ -55,14 +65,10 @@ const PostsReview = (props: PostsReviewProps) => {
           body: JSON.stringify(reviewData),
         }).then((r) => r.json());
 
-        if (!response.success) {
-          throw new Error(response.message);
-        }
-
-        location.reload();
         console.log(response.message);
+        location.reload();
       } catch (error: any) {
-        throw new Error("Error in create review: " + error);
+        console.error("Failed to create a review in this post, ", error);
       }
 
       setLoading(false);

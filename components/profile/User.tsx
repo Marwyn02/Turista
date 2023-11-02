@@ -63,8 +63,8 @@ const User: FC<IUserProps> = ({
 
       console.log(response.message);
       setFollowed(response.followed); // set follow to true if followed
-    } catch (error) {
-      console.error(error);
+    } catch (error: any) {
+      console.error("Failed to follow the user", error);
     }
   };
 
