@@ -4,6 +4,7 @@ import Link from "next/link";
 
 interface ReviewCardProps {
   id: string;
+  date: string;
   name: string;
   image: string;
   description: string;
@@ -20,6 +21,7 @@ interface ReviewCardProps {
 
 const ReviewCard: FC<ReviewCardProps> = ({
   id,
+  date,
   name,
   image,
   description,
@@ -46,19 +48,15 @@ const ReviewCard: FC<ReviewCardProps> = ({
         body: JSON.stringify({ id, postId }),
       }).then((r) => r.json());
 
-      if (!response.success) {
-        throw new Error(response.message);
-      }
-
-      location.reload();
       console.log(response.message);
+      location.reload();
     } catch (error: any) {
-      throw new Error("Error in Delete Review Handler: ", error);
+      console.error("Failed to delete the review, ", error);
     }
   };
 
   // Submitting the edited review
-  const reviewHandlerSubmit = async (
+  const updateReviewHandlerSubmit = async (
     e: FormEvent<HTMLFormElement>
   ): Promise<void> => {
     e.preventDefault();
@@ -78,15 +76,11 @@ const ReviewCard: FC<ReviewCardProps> = ({
         body: JSON.stringify(updatedReview),
       }).then((r) => r.json());
 
-      if (!response.success) {
-        throw new Error(response.message);
-      }
-
       setEditReview(false);
       console.log(response.message);
       location.reload();
     } catch (error: any) {
-      throw new Error("Error in Edit Review Handler: ", error);
+      console.error("Failed to update the review, ", error);
     }
   };
 
@@ -180,7 +174,7 @@ const ReviewCard: FC<ReviewCardProps> = ({
           )}
 
           <form
-            onSubmit={reviewHandlerSubmit}
+            onSubmit={updateReviewHandlerSubmit}
             className="w-full rounded-lg p-1.5"
           >
             <div>
@@ -216,19 +210,22 @@ const ReviewCard: FC<ReviewCardProps> = ({
   }
   return (
     <>
-      <div key={id} className="relative my-2 md:pl-3 p-1.5 ">
+      <div key={id} className="relative my-2 md:pl-3 py-1.5 ">
         <div className="flex justify-between">
           <div className="flex items-center">
             <Link href={`/user/${userId}`}>
               <img
                 src={image}
                 alt="lel"
-                className="rounded-full h-[50px] w-[50px]"
+                className="rounded-full h-[36px] w-[36px] md:h-[50px] md:w-[50px]"
               />
             </Link>
-            <p className="text-base font-medium text-gray-900 mb-0.5 ml-3">
-              {name}
-            </p>
+            <div className="ml-2 md:ml-3">
+              <p className="text-sm md:text-base font-medium text-gray-900">
+                {name}
+              </p>
+              <p className="text-xs text-gray-300">{date}</p>
+            </div>
           </div>
           <div className="flex items-center">
             {activeSession && (

@@ -4,6 +4,7 @@ import ReviewCard from "./ReviewCard";
 interface ReviewListProps {
   reviews: {
     id: string;
+    date: string;
     name: string;
     image: string;
     description: string;
@@ -29,6 +30,7 @@ const ReviewList: FC<ReviewListProps> = (props) => {
           <ReviewCard
             key={review.id}
             id={review.id}
+            date={review.date}
             name={review.name}
             image={review.image}
             description={review.description}

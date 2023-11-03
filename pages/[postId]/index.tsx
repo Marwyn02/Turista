@@ -9,6 +9,16 @@ import Find from "../api/post/find";
 
 import PostsDetail from "@/components/turistaPosts/PostsDetail";
 
+interface IReview {
+  _id: string;
+  createdAt: string;
+  post: string;
+  description: string;
+  image: string;
+  name: string;
+  user: string;
+}
+
 interface IImageProps {
   image: string;
   public_id: string;
@@ -23,20 +33,12 @@ interface IAmenityProps {
 
 interface IReviewProps {
   id: string;
+  date: string;
   name: string;
   postId: string;
   description: string;
   image: string;
   userId: string;
-}
-
-interface IReview {
-  _id: string;
-  post: string;
-  description: string;
-  image: string;
-  name: string;
-  user: string;
 }
 
 interface IPostData {
@@ -56,6 +58,7 @@ interface IPostData {
     userId: string;
     userImage: string;
     reviews: IReviewProps[];
+    date: string;
   };
 }
 
@@ -75,6 +78,7 @@ const index: FC<IPostData> = (props) => {
         userId={props.postData.userId}
         userImage={props.postData.userImage}
         reviews={props.postData.reviews}
+        date={props.postData.date}
       />
     </Suspense>
   );
@@ -108,6 +112,17 @@ export async function getStaticProps(
     // Get the selected post and user's data
     const { selectedPost, selectedUser } = await Find(postId);
 
+    // Fetch post created date
+    // Day - Month - Year
+    const date: string = new Date(selectedPost.createdAt).toLocaleString(
+      "en-GB",
+      {
+        day: "numeric",
+        month: "long",
+        year: "numeric",
+      }
+    );
+
     if (!selectedPost && !selectedUser) {
       return {
         notFound: true, // Return a 404 page
@@ -121,6 +136,11 @@ export async function getStaticProps(
         const { name, image } = user;
         return {
           id: review._id.toString(),
+          date: new Date(review.createdAt).toLocaleString("en-GB", {
+            day: "numeric",
+            month: "long",
+            year: "numeric",
+          }),
           postId: review.post.toString(),
           description: review.description,
           image: image,
@@ -135,9 +155,6 @@ export async function getStaticProps(
         postData: {
           id: selectedPost._id.toString(),
           likes: selectedPost.likes,
-          // likes: (selectedPost.likes || []).map((like: any) =>
-          //   like.toString()
-          // ),
           title: selectedPost.title,
           coordinate: {
             lng: selectedPost.coordinate.lng,
@@ -161,6 +178,7 @@ export async function getStaticProps(
           userId: selectedUser._id.toString(),
           userImage: selectedUser.image,
           reviews: reviewUser ? reviewUser : [], // If there are no reviews then just return empty array
+          date: date,
         },
       },
       revalidate: 1,
@@ -184,6 +202,7 @@ export async function getStaticProps(
           userId: "",
           userImage: "",
           reviews: [],
+          date: "",
         },
       },
       revalidate: 1,

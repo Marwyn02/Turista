@@ -128,13 +128,13 @@ const PostsDetailNavigation: FC<PostsDetailNavigationProps> = ({
         <div className="flex gap-x-1 md:gap-x-2">
           <button
             onClick={deleteHandler}
-            className="px-2 py-2 md:px-2.5 bg-violet-400 duration-300 rounded hover:bg-violet-400"
+            className="px-2 py-2 md:px-2.5 bg-violet-400 duration-300 rounded hover:bg-violet-500"
           >
             <img src="/trash.svg" height={18} width={18} alt="Delete" />
           </button>
 
           <Link href={`/edit/${postId}`}>
-            <button className="px-2 py-2 md:px-2.5 bg-violet-400 duration-300 rounded hover:bg-violet-400">
+            <button className="px-2 py-2 md:px-2.5 bg-violet-400 duration-300 rounded hover:bg-violet-500">
               <img src="/pencil-white.svg" height={18} width={18} alt="Edit" />
             </button>
           </Link>

@@ -21,6 +21,7 @@ type Amenities = {
 
 type Reviews = {
   id: string;
+  date: string;
   name: string;
   image: string;
   description: string;
@@ -44,6 +45,7 @@ type PostsDetailProps = {
   userId: string;
   userImage: string;
   reviews: Reviews[];
+  date: string;
 };
 
 const PostsDetail: FC<PostsDetailProps> = (props) => {
