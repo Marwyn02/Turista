@@ -22,6 +22,6 @@ export default async function restrict(
       });
     }
   } catch (error: any) {
-    return res.status(500).json({ error: "Server error" });
+    return res.status(500).json({ message: "User restriction error" });
   }
 }

@@ -24,13 +24,11 @@ const MainNavigation = () => {
               "Content-type": "application/json",
             },
             body: JSON.stringify({ userId: user_in_session }),
-          });
+          }).then((r) => r.json());
 
-          if (response.ok) {
-            const data = await response.json();
-            setUserHasNoCreatedPost(data.userHasNoCreatedPost);
-          }
-        } catch (error) {
+          console.log(response.message);
+          setUserHasNoCreatedPost(response.userHasNoCreatedPost);
+        } catch (error: any) {
           console.error("Main navigation error:", error);
         }
       };

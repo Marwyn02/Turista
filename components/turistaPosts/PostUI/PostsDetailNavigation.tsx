@@ -1,18 +1,18 @@
 import React, { FC, useEffect, useState } from "react";
-import { useSession } from "next-auth/react";
 import Link from "next/link";
 import router from "next/router";
+import { useSession } from "next-auth/react";
 
-type PostsDetailNavigationProps = {
+type TPostsDetailNavigationProps = {
   userId: string;
   postId: string;
-  likes: string[];
+  loves: string[];
 };
 
-const PostsDetailNavigation: FC<PostsDetailNavigationProps> = ({
+const PostsDetailNavigation: FC<TPostsDetailNavigationProps> = ({
   userId,
   postId,
-  likes,
+  loves,
 }) => {
   const { data: session } = useSession();
 
@@ -20,8 +20,8 @@ const PostsDetailNavigation: FC<PostsDetailNavigationProps> = ({
   const user_in_session = (session?.user as { _id: string })?._id as string;
 
   const [activeSession, setActiveSession] = useState<boolean>(false);
-  const [liked, setLiked] = useState<boolean>(false);
-  const [totalLikes, setTotalLikes] = useState<number>(0);
+  const [postLove, setPostLove] = useState<boolean>(false);
+  const [totalPostLove, setTotalPostLove] = useState<number>(0);
 
   // Add likes to the post function handler
   const handleLikesHandler = async (e: { preventDefault: () => void }) => {
@@ -43,8 +43,8 @@ const PostsDetailNavigation: FC<PostsDetailNavigationProps> = ({
     }).then((r) => r.json());
 
     console.log(response.message);
-    setLiked(response.liked); // false if already liked
-    setTotalLikes(response.total_likes);
+    setPostLove(response.liked); // false if already liked
+    setTotalPostLove(response.total_likes);
   };
 
   // This checks of how many likes does the post have
@@ -59,8 +59,8 @@ const PostsDetailNavigation: FC<PostsDetailNavigationProps> = ({
           body: JSON.stringify({ postId: postId, userId: user_in_session }),
         }).then((r) => r.json());
 
-        setLiked(response.liked);
-        setTotalLikes(response.total_likes);
+        setPostLove(response.liked);
+        setTotalPostLove(response.total_likes);
       } catch (error: any) {
         console.error(error);
       }
@@ -77,8 +77,8 @@ const PostsDetailNavigation: FC<PostsDetailNavigationProps> = ({
     }
 
     // Simple liking checker, if the client liked or unliked the post
-    if (likes.includes(user_in_session)) {
-      setLiked(true);
+    if (loves.includes(user_in_session)) {
+      setPostLove(true);
     }
   }, [session, userId, user_in_session]);
 
@@ -95,10 +95,6 @@ const PostsDetailNavigation: FC<PostsDetailNavigationProps> = ({
         body: JSON.stringify({ postId }),
       }).then((r) => r.json());
 
-      if (!response.success) {
-        throw new Error(response.message);
-      }
-
       console.log(response.message);
       router.push(response.redirect);
     } catch (error: any) {
@@ -112,15 +108,17 @@ const PostsDetailNavigation: FC<PostsDetailNavigationProps> = ({
           onClick={handleLikesHandler}
           className="px-2 py-2 md:px-2.5 bg-violet-100 duration-300 rounded hover:bg-violet-400"
         >
-          {!liked && (
+          {!postLove && (
             <img src="/heart-white.svg" height={18} width={18} alt="No-Like" />
           )}
-          {liked && (
+          {postLove && (
             <img src="/heart-fill.svg" height={18} width={18} alt="Liked" />
           )}
         </button>
         <span className="ml-2 text-sm text-gray-600 font-bold">
-          {totalLikes > 1 ? `${totalLikes} likes` : `${totalLikes} like`}
+          {totalPostLove > 1
+            ? `${totalPostLove} loves`
+            : `${totalPostLove} love`}
         </span>
       </div>
 

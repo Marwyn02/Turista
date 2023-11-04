@@ -1,8 +1,8 @@
+import { FC } from "react";
 import Link from "next/link";
 import Image from "next/image";
-import { FC } from "react";
 
-type UserPostsListProps = {
+type TUserPostsListProps = {
   posts: {
     id: string;
     title: string;
@@ -11,7 +11,7 @@ type UserPostsListProps = {
   }[];
 };
 
-const UserPostList: FC<UserPostsListProps> = ({ posts }) => {
+const UserPostList: FC<TUserPostsListProps> = ({ posts }) => {
   return (
     <>
       <div className="pb-4 mt-4 my-5 grid grid-cols-1 sm:grid-cols-3 gap-4">

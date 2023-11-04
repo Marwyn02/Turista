@@ -1,7 +1,7 @@
 import React, { FC } from "react";
 import ReviewCard from "./ReviewCard";
 
-interface ReviewListProps {
+interface TReviewListProps {
   reviews: {
     id: string;
     date: string;
@@ -19,7 +19,7 @@ interface ReviewListProps {
 //
 //
 
-const ReviewList: FC<ReviewListProps> = (props) => {
+const ReviewList: FC<TReviewListProps> = (props) => {
   return (
     <>
       <div

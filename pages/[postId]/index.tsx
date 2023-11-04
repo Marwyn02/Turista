@@ -42,9 +42,9 @@ interface IReviewProps {
 }
 
 interface IPostData {
-  postData: {
+  post: {
     id: string;
-    likes: string[];
+    loves: string[];
     title: string;
     coordinate: {
       lng: number;
@@ -66,19 +66,19 @@ const index: FC<IPostData> = (props) => {
   return (
     <Suspense fallback={<p>Loading content...</p>}>
       <PostsDetail
-        id={props.postData.id}
-        likes={props.postData.likes}
-        title={props.postData.title}
-        coordinate={props.postData.coordinate}
-        location={props.postData.location}
-        image={props.postData.image}
-        description={props.postData.description}
-        amenities={props.postData.amenities}
-        user={props.postData.user}
-        userId={props.postData.userId}
-        userImage={props.postData.userImage}
-        reviews={props.postData.reviews}
-        date={props.postData.date}
+        id={props.post.id}
+        loves={props.post.loves}
+        title={props.post.title}
+        coordinate={props.post.coordinate}
+        location={props.post.location}
+        image={props.post.image}
+        description={props.post.description}
+        amenities={props.post.amenities}
+        user={props.post.user}
+        userId={props.post.userId}
+        userImage={props.post.userImage}
+        reviews={props.post.reviews}
+        date={props.post.date}
       />
     </Suspense>
   );
@@ -152,9 +152,9 @@ export async function getStaticProps(
 
     return {
       props: {
-        postData: {
+        post: {
           id: selectedPost._id.toString(),
-          likes: selectedPost.likes,
+          loves: selectedPost.loves,
           title: selectedPost.title,
           coordinate: {
             lng: selectedPost.coordinate.lng,
@@ -186,9 +186,9 @@ export async function getStaticProps(
   } catch (error: any) {
     return {
       props: {
-        postData: {
+        post: {
           id: "",
-          likes: [],
+          loves: [],
           title: "",
           coordinate: {
             lng: 0,

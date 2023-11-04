@@ -1,25 +1,25 @@
-import { FC, Suspense } from "react";
+import React, { FC, Suspense } from "react";
 import dynamic from "next/dynamic";
 import Link from "next/link";
 
 import PostsReview from "./PostsReview";
 import PostImages from "./PostUI/PostImages";
-import ReviewList from "../review/ReviewList";
 import PostsDetailNavigation from "./PostUI/PostsDetailNavigation";
+import ReviewList from "../review/ReviewList";
 
-type Images = {
+type TImages = {
   image: string;
   public_id: string;
 };
 
-type Amenities = {
+type TAmenities = {
   name: string;
   description: string;
   checked: boolean;
   id: string;
 };
 
-type Reviews = {
+type TReviews = {
   id: string;
   date: string;
   name: string;
@@ -31,20 +31,20 @@ type Reviews = {
 
 type PostsDetailProps = {
   id: string;
-  likes: string[];
+  loves: string[];
   title: string;
   coordinate: {
     lng: number;
     lat: number;
   };
   location: string;
-  image: Images[];
+  image: TImages[];
   description: string;
-  amenities: Amenities[];
+  amenities: TAmenities[];
   user: string;
   userId: string;
   userImage: string;
-  reviews: Reviews[];
+  reviews: TReviews[];
   date: string;
 };
 
@@ -59,7 +59,7 @@ const PostsDetail: FC<PostsDetailProps> = (props) => {
         <PostsDetailNavigation
           userId={props.userId}
           postId={props.id}
-          likes={props.likes}
+          loves={props.loves}
         />
 
         {/* Image */}
