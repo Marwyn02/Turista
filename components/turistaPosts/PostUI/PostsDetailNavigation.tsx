@@ -34,7 +34,7 @@ const PostsDetailNavigation: FC<TPostsDetailNavigationProps> = ({
       return;
     }
 
-    const response = await fetch("/api/like/like", {
+    const response = await fetch("/api/like/love", {
       method: "POST",
       headers: {
         "Content-type": "application/json",
@@ -43,11 +43,11 @@ const PostsDetailNavigation: FC<TPostsDetailNavigationProps> = ({
     }).then((r) => r.json());
 
     console.log(response.message);
-    setPostLove(response.liked); // false if already liked
-    setTotalPostLove(response.total_likes);
+    setPostLove(response.loves); // false if already loved
+    setTotalPostLove(response.total_loves);
   };
 
-  // This checks of how many likes does the post have
+  // This checks of how many loves does the post have
   useEffect(() => {
     const checkLikeStatus = async () => {
       try {
@@ -59,8 +59,8 @@ const PostsDetailNavigation: FC<TPostsDetailNavigationProps> = ({
           body: JSON.stringify({ postId: postId, userId: user_in_session }),
         }).then((r) => r.json());
 
-        setPostLove(response.liked);
-        setTotalPostLove(response.total_likes);
+        setPostLove(response.loves);
+        setTotalPostLove(response.total_loves);
       } catch (error: any) {
         console.error(error);
       }
@@ -76,7 +76,7 @@ const PostsDetailNavigation: FC<TPostsDetailNavigationProps> = ({
       setActiveSession(true);
     }
 
-    // Simple liking checker, if the client liked or unliked the post
+    // Simple loving checker, if the client loved or unloved the post
     if (loves.includes(user_in_session)) {
       setPostLove(true);
     }

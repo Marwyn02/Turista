@@ -11,31 +11,31 @@ export default async function Check(req: NextApiRequest, res: NextApiResponse) {
   try {
     const post = await Post.findById(postId);
 
-    // get the likes number
-    const count: number = post.likes.length;
+    // get the loves number
+    const count: number = post.loves.length;
 
-    if (post.likes.includes(userId)) {
-      // if user already liked the post
+    if (post.loves.includes(userId)) {
+      // if user already loved the post
       return res.status(200).json({
-        // it returns boolean true to display liked post status
+        // it returns boolean true to display loved post status
         success: true,
-        liked: true,
-        total_likes: count,
-        message: "User has already liked this post",
+        loves: true,
+        total_loves: count,
+        message: "User has already loved this post",
       });
     }
 
     return res.status(200).json({
       success: true,
-      liked: false,
-      total_likes: count,
-      message: `User haven't liked this post`,
+      loves: false,
+      total_loves: count,
+      message: `User haven't loves this post`,
     });
   } catch (error: any) {
     return res.status(500).json({
       success: false,
-      liked: false,
-      message: "Failed to check if there's a like",
+      loves: false,
+      message: "Failed to check if there's a love",
       error,
     });
   }

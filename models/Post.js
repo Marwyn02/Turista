@@ -4,7 +4,7 @@ import Review from "./Review";
 
 const PostSchema = new mongoose.Schema(
   {
-    likes: {
+    loves: {
       type: Array,
     },
     title: {
