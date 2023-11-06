@@ -9,7 +9,7 @@ import EditPost from "@/components/form/EditPost";
 import FormLayout from "@/components/layout/FormLayout";
 
 interface PostData {
-  postData: {
+  post: {
     id: string;
     title: string;
     coordinate: {
@@ -19,7 +19,7 @@ interface PostData {
     location: string;
     image: ImageArray[];
     description: string;
-    amenities: AmenityArray[];
+    amenities: IAmenityArray[];
   };
 }
 
@@ -28,7 +28,7 @@ interface ImageArray {
   public_id: string;
 }
 
-interface AmenityArray {
+interface IAmenityArray {
   name: string;
   description: string;
   checked: boolean;
@@ -39,13 +39,13 @@ const index: FC<PostData> = (props) => {
     <Suspense fallback={<p>Loading content...</p>}>
       <FormLayout>
         <EditPost
-          id={props.postData.id}
-          title={props.postData.title}
-          coordinate={props.postData.coordinate}
-          location={props.postData.location}
-          image={props.postData.image}
-          description={props.postData.description}
-          amenities={props.postData.amenities}
+          id={props.post.id}
+          title={props.post.title}
+          coordinate={props.post.coordinate}
+          location={props.post.location}
+          image={props.post.image}
+          description={props.post.description}
+          amenities={props.post.amenities}
         />
       </FormLayout>
     </Suspense>
@@ -78,28 +78,29 @@ export async function getStaticProps(
       throw new Error("No params in context ");
     }
     const postId: string = context.params.id as string;
-    const { selectedResult, selectedUser } = await Find(postId);
 
-    if (!selectedResult && !selectedUser) {
+    const { selectedPost, selectedUser } = await Find(postId);
+
+    if (!selectedPost && !selectedUser) {
       return { notFound: true }; // Return a 404 page
     }
     return {
       props: {
-        postData: {
-          id: selectedResult._id.toString(),
-          title: selectedResult.title,
+        post: {
+          id: selectedPost._id.toString(),
+          title: selectedPost.title,
           coordinate: {
-            lng: selectedResult.coordinate.lng,
-            lat: selectedResult.coordinate.lat,
+            lng: selectedPost.coordinate.lng,
+            lat: selectedPost.coordinate.lat,
           },
-          location: selectedResult.location,
-          image: (selectedResult.image || []).map((i: ImageArray) => ({
+          location: selectedPost.location,
+          image: (selectedPost.image || []).map((i: ImageArray) => ({
             image: i.image,
             public_id: i.public_id,
           })),
-          description: selectedResult.description,
-          amenities: (selectedResult.amenities || []).map(
-            (item: AmenityArray) => ({
+          description: selectedPost.description,
+          amenities: (selectedPost.amenities || []).map(
+            (item: IAmenityArray) => ({
               name: item.name,
               description: item.description,
               checked: item.checked,
@@ -112,7 +113,7 @@ export async function getStaticProps(
   } catch (error: any) {
     return {
       props: {
-        postData: {
+        post: {
           id: "",
           title: "",
           coordinate: {
