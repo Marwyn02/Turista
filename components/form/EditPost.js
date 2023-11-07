@@ -1,13 +1,12 @@
 import Link from "next/link";
 import { useState } from "react";
-import { useRouter } from "next/router";
+import router from "next/router";
 
 import AmenitiesBox from "./UI/EditAmenityBox";
 import EditPostImage from "./UI/EditPostImage";
 import EditMap from "./UI/EditMap";
 
 export default function EditPost(props) {
-  const router = useRouter();
   const { id, title, coordinate, location, image, description, amenities } =
     props;
 

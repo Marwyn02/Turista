@@ -34,7 +34,7 @@ const PostsDetailNavigation: FC<TPostsDetailNavigationProps> = ({
       return;
     }
 
-    const response = await fetch("/api/like/love", {
+    const response = await fetch("/api/love/love", {
       method: "POST",
       headers: {
         "Content-type": "application/json",
@@ -51,7 +51,7 @@ const PostsDetailNavigation: FC<TPostsDetailNavigationProps> = ({
   useEffect(() => {
     const checkLikeStatus = async () => {
       try {
-        const response = await fetch("/api/like/check", {
+        const response = await fetch("/api/love/check", {
           method: "POST",
           headers: {
             "Content-type": "application/json",
@@ -126,14 +126,25 @@ const PostsDetailNavigation: FC<TPostsDetailNavigationProps> = ({
         <div className="flex gap-x-1 md:gap-x-2">
           <button
             onClick={deleteHandler}
-            className="px-2 py-2 md:px-2.5 bg-violet-400 duration-300 rounded hover:bg-violet-500"
+            className="px-2 py-2 md:px-2.5 bg-red-400 duration-300 
+              flex items-center rounded hover:bg-red-500"
           >
-            <img src="/trash.svg" height={18} width={18} alt="Delete" />
+            <img
+              src="/trash-bin-white.svg"
+              height={18}
+              width={18}
+              alt="Delete"
+            />
+            <span className="ml-2 text-white text-sm">Delete</span>
           </button>
 
           <Link href={`/edit/${postId}`}>
-            <button className="px-2 py-2 md:px-2.5 bg-violet-400 duration-300 rounded hover:bg-violet-500">
+            <button
+              className="px-2 py-2 md:px-2.5 bg-violet-400 duration-300 
+              flex items-center rounded hover:bg-violet-500"
+            >
               <img src="/pencil-white.svg" height={18} width={18} alt="Edit" />
+              <span className="ml-2 text-white text-sm">Edit</span>
             </button>
           </Link>
         </div>
