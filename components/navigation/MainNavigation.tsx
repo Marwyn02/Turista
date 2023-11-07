@@ -26,7 +26,6 @@ const MainNavigation = () => {
             body: JSON.stringify({ userId: user_in_session }),
           }).then((r) => r.json());
 
-          console.log(response.message);
           setUserHasNoCreatedPost(response.userHasNoCreatedPost);
         } catch (error: any) {
           console.error("Main navigation error:", error);

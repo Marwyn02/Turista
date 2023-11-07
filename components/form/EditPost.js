@@ -92,7 +92,7 @@ export default function EditPost(props) {
       router.push(response.redirect);
       setLoading(false);
     } catch (error) {
-      throw new Error("Error in Edit Post Submit Handler: " + error);
+      console.error("Error occur in post edit, ", error);
     }
   };
   return (

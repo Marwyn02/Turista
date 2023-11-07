@@ -29,7 +29,7 @@ type TReviews = {
   userId: string;
 };
 
-type PostsDetailProps = {
+type TPostsDetailProps = {
   id: string;
   loves: string[];
   title: string;
@@ -48,7 +48,7 @@ type PostsDetailProps = {
   date: string;
 };
 
-const PostsDetail: FC<PostsDetailProps> = (props) => {
+const PostsDetail: FC<TPostsDetailProps> = (props) => {
   const PostsMap = dynamic(() => import("./PostUI/PostsMap"), {
     loading: () => <p>Loading...</p>,
     ssr: false,

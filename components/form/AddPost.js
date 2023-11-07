@@ -78,13 +78,10 @@ export default function AddPost() {
       form.append("file", images);
       form.append("upload_preset", "Turista-Uploads");
 
-      const response = await fetch(
-        "https://api.cloudinary.com/v1_1/dgzsmdvo4/image/upload",
-        {
-          method: "POST",
-          body: form,
-        }
-      ).then((r) => r.json());
+      const response = await fetch(process.env.NEXT_PUBLIC_CLOUDINARY_URL, {
+        method: "POST",
+        body: form,
+      }).then((r) => r.json());
 
       console.log("Response: ", response);
 
@@ -478,7 +475,7 @@ export default function AddPost() {
                   className="bg-indigo-500 text-sm py-1.5 px-4 w-max rounded text-gray-100"
                   disabled={loading}
                 >
-                  {!loading ? "Create a new post" : "Creating your post"}
+                  {!loading ? "Create a post" : "Creating your post"}
                 </button>
               </div>
             )}
