@@ -36,6 +36,8 @@ const AddMap: FC<MapProps> = (props) => {
   });
   const [zoom] = useState<number>(8);
 
+  const [error, setError] = useState<string>("");
+
   useEffect(() => {
     if (mapContainerRef.current) {
       const map = new mapboxgl.Map({
@@ -95,14 +97,19 @@ const AddMap: FC<MapProps> = (props) => {
   // This only for adding marking the location for the map
 
   const handleMapCoordinates = () => {
+    if (coordinatesRef.current.lat === 0 || coordinatesRef.current.lng === 0) {
+      setError("Unknown location");
+      return;
+    }
     setMarked(true);
+    setError("");
     props.onMarkerClick(coordinatesRef.current);
   };
 
   return (
     <>
       <div ref={mapContainerRef} className="map-container" />
-
+      <p className="text-sm text-red-500 mt-0.5">{error}</p>
       {marked ? (
         <button
           className="w-full py-1.5 mt-3 text-sm border border-gray-200 rounded bg-gray-200 text-gray-500"

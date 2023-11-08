@@ -6,6 +6,17 @@ import { useSession } from "next-auth/react";
 
 import AmenitiesBox from "../ui/AmenitiesBox";
 
+// type TImage = {
+//   image: string;
+//   public_id: string;
+// };
+
+type TAmenities = {
+  name: string;
+  description: string;
+  checked: boolean;
+};
+
 export default function AddPost() {
   const { data: session } = useSession();
 
@@ -18,48 +29,56 @@ export default function AddPost() {
   }, [session]);
 
   // Form data
-  const titleInputRef = useRef(null);
-  const locationInputRef = useRef(null);
-  const descriptionInputRef = useRef(null);
-  const [imageData, setImageData] = useState([]);
-  const amenitiesRef = useRef([]);
-  const coordinatesRef = useRef({ lng: 0, lat: 0 });
+  const titleInputRef = useRef<HTMLInputElement>(null);
+  const locationInputRef = useRef<HTMLInputElement>(null);
+  const descriptionInputRef = useRef<HTMLTextAreaElement>(null);
+  // const [imageData, setImageData] = useState<TImage[]>([]);
+  const amenitiesRef = useRef<TAmenities[]>([]);
+  const coordinatesRef = useRef<{ lng: number; lat: number }>({
+    lng: 0,
+    lat: 0,
+  });
 
   // Image data
-  const [imageOnePreview, setImageOnePreview] = useState(null);
-  const [imageTwoPreview, setImageTwoPreview] = useState(null);
-  const [imageThreePreview, setImageThreePreview] = useState(null);
+  const [imageOnePreview, setImageOnePreview] = useState<string | null>(null);
+  const [imageTwoPreview, setImageTwoPreview] = useState<string | null>(null);
+  const [imageThreePreview, setImageThreePreview] = useState<string | null>(
+    null
+  );
 
-  const [selectedImages, setSelectedImages] = useState([]);
+  const [selectedImages, setSelectedImages] = useState<File[]>([]);
 
-  const imageOneInputRef = useRef();
-  const imageTwoInputRef = useRef();
-  const imageThreeInputRef = useRef();
+  const imageOneInputRef = useRef<HTMLInputElement>(null);
+  const imageTwoInputRef = useRef<HTMLInputElement>(null);
+  const imageThreeInputRef = useRef<HTMLInputElement>(null);
 
   // Loading states
   const [showContinue, setShowContinue] = useState(false);
   const [loading, setLoading] = useState(false);
 
   // Get coordinates
-  const coordinates = ({ lat, lng }) => {
+  const coordinates = ({ lat, lng }: { lat: number; lng: number }) => {
     coordinatesRef.current = { lng, lat };
   };
 
   // Get amenities
-  const amenitiesChecked = (amenity) => {
+  const amenitiesChecked = (amenity: TAmenities[]) => {
     amenitiesRef.current = amenity;
   };
 
   // Image handler
-  const handleImageChange = async (e, setImagePreview) => {
-    const imageFile = e.target.files[0];
+  const handleImageChange = async (
+    e: React.ChangeEvent<HTMLInputElement>,
+    setImagePreview: React.Dispatch<React.SetStateAction<string | null>>
+  ): Promise<void> => {
+    const imageFile = e.target.files?.[0];
 
     if (imageFile) {
-      const reader = new FileReader();
+      const reader: FileReader = new FileReader();
 
-      reader.onload = (e) => {
-        setSelectedImages((prevImages) => [...prevImages, imageFile]);
-        setImagePreview(e.target.result);
+      reader.onload = (e: ProgressEvent<FileReader>) => {
+        setSelectedImages((prevImages: File[]) => [...prevImages, imageFile]);
+        setImagePreview(e.target?.result as string);
       };
 
       reader.readAsDataURL(imageFile);
@@ -67,65 +86,114 @@ export default function AddPost() {
   };
 
   // Image submit to cloudinary handler
-  const handleImageSubmit = async (e) => {
-    e.preventDefault();
-    setLoading(true);
+  // const handleImageSubmit = async (e: React.FormEvent) => {
+  //   e.preventDefault();
+  //   setLoading(true);
 
-    const newImageDataArray = [];
+  //   const newImageDataArray = [];
 
-    for (const images of selectedImages) {
-      const form = new FormData();
-      form.append("file", images);
-      form.append("upload_preset", "Turista-Uploads");
+  //   for (const images of selectedImages) {
+  //     const form = new FormData();
+  //     form.append("file", images);
+  //     form.append("upload_preset", "Turista-Uploads");
 
-      const response = await fetch(process.env.NEXT_PUBLIC_CLOUDINARY_URL, {
-        method: "POST",
-        body: form,
-      }).then((r) => r.json());
+  //     const response = await fetch(
+  //       process.env.NEXT_PUBLIC_CLOUDINARY_URL as string,
+  //       {
+  //         method: "POST",
+  //         body: form,
+  //       }
+  //     ).then((r) => r.json());
 
-      console.log("Response: ", response);
+  //     console.log("Response: ", response);
 
-      const newImageData = {
-        image: response.secure_url,
-        public_id: response.public_id,
-      };
-      newImageDataArray.push(newImageData);
+  //     const newImageData = {
+  //       image: response.secure_url,
+  //       public_id: response.public_id,
+  //     };
+  //     newImageDataArray.push(newImageData);
+  //   }
+  //   setImageData(newImageDataArray);
+  //   setShowContinue(true);
+  //   setLoading(false);
+  // };
+
+  console.log("Selected Images: ", selectedImages);
+
+  // Check the selectedImages if the length is less than 3,
+  // to hide the title and description input.
+  // And the save button.
+  useEffect(() => {
+    if (selectedImages.length < 3) {
+      setShowContinue(false);
+    } else {
+      setShowContinue(true);
     }
-    setImageData(newImageDataArray);
-    setShowContinue(true);
-    setLoading(false);
-  };
+  }, [selectedImages]);
 
-  // Submit the input to database
-  const submitInputHandler = async () => {
+  // Submit the inputs of the user to the database
+  const submitHandler = async () => {
     setLoading(true);
-
-    const postData = {
-      loves: [], // insert no element array
-      image: imageData.map((i) => ({
-        image: i.image,
-        public_id: i.public_id,
-      })),
-      title:
-        titleInputRef.current.value.charAt(0).toUpperCase() +
-        titleInputRef.current.value.slice(1),
-      location: locationInputRef.current.value,
-      coordinate: {
-        lng: coordinatesRef.current.lng,
-        lat: coordinatesRef.current.lat,
-      },
-      amenities: amenitiesRef.current.map((check) => ({
-        name: check.name,
-        description: check.description,
-        checked: check.checked,
-      })),
-      description: descriptionInputRef.current.value,
-      user: session.user._id,
-    };
-
-    console.log("Response: ", postData);
 
     try {
+      // Upload images to cloudinary
+      const newImageDataArray = [];
+
+      // Loop all the selectedImages
+      for (const images of selectedImages) {
+        const form = new FormData();
+        form.append("file", images);
+        form.append("upload_preset", "Turista-Uploads");
+
+        const response = await fetch(
+          process.env.NEXT_PUBLIC_CLOUDINARY_URL as string,
+          {
+            method: "POST",
+            body: form,
+          }
+        ).then((r) => r.json());
+
+        console.log("Response: ", response);
+
+        // Create a variable for the image and public_id of the image,
+        // to store in the array of newImageDataArray
+        const newImageData = {
+          image: response.secure_url,
+          public_id: response.public_id,
+        };
+        // Push the newImageData to the new array to later store in the postData object
+        newImageDataArray.push(newImageData);
+      }
+
+      // setImageData(newImageDataArray);
+      // setShowContinue(true);
+      // setLoading(false);
+
+      const postData = {
+        loves: [], // insert no element array
+        image: newImageDataArray.map((i) => ({
+          image: i.image,
+          public_id: i.public_id,
+        })),
+        title:
+          titleInputRef.current!.value.charAt(0).toUpperCase() +
+          titleInputRef.current!.value.slice(1),
+        location: locationInputRef.current?.value,
+        coordinate: {
+          lng: coordinatesRef.current.lng,
+          lat: coordinatesRef.current.lat,
+        },
+        amenities: amenitiesRef.current.map((check) => ({
+          name: check.name,
+          description: check.description,
+          checked: check.checked,
+        })),
+        description: descriptionInputRef.current?.value,
+        user: (session?.user as { _id: string })?._id as string,
+      };
+
+      console.log("Response: ", postData);
+
       const response = await fetch("/api/post/create", {
         method: "POST",
         headers: {
@@ -136,15 +204,16 @@ export default function AddPost() {
 
       if (!response.success) {
         setLoading(false);
-        throw new Error(response.message);
+        console.error(response.message);
       }
 
       console.log(response.message);
       router.push(response.redirect);
       location.reload();
       setLoading(false);
-    } catch (error) {
-      console.error(error);
+    } catch (error: any) {
+      setLoading(false);
+      console.error("Failed to create a post, ", error);
     }
   };
 
@@ -154,7 +223,7 @@ export default function AddPost() {
     ssr: false,
   });
   return (
-    <form className="bg-white sm:my-4" onSubmit={submitInputHandler}>
+    <section className="bg-white sm:my-4">
       <div className="space-y-10 md:px-2">
         <div className="px-5">
           <h2 className="text-xl">Create your own post.</h2>
@@ -251,7 +320,7 @@ export default function AddPost() {
               <img
                 src={imageOnePreview}
                 alt="Preview 1"
-                className="mt-4 rounded-lg"
+                className="mt-2 md:mt-4 rounded-lg"
               />
             )}
 
@@ -301,7 +370,7 @@ export default function AddPost() {
                 <img
                   src={imageTwoPreview}
                   alt="Preview 2"
-                  className="mt-4 rounded-lg"
+                  className="mt-2 md:mt-4 rounded-lg"
                 />
               )}
 
@@ -344,7 +413,7 @@ export default function AddPost() {
                 <img
                   src={imageThreePreview}
                   alt="Preview 3"
-                  className="mt-4 rounded-lg"
+                  className="mt-2 md:mt-4 rounded-lg"
                 />
               )}
             </div>
@@ -352,7 +421,7 @@ export default function AddPost() {
             {/* Images Buttons  */}
             <div className="flex gap-x-2 md:mt-2">
               {/* Will clear all preview images and the array state for the cloudinary */}
-              {imageOnePreview && !showContinue && !loading && (
+              {imageOnePreview && !loading && (
                 <button
                   onClick={(e) => {
                     setSelectedImages([]);
@@ -370,7 +439,7 @@ export default function AddPost() {
               )}
 
               {/* Will save the image to the cloudinary */}
-              {selectedImages && selectedImages.length === 3 && (
+              {/* {selectedImages && selectedImages.length === 3 && (
                 <button
                   onClick={handleImageSubmit}
                   className={`px-8 py-2 text-xs md:text-sm  duration-300 
@@ -398,7 +467,7 @@ export default function AddPost() {
                     "Save selected images"
                   )}
                 </button>
-              )}
+              )} */}
             </div>
           </div>
 
@@ -440,9 +509,8 @@ export default function AddPost() {
               <div>
                 <div className="flex w-full">
                   <textarea
-                    cols="30"
-                    rows="5"
-                    type="text"
+                    cols={30}
+                    rows={5}
                     name="description"
                     id="description"
                     className="add_edit_description"
@@ -471,17 +539,18 @@ export default function AddPost() {
             {showContinue && (
               <div>
                 <button
-                  type="submit"
+                  type="button"
                   className="bg-indigo-500 text-sm py-1.5 px-4 w-max rounded text-gray-100"
+                  onClick={submitHandler}
                   disabled={loading}
                 >
-                  {!loading ? "Create a post" : "Creating your post"}
+                  {!loading ? "Create a post" : "Creating your post..."}
                 </button>
               </div>
             )}
           </div>
         </div>
       </div>
-    </form>
+    </section>
   );
 }

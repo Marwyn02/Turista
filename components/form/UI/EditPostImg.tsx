@@ -1,31 +1,51 @@
-import Image from "next/image";
-import { useState, useRef } from "react";
+import React, { useState, useRef, FC } from "react";
 
-export default function EditPostImage({ id, image, title, updateImageData }) {
-  const [selectedImages, setSelectedImages] = useState([]);
+type TEditPostImageProps = {
+  id: string;
+  image: { image: string; public_id: string }[];
+  title: string;
+  updateImageData: (
+    updateImages: { image: string; public_id: string }[]
+  ) => void;
+};
 
-  const [imageOnePreview, setImageOnePreview] = useState(null);
-  const [imageTwoPreview, setImageTwoPreview] = useState(null);
-  const [imageThreePreview, setImageThreePreview] = useState(null);
-  const [editedImages, setEditedImages] = useState([]);
+const EditPostImage: FC<TEditPostImageProps> = ({
+  id,
+  image,
+  title,
+  updateImageData,
+}) => {
+  const [selectedImages, setSelectedImages] = useState<
+    { image: string; public_id: string }[]
+  >([]);
 
-  const imageOneInputRef = useRef();
-  const imageTwoInputRef = useRef();
-  const imageThreeInputRef = useRef();
+  const [imageOnePreview, setImageOnePreview] = useState<string | null>(null);
+  const [imageTwoPreview, setImageTwoPreview] = useState<string | null>(null);
+  const [imageThreePreview, setImageThreePreview] = useState<string | null>(
+    null
+  );
+  const [editedImages, setEditedImages] = useState<File[]>([]);
+
+  const imageOneInputRef = useRef<HTMLInputElement | null>(null);
+  const imageTwoInputRef = useRef<HTMLInputElement | null>(null);
+  const imageThreeInputRef = useRef<HTMLInputElement | null>(null);
 
   const [editLoading, setEditLoading] = useState(false);
   const [editSaved, setEditSaved] = useState(false);
 
   // File reader to preview the inputted file
-  const handleImageChange = async (e, setImagePreview, position) => {
-    const imageFile = e.target.files[0];
+  const handleImageChange = async (
+    e: React.ChangeEvent<HTMLInputElement>,
+    setImagePreview: React.Dispatch<React.SetStateAction<string | null>>
+  ) => {
+    const imageFile = e.target.files?.[0];
 
     if (imageFile) {
-      const reader = new FileReader();
+      const reader: FileReader = new FileReader();
 
       reader.onload = (e) => {
         setEditedImages((prevImages) => [...prevImages, imageFile]);
-        setImagePreview(e.target.result);
+        setImagePreview(e.target?.result as string);
       };
 
       reader.readAsDataURL(imageFile);
@@ -33,7 +53,7 @@ export default function EditPostImage({ id, image, title, updateImageData }) {
   };
 
   // Save image to cloudinary
-  const submitImageHandler = async (e) => {
+  const submitImageHandler = async (e: React.FormEvent): Promise<void> => {
     e.preventDefault();
     setEditLoading(true);
 
@@ -46,7 +66,7 @@ export default function EditPostImage({ id, image, title, updateImageData }) {
         form.append("upload_preset", "Turista-Uploads");
 
         const response = await fetch(
-          "https://api.cloudinary.com/v1_1/dgzsmdvo4/image/upload",
+          process.env.NEXT_PUBLIC_CLOUDINARY_URL as string,
           {
             method: "POST",
             body: form,
@@ -72,7 +92,7 @@ export default function EditPostImage({ id, image, title, updateImageData }) {
   };
 
   // Filtering the selected images
-  const toggleImageSelection = (index) => {
+  const toggleImageSelection = (index: number) => {
     const imageToSelect = image[index];
 
     const isSelected = selectedImages.includes(imageToSelect);
@@ -85,7 +105,7 @@ export default function EditPostImage({ id, image, title, updateImageData }) {
   };
 
   // Delete and remove the image to the post and the database
-  const deleteSelectedImages = async (e) => {
+  const deleteSelectedImages = async (e: { preventDefault: () => void }) => {
     e.preventDefault();
 
     try {
@@ -100,19 +120,18 @@ export default function EditPostImage({ id, image, title, updateImageData }) {
             "Content-type": "application/json",
           },
           body: JSON.stringify({ id, img }),
-        });
+        }).then((r) => r.json());
 
-        if (!response.ok) {
-          console.error(`Failed to delete image: ${img.public_id}`);
+        if (!response.success) {
+          console.error(`Failed to delete image`);
         }
-        const res = await response.json();
-        console.log(res.message);
+        console.log(response.message);
       });
       await Promise.all(deletePromises);
 
       setEditLoading(false);
       location.reload();
-    } catch (error) {
+    } catch (error: any) {
       setEditLoading(false);
       console.error("Failed to delete image", error);
     }
@@ -122,12 +141,9 @@ export default function EditPostImage({ id, image, title, updateImageData }) {
       <div>
         {/* Image one  */}
         {image[0] && (
-          <Image
+          <img
             src={image[0].image}
-            height={300}
-            width={400}
             alt={title}
-            name="image"
             id="image"
             className={`w-full md:rounded-lg duration-100 mt-2 hover:brightness-90
                   ${
@@ -140,14 +156,14 @@ export default function EditPostImage({ id, image, title, updateImageData }) {
         )}
         {!imageOnePreview && !image[0] && (
           <div
-            className="mt-2 flex justify-center rounded-lg border 
+            className="mt-2 flex justify-center rounded-lg border
                   border-dashed border-gray-900/25 px-6 py-10"
           >
             <div className="text-center">
               <div className="mt-4 flex text-sm leading-6 text-gray-600">
                 <label
                   htmlFor="file-upload-0"
-                  className="relative cursor-pointer rounded-md bg-white 
+                  className="relative cursor-pointer rounded-md bg-white
                      font-semibold text-indigo-600 hover:text-indigo-500"
                 >
                   <span>Upload a file</span>
@@ -157,9 +173,7 @@ export default function EditPostImage({ id, image, title, updateImageData }) {
                     type="file"
                     accept="image/*"
                     className="sr-only"
-                    onChange={(e) =>
-                      handleImageChange(e, setImageOnePreview, 0)
-                    }
+                    onChange={(e) => handleImageChange(e, setImageOnePreview)}
                     ref={imageOneInputRef}
                   />
                 </label>
@@ -181,12 +195,9 @@ export default function EditPostImage({ id, image, title, updateImageData }) {
 
         {/* Image two  */}
         {image[1] && (
-          <Image
+          <img
             src={image[1].image}
-            height={300}
-            width={400}
             alt={title}
-            name="image"
             id="image"
             className={`w-full md:rounded-lg duration-100 mt-2 hover:brightness-90
                       ${
@@ -199,14 +210,14 @@ export default function EditPostImage({ id, image, title, updateImageData }) {
         )}
         {!imageTwoPreview && !image[1] && (
           <div
-            className="mt-2 flex justify-center rounded-lg border 
+            className="mt-2 flex justify-center rounded-lg border
                         border-dashed border-gray-900/25 px-6 py-10"
           >
             <div className="text-center">
               <div className="mt-4 flex text-sm leading-6 text-gray-600">
                 <label
                   htmlFor="file-upload-1"
-                  className="relative cursor-pointer rounded-md bg-white 
+                  className="relative cursor-pointer rounded-md bg-white
                            font-semibold text-indigo-600 hover:text-indigo-500"
                 >
                   <span>Upload a file</span>
@@ -216,9 +227,7 @@ export default function EditPostImage({ id, image, title, updateImageData }) {
                     type="file"
                     accept="image/*"
                     className="sr-only"
-                    onChange={(e) =>
-                      handleImageChange(e, setImageTwoPreview, 1)
-                    }
+                    onChange={(e) => handleImageChange(e, setImageTwoPreview)}
                     ref={imageTwoInputRef}
                   />
                 </label>
@@ -240,12 +249,9 @@ export default function EditPostImage({ id, image, title, updateImageData }) {
 
         {/* Image three  */}
         {image[2] && (
-          <Image
+          <img
             src={image[2].image}
-            height={300}
-            width={400}
             alt={title}
-            name="image"
             id="image"
             className={`w-full md:rounded-lg duration-100 mt-2 hover:brightness-90
                       ${
@@ -258,14 +264,14 @@ export default function EditPostImage({ id, image, title, updateImageData }) {
         )}
         {!imageThreePreview && !image[2] && (
           <div
-            className="mt-2 flex justify-center rounded-lg border 
+            className="mt-2 flex justify-center rounded-lg border
                       border-dashed border-gray-900/25 px-6 py-10"
           >
             <div className="text-center">
               <div className="mt-4 flex text-sm leading-6 text-gray-600">
                 <label
                   htmlFor="file-upload-2"
-                  className="relative cursor-pointer rounded-md bg-white 
+                  className="relative cursor-pointer rounded-md bg-white
                          font-semibold text-indigo-600 hover:text-indigo-500"
                 >
                   <span>Upload a file</span>
@@ -275,9 +281,7 @@ export default function EditPostImage({ id, image, title, updateImageData }) {
                     type="file"
                     accept="image/*"
                     className="sr-only"
-                    onChange={(e) =>
-                      handleImageChange(e, setImageThreePreview, 2)
-                    }
+                    onChange={(e) => handleImageChange(e, setImageThreePreview)}
                     ref={imageThreeInputRef}
                   />
                 </label>
@@ -304,7 +308,7 @@ export default function EditPostImage({ id, image, title, updateImageData }) {
           {selectedImages.length >= 1 && !editSaved ? (
             <button
               type="button"
-              className="px-8 py-2 text-xs md:text-sm bg-red-400 text-white duration-300 
+              className="px-8 py-2 text-xs md:text-sm bg-red-400 text-white duration-300
                        rounded mt-2 hover:bg-red-500"
               onClick={deleteSelectedImages}
               disabled={editLoading}
@@ -318,7 +322,7 @@ export default function EditPostImage({ id, image, title, updateImageData }) {
           {imageOnePreview || imageTwoPreview || imageThreePreview ? (
             <button
               type="button"
-              className="px-4 py-2 text-xs md:text-sm bg-gray-200 text-gray-500 duration-300 
+              className="px-4 py-2 text-xs md:text-sm bg-gray-200 text-gray-500 duration-300
               rounded mt-2 hover:bg-gray-300 hover:text-gray-600"
               onClick={() => {
                 setImageOnePreview(null);
@@ -334,7 +338,7 @@ export default function EditPostImage({ id, image, title, updateImageData }) {
         {imageThreePreview && !editSaved && (
           <button
             type="button"
-            className="px-8 py-2 text-xs md:text-sm bg-indigo-500 text-white duration-300 
+            className="px-8 py-2 text-xs md:text-sm bg-indigo-500 text-white duration-300
               rounded mt-2 hover:bg-indigo-600 hover:text-white"
             disabled={editLoading}
             onClick={submitImageHandler}
@@ -361,4 +365,6 @@ export default function EditPostImage({ id, image, title, updateImageData }) {
       )}
     </>
   );
-}
+};
+
+export default EditPostImage;

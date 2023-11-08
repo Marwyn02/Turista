@@ -16,7 +16,9 @@ export default async function remove(
     const post = await Post.findById(id);
 
     if (!post) {
-      return res.status(404).json({ message: "Post not found" });
+      return res
+        .status(404)
+        .json({ success: false, message: "Post not found" });
     }
 
     const imageIndex: number = post.image.findIndex(
@@ -24,7 +26,9 @@ export default async function remove(
     );
 
     if (imageIndex === -1) {
-      return res.status(404).json({ message: "Image not found in the post" });
+      return res
+        .status(404)
+        .json({ success: false, message: "Image not found in the post" });
     }
 
     post.image.splice(imageIndex, 1);
@@ -35,7 +39,10 @@ export default async function remove(
     console.log("Image deleted");
     return res
       .status(200)
-      .json({ message: `Image: ${image.public_id} deleted successfully` });
+      .json({
+        success: true,
+        message: `Image: ${image.public_id} deleted successfully`,
+      });
   } catch (error: any) {
     return res
       .status(500)
