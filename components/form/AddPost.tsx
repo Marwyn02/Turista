@@ -6,11 +6,6 @@ import { useSession } from "next-auth/react";
 
 import AmenitiesBox from "../ui/AmenitiesBox";
 
-// type TImage = {
-//   image: string;
-//   public_id: string;
-// };
-
 type TAmenities = {
   name: string;
   description: string;
@@ -39,7 +34,7 @@ export default function AddPost() {
     lat: 0,
   });
 
-  // Image data
+  // Image data states
   const [imageOnePreview, setImageOnePreview] = useState<string | null>(null);
   const [imageTwoPreview, setImageTwoPreview] = useState<string | null>(null);
   const [imageThreePreview, setImageThreePreview] = useState<string | null>(
@@ -56,17 +51,18 @@ export default function AddPost() {
   const [showContinue, setShowContinue] = useState(false);
   const [loading, setLoading] = useState(false);
 
-  // Get coordinates
+  // Get coordinates from addmap
   const coordinates = ({ lat, lng }: { lat: number; lng: number }) => {
     coordinatesRef.current = { lng, lat };
   };
 
-  // Get amenities
+  // Get amenities from amenities box
   const amenitiesChecked = (amenity: TAmenities[]) => {
     amenitiesRef.current = amenity;
   };
 
   // Image handler
+  // Select and push the image urls to the setSeletedImages array
   const handleImageChange = async (
     e: React.ChangeEvent<HTMLInputElement>,
     setImagePreview: React.Dispatch<React.SetStateAction<string | null>>
@@ -85,41 +81,6 @@ export default function AddPost() {
     }
   };
 
-  // Image submit to cloudinary handler
-  // const handleImageSubmit = async (e: React.FormEvent) => {
-  //   e.preventDefault();
-  //   setLoading(true);
-
-  //   const newImageDataArray = [];
-
-  //   for (const images of selectedImages) {
-  //     const form = new FormData();
-  //     form.append("file", images);
-  //     form.append("upload_preset", "Turista-Uploads");
-
-  //     const response = await fetch(
-  //       process.env.NEXT_PUBLIC_CLOUDINARY_URL as string,
-  //       {
-  //         method: "POST",
-  //         body: form,
-  //       }
-  //     ).then((r) => r.json());
-
-  //     console.log("Response: ", response);
-
-  //     const newImageData = {
-  //       image: response.secure_url,
-  //       public_id: response.public_id,
-  //     };
-  //     newImageDataArray.push(newImageData);
-  //   }
-  //   setImageData(newImageDataArray);
-  //   setShowContinue(true);
-  //   setLoading(false);
-  // };
-
-  console.log("Selected Images: ", selectedImages);
-
   // Check the selectedImages if the length is less than 3,
   // to hide the title and description input.
   // And the save button.
@@ -137,9 +98,10 @@ export default function AddPost() {
 
     try {
       // Upload images to cloudinary
-      const newImageDataArray = [];
+      const imageArray = [];
 
       // Loop all the selectedImages
+      // Then save it to the cloudinary cloud storage
       for (const images of selectedImages) {
         const form = new FormData();
         form.append("file", images);
@@ -156,25 +118,23 @@ export default function AddPost() {
         console.log("Response: ", response);
 
         // Create a variable for the image and public_id of the image,
-        // to store in the array of newImageDataArray
-        const newImageData = {
+        // to store in the array of imageArray
+        const image = {
           image: response.secure_url,
           public_id: response.public_id,
         };
+
         // Push the newImageData to the new array to later store in the postData object
-        newImageDataArray.push(newImageData);
+        imageArray.push(image);
       }
 
-      // setImageData(newImageDataArray);
-      // setShowContinue(true);
-      // setLoading(false);
-
-      const postData = {
+      const post = {
         loves: [], // insert no element array
-        image: newImageDataArray.map((i) => ({
-          image: i.image,
-          public_id: i.public_id,
+        image: imageArray.map((img) => ({
+          image: img.image,
+          public_id: img.public_id,
         })),
+        // Capitalize the first character of the title inputted
         title:
           titleInputRef.current!.value.charAt(0).toUpperCase() +
           titleInputRef.current!.value.slice(1),
@@ -189,17 +149,18 @@ export default function AddPost() {
           checked: check.checked,
         })),
         description: descriptionInputRef.current?.value,
-        user: (session?.user as { _id: string })?._id as string,
+        user: (session?.user as { _id: string })?._id as string, // id of the active user
       };
 
-      console.log("Response: ", postData);
+      // Log the response
+      console.log("Response: ", post);
 
       const response = await fetch("/api/post/create", {
         method: "POST",
         headers: {
           "Content-type": "application/json",
         },
-        body: JSON.stringify(postData),
+        body: JSON.stringify(post),
       }).then((r) => r.json());
 
       if (!response.success) {
@@ -211,9 +172,11 @@ export default function AddPost() {
       router.push(response.redirect);
       location.reload();
       setLoading(false);
+
+      // Catch Error of the whole function
     } catch (error: any) {
       setLoading(false);
-      console.error("Failed to create a post, ", error);
+      console.error("Failed to creating your post, ", error);
     }
   };
 
@@ -437,37 +400,6 @@ export default function AddPost() {
                   Clear image(s)
                 </button>
               )}
-
-              {/* Will save the image to the cloudinary */}
-              {/* {selectedImages && selectedImages.length === 3 && (
-                <button
-                  onClick={handleImageSubmit}
-                  className={`px-8 py-2 text-xs md:text-sm  duration-300 
-                  rounded mt-2  ${
-                    showContinue
-                      ? "bg-gray-300"
-                      : "bg-indigo-500 text-white hover:bg-indigo-600 hover:text-white"
-                  }`}
-                  disabled={showContinue || loading}
-                >
-                  {loading ? (
-                    "Saving..."
-                  ) : showContinue ? (
-                    <div className="flex items-center">
-                      Saved{" "}
-                      <img
-                        src="/check-photo.svg"
-                        alt="saved"
-                        height={20}
-                        width={20}
-                        className="ml-1"
-                      />
-                    </div>
-                  ) : (
-                    "Save selected images"
-                  )}
-                </button>
-              )} */}
             </div>
           </div>
 
@@ -523,19 +455,21 @@ export default function AddPost() {
           )}
 
           {/* Submit and cancel buttons */}
-          <div className="flex gap-x-1.5 pt-5">
-            <div>
-              <Link href="/">
-                <button
-                  type="button"
-                  className="bg-gray-200 text-sm py-1.5 px-4 w-max rounded text-gray-900
+          <section className="flex gap-x-1.5 pt-5">
+            {!loading && (
+              <div>
+                <Link href="/">
+                  <button
+                    type="button"
+                    className="bg-gray-200 text-sm py-1.5 px-4 w-max rounded text-gray-900
                   hover:bg-gray-300 duration-300"
-                  disabled={loading}
-                >
-                  Cancel
-                </button>
-              </Link>
-            </div>
+                    disabled={loading}
+                  >
+                    Cancel
+                  </button>
+                </Link>
+              </div>
+            )}
             {showContinue && (
               <div>
                 <button
@@ -548,7 +482,7 @@ export default function AddPost() {
                 </button>
               </div>
             )}
-          </div>
+          </section>
         </div>
       </div>
     </section>
