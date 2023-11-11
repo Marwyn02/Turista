@@ -22,6 +22,22 @@ export default function EditPost(props) {
 
   const [loading, setLoading] = useState(false);
 
+  // Post information edit states
+  const [editState, setEditState] = useState({
+    title: false,
+    location: false,
+    description: false,
+  });
+
+  // Handle the toggling function of the post information,
+  // title, location, description
+  const handleEditToggle = (inputName) => {
+    setEditState((prevEditState) => ({
+      ...prevEditState,
+      [inputName]: !prevEditState[inputName],
+    }));
+  };
+
   const editCoordinates = ({ lng, lat }) => {
     setNewCoordinates({ lng: lng, lat: lat });
   };
@@ -85,7 +101,7 @@ export default function EditPost(props) {
 
       if (!response.success) {
         setLoading(false);
-        throw new Error(response.message);
+        console.error(response.message);
       }
 
       console.log(response.message);
@@ -143,80 +159,126 @@ export default function EditPost(props) {
               </div>
             </div>
 
-            {/* Title Input  */}
-            <div className="sm:col-span-6">
-              <label
-                className="text-sm font-medium leading-6 text-gray-600"
-                htmlFor="title"
-              >
-                Title
-              </label>
-              <div>
-                <div className="flex w-full">
-                  <input
-                    type="text"
-                    name="title"
-                    id="title"
-                    className="add_edit_title"
-                    placeholder="My travel post title"
-                    onChange={(e) => setNewTitle(e.target.value)}
-                    value={newTitle}
-                    required
-                  ></input>
+            {/* Post Details */}
+            <section className="sm:col-span-6 pb-8">
+              <h3 className="text-xl py-5">Post Information.</h3>
+              <p></p>
+              {/* Title Input  */}
+              <div className="grid grid-cols-4 border-t border-gray-300 py-6">
+                <label
+                  className="col-span-1 text-sm font-medium leading-6 text-gray-700"
+                  htmlFor="title"
+                >
+                  Title
+                </label>
+                <div className="col-span-2">
+                  {!editState.title ? (
+                    <p className="text-sm text-gray-500">{newTitle}</p>
+                  ) : (
+                    <div className="flex w-full">
+                      <input
+                        type="text"
+                        name="title"
+                        id="title"
+                        className="border border-gray-300 rounded-md p-1.5 text-black w-full text-sm 
+                        focus:ring-0 focus:outline-none"
+                        placeholder="My travel post title"
+                        onChange={(e) => setNewTitle(e.target.value)}
+                        value={newTitle}
+                        required
+                      />
+                    </div>
+                  )}
+                </div>
+                <div className="col-span-1 flex justify-end">
+                  <button
+                    type="button"
+                    className="text-sm"
+                    onClick={() => handleEditToggle("title")}
+                  >
+                    {!editState.title ? "Edit" : "Save"}
+                  </button>
                 </div>
               </div>
-            </div>
 
-            {/* Location Input  */}
-            <div className="sm:col-span-6">
-              <label
-                className="text-sm font-medium leading-6 text-gray-600"
-                htmlFor="location"
-              >
-                Location
-              </label>
-              <div>
-                <div className="flex w-full">
-                  <input
-                    type="text"
-                    name="location"
-                    id="location"
-                    className="add_edit_location"
-                    placeholder="Where it was street, country name"
-                    onChange={(e) => setNewLocation(e.target.value)}
-                    value={newLocation}
-                    required
-                  ></input>
+              {/* Location Input  */}
+              <div className="grid grid-cols-4 border-t py-6">
+                <label
+                  className="col-span-1 text-sm font-medium leading-6 text-gray-700"
+                  htmlFor="location"
+                >
+                  Location
+                </label>
+                <div className="col-span-2">
+                  {!editState.location ? (
+                    <p className="text-sm text-gray-500">{newLocation}</p>
+                  ) : (
+                    <div className="flex w-full">
+                      <input
+                        type="text"
+                        name="location"
+                        id="location"
+                        className="border border-gray-300 rounded-md p-1.5 text-black w-full text-sm 
+                      focus:ring-0 focus:outline-none"
+                        placeholder="Where it was street, country name"
+                        onChange={(e) => setNewLocation(e.target.value)}
+                        value={newLocation}
+                        required
+                      ></input>
+                    </div>
+                  )}
+                </div>
+                <div className="col-span-1 flex justify-end">
+                  <button
+                    type="button"
+                    className="text-sm"
+                    onClick={() => handleEditToggle("location")}
+                  >
+                    {!editState.location ? "Edit" : "Save"}
+                  </button>
                 </div>
               </div>
-            </div>
 
-            {/* Description Input  */}
-            <div className="sm:col-span-6">
-              <label
-                className="text-sm font-medium leading-6 text-gray-600"
-                htmlFor="description"
-              >
-                Description
-              </label>
-              <div>
-                <div className="flex w-full">
-                  <textarea
-                    cols="30"
-                    rows="5"
-                    name="description"
-                    id="description"
-                    className="add_edit_description"
-                    placeholder="Is it fun? Maybe not"
-                    onChange={(e) => setNewDescription(e.target.value)}
-                    value={newDescription}
-                  ></textarea>
+              {/* Description Input  */}
+              <div className="grid grid-cols-4 border-t py-6">
+                <label
+                  className="col-span-1 text-sm font-medium leading-6 text-gray-700"
+                  htmlFor="description"
+                >
+                  Description
+                </label>
+                <div className="col-span-2">
+                  {!editState.description ? (
+                    <p className="text-sm text-gray-500">{newDescription}</p>
+                  ) : (
+                    <div className="flex w-full">
+                      <textarea
+                        cols="30"
+                        rows="5"
+                        name="description"
+                        id="description"
+                        className="add_edit_description"
+                        placeholder="Is it fun? Maybe not"
+                        onChange={(e) => setNewDescription(e.target.value)}
+                        value={newDescription}
+                      ></textarea>
+                    </div>
+                  )}
+                </div>
+                <div className="col-span-1 flex justify-end items-start">
+                  <button
+                    type="button"
+                    className="text-sm"
+                    onClick={() => handleEditToggle("description")}
+                  >
+                    {!editState.description ? "Edit" : "Save"}
+                  </button>
                 </div>
               </div>
-            </div>
+            </section>
 
             {/* Cancel and update buttons */}
-            <div className="flex justify-between md:justify-normal items-center gap-x-1.5 py-3">
+            <section className="flex justify-between md:justify-normal items-center gap-x-1.5 py-3">
               <div>
                 <Link href={`/${id}`}>
                   <button
@@ -240,7 +302,7 @@ export default function EditPost(props) {
                   {!loading ? "Save" : "Saving..."}
                 </button>
               </div>
-            </div>
+            </section>
           </div>
         </div>
       </div>

@@ -7,6 +7,18 @@ export default async function create(
 ) {
   try {
     const result = new Post(req.body);
+
+    if (!result) {
+      return res
+        .status(400)
+        .json({
+          success: false,
+          message: "Something wrong with the request",
+          redirect: "/",
+        });
+    }
+
+    // Save the result of the request
     await result.save();
 
     return res
