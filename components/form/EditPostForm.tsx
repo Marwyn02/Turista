@@ -1,29 +1,60 @@
+import React, { FC, useState } from "react";
 import Link from "next/link";
-import { useState } from "react";
 import router from "next/router";
 
 import AmenitiesBox from "./UI/EditAmenityBox";
 import EditPostImage from "./UI/EditPostImage";
 import EditMap from "./UI/EditMap";
 
-export default function EditPost(props) {
+type TImages = {
+  image: string;
+  public_id: string;
+};
+
+type TCoordinates = {
+  lat: number;
+  lng: number;
+};
+
+type TAmenities = {
+  name: string;
+  description: string;
+  checked: boolean;
+};
+
+type TEditPostDataProps = {
+  id: string;
+  title: string;
+  coordinate: TCoordinates;
+  location: string;
+  image: TImages[];
+  description: string;
+  amenities: TAmenities[];
+};
+
+const EditPost: FC<TEditPostDataProps> = (props) => {
   const { id, title, coordinate, location, image, description, amenities } =
     props;
 
-  const [newImage, setNewImage] = useState([]);
-  const [newTitle, setNewTitle] = useState(title);
-  const [newCoordinates, setNewCoordinates] = useState({
+  const [newImage, setNewImage] = useState<TImages[]>([]);
+  const [newTitle, setNewTitle] = useState<string>(title);
+  const [newCoordinates, setNewCoordinates] = useState<TCoordinates>({
     lng: coordinate.lng,
     lat: coordinate.lat,
   });
-  const [newDescription, setNewDescription] = useState(description);
-  const [newLocation, setNewLocation] = useState(location);
-  const [newAmenities, setNewAmenities] = useState(amenities);
+  const [newDescription, setNewDescription] = useState<string>(description);
+  const [newLocation, setNewLocation] = useState<string>(location);
+  const [newAmenities, setNewAmenities] = useState<TAmenities[]>(amenities);
 
-  const [loading, setLoading] = useState(false);
+  // Loading States
+  const [loading, setLoading] = useState<boolean>(false);
 
   // Post information edit states
-  const [editState, setEditState] = useState({
+  const [editState, setEditState] = useState<{
+    title: boolean;
+    location: boolean;
+    description: boolean;
+  }>({
     title: false,
     location: false,
     description: false,
@@ -31,23 +62,24 @@ export default function EditPost(props) {
 
   // Handle the toggling function of the post information,
   // title, location, description
-  const handleEditToggle = (inputName) => {
+  const handleEditToggle = (inputName: string) => {
     setEditState((prevEditState) => ({
       ...prevEditState,
-      [inputName]: !prevEditState[inputName],
+      [inputName]: !prevEditState[inputName as keyof typeof prevEditState],
     }));
   };
 
-  const editCoordinates = ({ lng, lat }) => {
+  // Fetched map coordinates from the editMap
+  const editCoordinates = ({ lng, lat }: { lng: number; lat: number }) => {
     setNewCoordinates({ lng: lng, lat: lat });
   };
 
-  const amenitiesChecked = (amenity) => {
+  const amenitiesChecked = (amenity: TAmenities[]) => {
     setNewAmenities(amenity);
   };
 
   // Update the image state with the new data from the EditPostImage component
-  const updateImageData = (newImageData) => {
+  const updateImageData = (newImageData: TImages[]) => {
     if (newImageData.length !== 0) {
       setNewImage(newImageData); // 1
       console.log("Updated image data");
@@ -55,13 +87,16 @@ export default function EditPost(props) {
   };
 
   // Update the current post data
-  const handleEditSubmit = async (e) => {
+  const handleEditSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setLoading(true);
 
     let updatedPost;
 
     // Check if the new image array is not empty
+
+    // If empty, this will use the prev image data so it will not update the image
+    // to an empty array of image
     if (newImage.length === 0) {
       updatedPost = {
         id: id,
@@ -73,6 +108,7 @@ export default function EditPost(props) {
         amenities: newAmenities,
       };
     } else {
+      // If not empty, then this will run
       updatedPost = {
         id: id,
         image: newImage, // updatedimage data
@@ -84,6 +120,7 @@ export default function EditPost(props) {
       };
     }
 
+    // Updated post check for debugging purposes
     if (updatedPost) {
       console.log("POST: ", updatedPost);
     } else {
@@ -107,7 +144,7 @@ export default function EditPost(props) {
       console.log(response.message);
       router.push(response.redirect);
       setLoading(false);
-    } catch (error) {
+    } catch (error: any) {
       console.error("Error occur in post edit, ", error);
     }
   };
@@ -122,7 +159,7 @@ export default function EditPost(props) {
           </p>
         </div>
 
-        <div>
+        <section>
           {/* Image Input  */}
           <div className="sm:col-span-6">
             <EditPostImage
@@ -159,7 +196,7 @@ export default function EditPost(props) {
               </div>
             </div>
 
-            {/* Post Details */}
+            {/* Post Details / Informations */}
             <section className="sm:col-span-6 pb-8">
               <h3 className="text-xl py-5">Post Information.</h3>
               <p></p>
@@ -253,8 +290,8 @@ export default function EditPost(props) {
                   ) : (
                     <div className="flex w-full">
                       <textarea
-                        cols="30"
-                        rows="5"
+                        cols={30}
+                        rows={5}
                         name="description"
                         id="description"
                         className="add_edit_description"
@@ -304,8 +341,10 @@ export default function EditPost(props) {
               </div>
             </section>
           </div>
-        </div>
+        </section>
       </div>
     </form>
   );
-}
+};
+
+export default EditPost;

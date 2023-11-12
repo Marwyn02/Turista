@@ -5,7 +5,7 @@ import mongoose from "mongoose";
 
 import Find from "@/pages/api/post/find";
 
-import EditPost from "@/components/form/EditPost";
+import EditPostForm from "@/components/form/EditPostForm";
 import FormLayout from "@/components/layout/FormLayout";
 
 interface PostData {
@@ -38,7 +38,7 @@ const index: FC<PostData> = (props) => {
   return (
     <Suspense fallback={<p>Loading content...</p>}>
       <div className="px-2 md:px-40">
-        <EditPost
+        <EditPostForm
           id={props.post.id}
           title={props.post.title}
           coordinate={props.post.coordinate}
