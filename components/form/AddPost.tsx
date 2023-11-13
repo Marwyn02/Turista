@@ -4,7 +4,7 @@ import Link from "next/link";
 import router from "next/router";
 import { useSession } from "next-auth/react";
 
-import AmenitiesBox from "../ui/AmenitiesBox";
+import AmenityBox from "./UI/AmenityBox";
 
 type TAmenities = {
   name: string;
@@ -155,22 +155,22 @@ export default function AddPost() {
       // Log the response
       console.log("Response: ", post);
 
-      const response = await fetch("/api/post/create", {
-        method: "POST",
-        headers: {
-          "Content-type": "application/json",
-        },
-        body: JSON.stringify(post),
-      }).then((r) => r.json());
+      // const response = await fetch("/api/post/create", {
+      //   method: "POST",
+      //   headers: {
+      //     "Content-type": "application/json",
+      //   },
+      //   body: JSON.stringify(post),
+      // }).then((r) => r.json());
 
-      if (!response.success) {
-        setLoading(false);
-        console.error(response.message);
-      }
+      // if (!response.success) {
+      //   setLoading(false);
+      //   console.error(response.message);
+      // }
 
-      console.log(response.message);
-      router.push(response.redirect);
-      location.reload();
+      // console.log(response.message);
+      // router.push(response.redirect);
+      // location.reload();
       setLoading(false);
 
       // Catch Error of the whole function
@@ -181,7 +181,7 @@ export default function AddPost() {
   };
 
   // Map import
-  const AddMap = dynamic(() => import("./UI/AddMap"), {
+  const AddMap = dynamic(() => import("./UI/add/AddMap"), {
     loading: () => <p>Loading Map...</p>,
     ssr: false,
   });
@@ -263,7 +263,7 @@ export default function AddPost() {
               Amenities
             </h2>
             <div className="grid grid-cols-2 gap-2">
-              <AmenitiesBox amenitiesChecked={amenitiesChecked} />
+              <AmenityBox amenitiesChecked={amenitiesChecked} />
             </div>
           </div>
 

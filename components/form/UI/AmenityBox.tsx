@@ -1,18 +1,18 @@
-import { FC, useRef, useState } from "react";
+import React, { FC, useRef, useState } from "react";
 
-type CheckboxOptions = {
+type TCheckboxOption = {
   name: string;
   description: string;
   checked: boolean;
 };
 
-type AmenitiesBoxProps = {
-  editAmenities: CheckboxOptions[];
-  amenitiesChecked: (amenities: CheckboxOptions[]) => void;
+type TAmenityBoxProps = {
+  editAmenities?: TCheckboxOption[];
+  amenitiesChecked: (amenities: TCheckboxOption[]) => void;
 };
 
-const EditAmenitiesBox: FC<AmenitiesBoxProps> = (props) => {
-  const checkboxOptions: CheckboxOptions[] = [
+const AddAmenity: FC<TAmenityBoxProps> = (props) => {
+  const checkboxOptions: TCheckboxOption[] = [
     {
       name: "Free Wifi",
       description: "Who doesn't want free wifi?",
@@ -25,7 +25,7 @@ const EditAmenitiesBox: FC<AmenitiesBoxProps> = (props) => {
     },
   ];
 
-  const amenitiesRef = useRef<CheckboxOptions[]>(
+  const amenitiesRef = useRef<TCheckboxOption[]>(
     props.editAmenities
       ? props.editAmenities
       : checkboxOptions.map((option) => ({ ...option, checked: false }))
@@ -39,10 +39,10 @@ const EditAmenitiesBox: FC<AmenitiesBoxProps> = (props) => {
 
   // Function to handle checkbox change
   const handleCheckboxChange = (
-    event: React.ChangeEvent<HTMLInputElement>,
+    e: React.ChangeEvent<HTMLInputElement>,
     index: number
   ) => {
-    const checked = event.target.checked;
+    const checked = e.target.checked;
     setIsChecked((prevState) => {
       const newState = [...prevState];
       newState[index] = checked;
@@ -61,7 +61,7 @@ const EditAmenitiesBox: FC<AmenitiesBoxProps> = (props) => {
           key={index}
           className={`relative flex p-2 border-2 rounded-lg h-full w-full cursor-pointer ${
             isChecked[index]
-              ? "border-violet-400"
+              ? "border-indigo-400"
               : "border-gray-200 hover:border-indigo-200 duration-300"
           }`}
         >
@@ -78,8 +78,8 @@ const EditAmenitiesBox: FC<AmenitiesBoxProps> = (props) => {
           <div className="text-sm leading-6">
             <label
               htmlFor={`checkbox-${index}`}
-              className={`font-medium text-violet-400 duration-300 cursor-pointer ${
-                isChecked[index] ? "text-violet-800" : ""
+              className={`font-medium text-indigo-400 duration-300 cursor-pointer ${
+                isChecked[index] ? "text-indigo-800" : ""
               }`}
             >
               {option.name}{" "}
@@ -98,4 +98,4 @@ const EditAmenitiesBox: FC<AmenitiesBoxProps> = (props) => {
   );
 };
 
-export default EditAmenitiesBox;
+export default AddAmenity;

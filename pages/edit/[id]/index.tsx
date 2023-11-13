@@ -37,7 +37,7 @@ interface IAmenityArray {
 const index: FC<PostData> = (props) => {
   return (
     <Suspense fallback={<p>Loading content...</p>}>
-      <div className="px-2 md:px-40">
+      <FormLayout>
         <EditPostForm
           id={props.post.id}
           title={props.post.title}
@@ -47,7 +47,7 @@ const index: FC<PostData> = (props) => {
           description={props.post.description}
           amenities={props.post.amenities}
         />
-      </div>
+      </FormLayout>
     </Suspense>
   );
 };

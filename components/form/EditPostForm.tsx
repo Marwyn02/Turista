@@ -2,9 +2,9 @@ import React, { FC, useState } from "react";
 import Link from "next/link";
 import router from "next/router";
 
-import AmenitiesBox from "./UI/EditAmenityBox";
+import AmenitiesBox from "./UI/AmenityBox";
 import EditPostImage from "./UI/EditPostImage";
-import EditMap from "./UI/EditMap";
+import EditMap from "./UI/edit/EditMap";
 
 type TImages = {
   image: string;
@@ -128,21 +128,21 @@ const EditPost: FC<TEditPostDataProps> = (props) => {
     }
 
     try {
-      const response = await fetch(`/api/post/edit`, {
-        method: "PUT",
-        headers: {
-          "Content-type": "application/json",
-        },
-        body: JSON.stringify(updatedPost),
-      }).then((r) => r.json());
+      // const response = await fetch(`/api/post/edit`, {
+      //   method: "PUT",
+      //   headers: {
+      //     "Content-type": "application/json",
+      //   },
+      //   body: JSON.stringify(updatedPost),
+      // }).then((r) => r.json());
 
-      if (!response.success) {
-        setLoading(false);
-        console.error(response.message);
-      }
+      // if (!response.success) {
+      //   setLoading(false);
+      //   console.error(response.message);
+      // }
 
-      console.log(response.message);
-      router.push(response.redirect);
+      // console.log(response.message);
+      // router.push(response.redirect);
       setLoading(false);
     } catch (error: any) {
       console.error("Error occur in post edit, ", error);
@@ -230,7 +230,7 @@ const EditPost: FC<TEditPostDataProps> = (props) => {
                 <div className="col-span-1 flex justify-end">
                   <button
                     type="button"
-                    className="text-sm"
+                    className="text-xs md:text-sm text-gray-500"
                     onClick={() => handleEditToggle("title")}
                   >
                     {!editState.title ? "Edit" : "Save"}
@@ -268,7 +268,7 @@ const EditPost: FC<TEditPostDataProps> = (props) => {
                 <div className="col-span-1 flex justify-end">
                   <button
                     type="button"
-                    className="text-sm"
+                    className="text-xs md:text-sm text-gray-500"
                     onClick={() => handleEditToggle("location")}
                   >
                     {!editState.location ? "Edit" : "Save"}
@@ -305,7 +305,7 @@ const EditPost: FC<TEditPostDataProps> = (props) => {
                 <div className="col-span-1 flex justify-end items-start">
                   <button
                     type="button"
-                    className="text-sm"
+                    className="text-xs md:text-sm text-gray-500"
                     onClick={() => handleEditToggle("description")}
                   >
                     {!editState.description ? "Edit" : "Save"}

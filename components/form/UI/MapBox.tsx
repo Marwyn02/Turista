@@ -5,13 +5,13 @@ if (process.env.NEXT_PUBLIC_MAPBOX_TOKEN) {
   mapboxgl.accessToken = process.env.NEXT_PUBLIC_MAPBOX_TOKEN;
 }
 
-interface MapProps {
+interface MapBoxProps {
   checkLng?: number;
   checkLat?: number;
-  onEditMarkerClick: (coordinates: { lng: number; lat: number }) => void;
+  onMarkerClick: (coordinates: { lng: number; lat: number }) => void;
 }
 
-const EditMap: FC<MapProps> = (props) => {
+const Mapbox: FC<MapBoxProps> = (props) => {
   const coordinatesRef = useRef<{ lng: number; lat: number }>({
     lng: 0,
     lat: 0,
@@ -23,6 +23,12 @@ const EditMap: FC<MapProps> = (props) => {
   const [lng, setLng] = useState<number>(props.checkLng || 120.979);
   const [lat, setLat] = useState<number>(props.checkLat || 14.5828);
   const [zoom] = useState<number>(8);
+
+  //   Toggle State
+  const [editToggle, setEditToggle] = useState<boolean>(false);
+
+  //   Error State
+  const [error, setError] = useState<string>("");
 
   useEffect(() => {
     if (mapContainerRef.current) {
@@ -78,18 +84,27 @@ const EditMap: FC<MapProps> = (props) => {
   //
   //
   //
-  // This only for editing the marking location for the map
+  // This is for creating a new mark of the location for the map
 
   const handleMapCoordinates = () => {
+    // kapag add, at hindi naginput = true true / kapag nag input = false false === ADD MAP OK!
+    // kapag Edit, hindi nagedit = true true / kapag nagedit = false false === EDIT MAP
+    if (coordinatesRef.current.lat === 0 && coordinatesRef.current.lng === 0) {
+      setError("Unknown location");
+      return;
+    }
+
     setMarked(true);
-    props.onEditMarkerClick(coordinatesRef.current);
+    setError("");
+    props.onMarkerClick(coordinatesRef.current);
   };
 
   return (
     <>
       <div ref={mapContainerRef} className="map-container" />
-
+      <p className="text-sm text-red-500 mt-0.5">{error}</p>
       {marked ? (
+        // Submitted State
         <button
           className="w-full py-1.5 mt-3 text-sm border border-gray-200 rounded bg-gray-200 text-gray-500"
           disabled
@@ -97,21 +112,30 @@ const EditMap: FC<MapProps> = (props) => {
           Marked
         </button>
       ) : (
-        <button
-          type="button"
-          className="w-full py-1.5 mt-3 text-sm border border-black/50 rounded 
-                hover:bg-indigo-500 hover:border-indigo-500 hover:text-white 
-                  duration-300"
-          onClick={(e) => {
-            e.preventDefault();
-            handleMapCoordinates();
-          }}
-        >
-          Mark new location
-        </button>
+        //   Normal state
+        <div>
+          {editToggle && (
+            <button
+              type="button"
+              className="w-full py-1.5 mt-3 text-sm border border-black/50 rounded 
+                      hover:bg-indigo-500 hover:border-indigo-500 hover:text-white 
+                        duration-300"
+              onClick={(e) => {
+                e.preventDefault();
+                handleMapCoordinates();
+              }}
+            >
+              Mark {props.checkLat && props.checkLng ? "new" : ""} location
+            </button>
+          )}
+
+          <button type="button" onClick={() => setEditToggle(!editToggle)}>
+            {!editToggle ? "Edit" : "Cancel"}
+          </button>
+        </div>
       )}
     </>
   );
 };
 
-export default EditMap;
+export default Mapbox;
