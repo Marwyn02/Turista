@@ -1,12 +1,23 @@
-import SiteLayout from "@/components/layout/SiteLayout";
-import "@/styles/globals.css";
+import React, { FC } from "react";
 import { SessionProvider } from "next-auth/react";
 import Head from "next/head";
 
-export default function App({
+import "@/styles/globals.css";
+
+import SiteLayout from "@/components/layout/SiteLayout";
+
+type TAppProps = {
+  Component: FC;
+  pageProps: {
+    session: any;
+    [key: string]: any;
+  };
+};
+
+const App: FC<TAppProps> = ({
   Component,
   pageProps: { session, ...pageProps },
-}) {
+}) => {
   return (
     <SessionProvider session={session}>
       <Head>
@@ -17,4 +28,6 @@ export default function App({
       </SiteLayout>
     </SessionProvider>
   );
-}
+};
+
+export default App;
