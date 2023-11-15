@@ -1,12 +1,12 @@
 import React, { FC } from "react";
 
 import FormLayout from "@/components/layout/FormLayout";
-import AddPost from "@/components/form/AddPost";
+import AddPostForm from "@/components/form/AddPostForm";
 
 const index: FC = () => {
   return (
     <FormLayout>
-      <AddPost />
+      <AddPostForm />
     </FormLayout>
   );
 };

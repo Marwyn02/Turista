@@ -1,9 +1,9 @@
 import React, { FC, Suspense } from "react";
-import dynamic from "next/dynamic";
 import Link from "next/link";
 
 import PostsReview from "./PostsReview";
 import PostImages from "./PostUI/PostImages";
+import PostsMap from "./PostUI/PostsMap";
 import PostsDetailNavigation from "./PostUI/PostsDetailNavigation";
 import ReviewList from "../review/ReviewList";
 
@@ -49,10 +49,6 @@ type TPostsDetailProps = {
 };
 
 const PostsDetail: FC<TPostsDetailProps> = (props) => {
-  const PostsMap = dynamic(() => import("./PostUI/PostsMap"), {
-    loading: () => <p>Loading...</p>,
-    ssr: false,
-  });
   return (
     <section key={props.id} className="md:px-32 pt-5 md:pt-20">
       <main>

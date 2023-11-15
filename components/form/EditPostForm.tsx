@@ -1,10 +1,11 @@
 import React, { FC, useState } from "react";
+import dynamic from "next/dynamic";
 import Link from "next/link";
 import router from "next/router";
 
 import AmenitiesBox from "./UI/AmenityBox";
 import EditPostImage from "./UI/EditPostImage";
-import EditMap from "./UI/edit/EditMap";
+import Mapbox from "./UI/MapBox";
 
 type TImages = {
   image: string;
@@ -176,10 +177,10 @@ const EditPost: FC<TEditPostDataProps> = (props) => {
               <h2 className="text-sm font-medium leading-6 text-gray-600">
                 Map
               </h2>
-              <EditMap
+              <Mapbox
                 checkLat={coordinate.lat}
                 checkLng={coordinate.lng}
-                onEditMarkerClick={editCoordinates}
+                onMarkerClick={editCoordinates}
               />
             </div>
 

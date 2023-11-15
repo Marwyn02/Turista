@@ -28,7 +28,7 @@ const Mapbox: FC<MapBoxProps> = (props) => {
   const [editToggle, setEditToggle] = useState<boolean>(false);
 
   //   Error State
-  const [error, setError] = useState<string>("");
+  const [error, setError] = useState<boolean>(false);
 
   useEffect(() => {
     if (mapContainerRef.current) {
@@ -87,22 +87,25 @@ const Mapbox: FC<MapBoxProps> = (props) => {
   // This is for creating a new mark of the location for the map
 
   const handleMapCoordinates = () => {
-    // kapag add, at hindi naginput = true true / kapag nag input = false false === ADD MAP OK!
-    // kapag Edit, hindi nagedit = true true / kapag nagedit = false false === EDIT MAP
-    if (coordinatesRef.current.lat === 0 && coordinatesRef.current.lng === 0) {
-      setError("Unknown location");
+    if (
+      (!coordinatesRef.current ||
+        coordinatesRef.current.lat === 0 ||
+        coordinatesRef.current.lng === 0) &&
+      (!props.checkLat || !props.checkLng)
+    ) {
+      setError(true);
       return;
     }
-
     setMarked(true);
-    setError("");
+    setError(false);
     props.onMarkerClick(coordinatesRef.current);
   };
-
   return (
     <>
       <div ref={mapContainerRef} className="map-container" />
-      <p className="text-sm text-red-500 mt-0.5">{error}</p>
+      {error && (
+        <p className="text-sm text-red-500 mt-0.5">Unknown location.</p>
+      )}
       {marked ? (
         // Submitted State
         <button
@@ -113,26 +116,35 @@ const Mapbox: FC<MapBoxProps> = (props) => {
         </button>
       ) : (
         //   Normal state
-        <div>
-          {editToggle && (
-            <button
-              type="button"
-              className="w-full py-1.5 mt-3 text-sm border border-black/50 rounded 
-                      hover:bg-indigo-500 hover:border-indigo-500 hover:text-white 
-                        duration-300"
-              onClick={(e) => {
-                e.preventDefault();
-                handleMapCoordinates();
-              }}
-            >
-              Mark {props.checkLat && props.checkLng ? "new" : ""} location
-            </button>
-          )}
+        <section>
+          <div>
+            {(!props.checkLat && !props.checkLat) || editToggle ? (
+              <button
+                type="button"
+                className="w-full py-1.5 mt-3 text-sm border border-black/50 rounded 
+                        hover:bg-indigo-500 hover:border-indigo-500 hover:text-white 
+                          duration-300"
+                onClick={(e) => {
+                  e.preventDefault();
+                  handleMapCoordinates();
+                }}
+              >
+                Mark {props.checkLat && props.checkLng ? "new" : ""} location
+              </button>
+            ) : null}
 
-          <button type="button" onClick={() => setEditToggle(!editToggle)}>
-            {!editToggle ? "Edit" : "Cancel"}
-          </button>
-        </div>
+            {props.checkLat && props.checkLng && (
+              <div className="text-sm text-gray-500 flex justify-end mt-2">
+                <button
+                  type="button"
+                  onClick={() => setEditToggle(!editToggle)}
+                >
+                  {!editToggle ? "Edit" : "Cancel"}
+                </button>
+              </div>
+            )}
+          </div>
+        </section>
       )}
     </>
   );

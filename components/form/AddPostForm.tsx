@@ -1,10 +1,10 @@
 import React, { useRef, useState, useEffect } from "react";
-import dynamic from "next/dynamic";
 import Link from "next/link";
 import router from "next/router";
 import { useSession } from "next-auth/react";
 
 import AmenityBox from "./UI/AmenityBox";
+import Mapbox from "./UI/MapBox";
 
 type TAmenities = {
   name: string;
@@ -179,12 +179,6 @@ export default function AddPost() {
       console.error("Failed to creating your post, ", error);
     }
   };
-
-  // Map import
-  const AddMap = dynamic(() => import("./UI/add/AddMap"), {
-    loading: () => <p>Loading Map...</p>,
-    ssr: false,
-  });
   return (
     <section className="bg-white sm:my-4">
       <div className="space-y-10 md:px-2">
@@ -199,7 +193,7 @@ export default function AddPost() {
         <div className="mt-10 grid grid-cols-1 gap-x-6 gap-y-8 px-5 sm:grid-cols-6">
           {/* Map Input  */}
           <div className="sm:col-span-6">
-            <AddMap onMarkerClick={coordinates} />
+            <Mapbox onMarkerClick={coordinates} />
           </div>
 
           {/* Location Input  */}
