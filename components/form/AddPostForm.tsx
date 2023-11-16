@@ -95,7 +95,6 @@ export default function AddPost() {
   // Submit the inputs of the user to the database
   const submitHandler = async () => {
     setLoading(true);
-
     try {
       // Upload images to cloudinary
       const imageArray = [];

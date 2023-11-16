@@ -1,5 +1,4 @@
 import React, { FC, useState } from "react";
-import dynamic from "next/dynamic";
 import Link from "next/link";
 import router from "next/router";
 
@@ -37,7 +36,7 @@ const EditPost: FC<TEditPostDataProps> = (props) => {
   const { id, title, coordinate, location, image, description, amenities } =
     props;
 
-  const [newImage, setNewImage] = useState<TImages[]>([]);
+  const [newImage, setNewImage] = useState<File[]>([]);
   const [newTitle, setNewTitle] = useState<string>(title);
   const [newCoordinates, setNewCoordinates] = useState<TCoordinates>({
     lng: coordinate.lng,
@@ -80,10 +79,9 @@ const EditPost: FC<TEditPostDataProps> = (props) => {
   };
 
   // Update the image state with the new data from the EditPostImage component
-  const updateImageData = (newImageData: TImages[]) => {
+  const updateImageData = (newImageData: File[]) => {
     if (newImageData.length !== 0) {
-      setNewImage(newImageData); // 1
-      console.log("Updated image data");
+      setNewImage(newImageData);
     }
   };
 
@@ -91,6 +89,31 @@ const EditPost: FC<TEditPostDataProps> = (props) => {
   const handleEditSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setLoading(true);
+
+    const imageArray = [];
+
+    for (const images of newImage) {
+      const form = new FormData();
+      form.append("file", images);
+      form.append("upload_preset", "Turista-Uploads");
+
+      const response = await fetch(
+        process.env.NEXT_PUBLIC_CLOUDINARY_URL as string,
+        {
+          method: "POST",
+          body: form,
+        }
+      ).then((r) => r.json());
+
+      console.log("Response: ", response);
+
+      const image = {
+        image: response.secure_url,
+        public_id: response.public_id,
+      };
+
+      imageArray.push(image);
+    }
 
     let updatedPost;
 
@@ -112,7 +135,13 @@ const EditPost: FC<TEditPostDataProps> = (props) => {
       // If not empty, then this will run
       updatedPost = {
         id: id,
-        image: newImage, // updatedimage data
+        image: [
+          ...image.map((img) => ({
+            image: img.image,
+            public_id: img.public_id,
+          })),
+          ...imageArray,
+        ],
         title: newTitle,
         coordinate: newCoordinates,
         location: newLocation,
@@ -121,12 +150,7 @@ const EditPost: FC<TEditPostDataProps> = (props) => {
       };
     }
 
-    // Updated post check for debugging purposes
-    if (updatedPost) {
-      console.log("POST: ", updatedPost);
-    } else {
-      console.log("No updated post");
-    }
+    console.log("POST: ", updatedPost);
 
     try {
       // const response = await fetch(`/api/post/edit`, {

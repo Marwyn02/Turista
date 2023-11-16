@@ -37,38 +37,41 @@ export default function EditPostImage({ id, image, title, updateImageData }) {
     e.preventDefault();
     setEditLoading(true);
 
-    try {
-      const updatedImages = [...image];
+    console.log("Edited Image: ", editedImages);
+    updateImageData(editedImages);
 
-      for (const images of editedImages) {
-        const form = new FormData();
-        form.append("file", images);
-        form.append("upload_preset", "Turista-Uploads");
+    // try {
+    //   const updatedImages = [...image];
 
-        const response = await fetch(
-          "https://api.cloudinary.com/v1_1/dgzsmdvo4/image/upload",
-          {
-            method: "POST",
-            body: form,
-          }
-        ).then((r) => r.json());
+    //   for (const images of editedImages) {
+    //     const form = new FormData();
+    //     form.append("file", images);
+    //     form.append("upload_preset", "Turista-Uploads");
 
-        console.log("Response: ", response);
+    //     const response = await fetch(
+    //       "https://api.cloudinary.com/v1_1/dgzsmdvo4/image/upload",
+    //       {
+    //         method: "POST",
+    //         body: form,
+    //       }
+    //     ).then((r) => r.json());
 
-        const newImageData = {
-          image: response.secure_url,
-          public_id: response.public_id,
-        };
-        updatedImages.push(newImageData);
-      }
+    //     console.log("Response: ", response);
 
-      updateImageData(updatedImages);
-      setEditSaved(true);
-      setEditLoading(false);
-    } catch (error) {
-      setEditLoading(false);
-      console.error("Error updating image data", error);
-    }
+    //     const newImageData = {
+    //       image: response.secure_url,
+    //       public_id: response.public_id,
+    //     };
+    //     updatedImages.push(newImageData);
+    //   }
+
+    //   updateImageData(updatedImages);
+    //   setEditSaved(true);
+    setEditLoading(false);
+    // } catch (error) {
+    //   setEditLoading(false);
+    //   console.error("Error updating image data", error);
+    // }
   };
 
   // Filtering the selected images
