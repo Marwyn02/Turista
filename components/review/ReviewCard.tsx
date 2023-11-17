@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useRef, FC, FormEvent } from "react";
 import { useSession } from "next-auth/react";
 import Link from "next/link";
+import router from "next/router";
 
 interface ReviewCardProps {
   id: string;
@@ -49,7 +50,7 @@ const ReviewCard: FC<ReviewCardProps> = ({
       }).then((r) => r.json());
 
       console.log(response.message);
-      location.reload();
+      router.push(response.path);
     } catch (error: any) {
       console.error("Failed to delete the review, ", error);
     }
@@ -78,7 +79,7 @@ const ReviewCard: FC<ReviewCardProps> = ({
 
       setEditReview(false);
       console.log(response.message);
-      location.reload();
+      router.push(response.path);
     } catch (error: any) {
       console.error("Failed to update the review, ", error);
     }
@@ -209,80 +210,78 @@ const ReviewCard: FC<ReviewCardProps> = ({
     );
   }
   return (
-    <>
-      <div key={id} className="relative my-2 md:pl-3 py-1.5 ">
-        <div className="flex justify-between">
-          <div className="flex items-center">
+    <section key={id} className="relative my-2 md:pl-3 py-1.5 ">
+      <div className="flex justify-between">
+        <div className="flex items-center">
+          <Link href={`/user/${userId}`}>
+            <img
+              src={image}
+              alt="lel"
+              className="rounded-full h-[36px] w-[36px] md:h-[50px] md:w-[50px]"
+            />
+          </Link>
+          <div className="ml-2 md:ml-3">
             <Link href={`/user/${userId}`}>
-              <img
-                src={image}
-                alt="lel"
-                className="rounded-full h-[36px] w-[36px] md:h-[50px] md:w-[50px]"
-              />
-            </Link>
-            <div className="ml-2 md:ml-3">
               <p className="text-sm md:text-base font-medium text-gray-900">
                 {name}
               </p>
-              <p className="text-xs text-gray-300">{date}</p>
-            </div>
-          </div>
-          <div className="flex items-center">
-            {activeSession && (
-              <img
-                src="/horizontal-dots.svg"
-                alt="lel"
-                height={23}
-                width={23}
-                className="hover:bg-gray-200"
-                ref={buttonRef}
-                onClick={() => setDropdown(!dropdown)}
-              />
-            )}
+            </Link>
+            <p className="text-xs text-gray-300">{date}</p>
           </div>
         </div>
-
-        {dropdown && (
-          <div
-            ref={dropdownRef}
-            className="absolute right-2 top-11 bg-white rounded border w-32 z-[9999]"
-          >
-            <ul className="text-sm text-slate-700">
-              <li
-                onClick={showHideDropdown}
-                className="cursor-pointer hover:bg-gray-200 hover:text-black py-1.5 pl-2 flex duration-300"
-              >
-                <img
-                  src="/pen.svg"
-                  height={18}
-                  width={18}
-                  alt="lel"
-                  className="mr-1.5"
-                />{" "}
-                Edit
-              </li>
-              <li
-                onClick={deleteReviewHandler}
-                className="cursor-pointer hover:bg-gray-200 hover:text-black py-1.5 pl-2 flex duration-300"
-              >
-                <img
-                  src="/trash.svg"
-                  height={18}
-                  width={18}
-                  alt="lel"
-                  className="mr-1.5"
-                />{" "}
-                Delete
-              </li>
-            </ul>
-          </div>
-        )}
-
-        <p className="text-sm mt-3 mb-0.5 lg:pl-5 text-gray-800">
-          {description}
-        </p>
+        <div className="flex items-center">
+          {activeSession && (
+            <img
+              src="/horizontal-dots.svg"
+              alt="lel"
+              height={23}
+              width={23}
+              className="hover:bg-gray-200"
+              ref={buttonRef}
+              onClick={() => setDropdown(!dropdown)}
+            />
+          )}
+        </div>
       </div>
-    </>
+
+      {dropdown && (
+        <div
+          ref={dropdownRef}
+          className="absolute right-2 top-11 bg-white rounded border w-32 z-[9999]"
+        >
+          <ul className="text-sm text-slate-700">
+            <li
+              onClick={showHideDropdown}
+              className="cursor-pointer hover:bg-gray-200 hover:text-black py-1.5 pl-2 flex duration-300"
+            >
+              <img
+                src="/pen.svg"
+                height={18}
+                width={18}
+                alt="lel"
+                className="mr-1.5"
+              />{" "}
+              Edit
+            </li>
+            <li
+              onClick={deleteReviewHandler}
+              className="cursor-pointer hover:bg-gray-200 hover:text-black py-1.5 pl-2 flex duration-300"
+            >
+              <img
+                src="/trash.svg"
+                height={18}
+                width={18}
+                alt="lel"
+                className="mr-1.5"
+              />{" "}
+              Delete
+            </li>
+          </ul>
+        </div>
+      )}
+
+      <p className="text-sm mt-3 mb-0.5 lg:pl-5 text-gray-800">{description}</p>
+    </section>
   );
 };
 

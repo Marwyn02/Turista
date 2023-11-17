@@ -27,6 +27,7 @@ export default async function create(
     return res.status(200).json({
       success: true,
       message: "Review created",
+      path: `/${postId}`,
     });
   } catch (error: any) {
     return res

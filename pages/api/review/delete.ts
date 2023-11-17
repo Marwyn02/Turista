@@ -22,6 +22,7 @@ export default async function Delete(
     return res.status(200).json({
       success: true,
       message: `Review ID:${reviewId} is deleted!`,
+      path: `/${postId}`,
     });
   } catch (error: any) {
     return res.status(500).json({

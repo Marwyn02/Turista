@@ -24,7 +24,6 @@ const PostsReview = (props: PostsReviewProps) => {
     e: React.FormEvent<HTMLFormElement>
   ): Promise<void> => {
     e.preventDefault();
-
     setLoading(true);
 
     // If the client is not authenticated, re-route to sign in page
@@ -66,7 +65,7 @@ const PostsReview = (props: PostsReviewProps) => {
         }).then((r) => r.json());
 
         console.log(response.message);
-        location.reload();
+        router.push(response.path);
       } catch (error: any) {
         console.error("Failed to create a review in this post, ", error);
       }
@@ -75,6 +74,7 @@ const PostsReview = (props: PostsReviewProps) => {
       reviewDescriptionRef.current!.value = "";
     }
   };
+
   return (
     <>
       <form
@@ -85,6 +85,7 @@ const PostsReview = (props: PostsReviewProps) => {
         <textarea
           rows={4}
           cols={30}
+          name="description"
           className={
             !inputError
               ? `resize-none border border-gray-300 p-2 text-sm w-full mt-1 rounded-xl 

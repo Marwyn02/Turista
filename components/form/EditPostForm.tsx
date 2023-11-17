@@ -118,7 +118,6 @@ const EditPost: FC<TEditPostDataProps> = (props) => {
     let updatedPost;
 
     // Check if the new image array is not empty
-
     // If empty, this will use the prev image data so it will not update the image
     // to an empty array of image
     if (newImage.length === 0) {
