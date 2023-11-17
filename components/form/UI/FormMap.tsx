@@ -5,13 +5,13 @@ if (process.env.NEXT_PUBLIC_MAPBOX_TOKEN) {
   mapboxgl.accessToken = process.env.NEXT_PUBLIC_MAPBOX_TOKEN;
 }
 
-interface MapBoxProps {
+interface FormMapProps {
   checkLng?: number;
   checkLat?: number;
   onMarkerClick: (coordinates: { lng: number; lat: number }) => void;
 }
 
-const Mapbox: FC<MapBoxProps> = (props) => {
+const FormMap: FC<FormMapProps> = (props) => {
   const coordinatesRef = useRef<{ lng: number; lat: number }>({
     lng: 0,
     lat: 0,
@@ -150,4 +150,4 @@ const Mapbox: FC<MapBoxProps> = (props) => {
   );
 };
 
-export default Mapbox;
+export default FormMap;

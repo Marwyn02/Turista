@@ -4,9 +4,7 @@ type TEditPostImageProps = {
   id: string;
   image: { image: string; public_id: string }[];
   title: string;
-  updateImageData: (
-    updateImages: { image: string; public_id: string }[]
-  ) => void;
+  updateImageData: (editedImages: File[]) => void;
 };
 
 const EditPostImage: FC<TEditPostImageProps> = ({
@@ -57,38 +55,9 @@ const EditPostImage: FC<TEditPostImageProps> = ({
     e.preventDefault();
     setEditLoading(true);
 
-    try {
-      const updatedImages = [...image];
-
-      for (const images of editedImages) {
-        const form = new FormData();
-        form.append("file", images);
-        form.append("upload_preset", "Turista-Uploads");
-
-        const response = await fetch(
-          process.env.NEXT_PUBLIC_CLOUDINARY_URL as string,
-          {
-            method: "POST",
-            body: form,
-          }
-        ).then((r) => r.json());
-
-        console.log("Response: ", response);
-
-        const newImageData = {
-          image: response.secure_url,
-          public_id: response.public_id,
-        };
-        updatedImages.push(newImageData);
-      }
-
-      updateImageData(updatedImages);
-      setEditSaved(true);
-      setEditLoading(false);
-    } catch (error) {
-      setEditLoading(false);
-      console.error("Error updating image data", error);
-    }
+    updateImageData(editedImages);
+    setEditSaved(true);
+    setEditLoading(false);
   };
 
   // Filtering the selected images
@@ -319,7 +288,8 @@ const EditPostImage: FC<TEditPostImageProps> = ({
             <div></div>
           )}
 
-          {imageOnePreview || imageTwoPreview || imageThreePreview ? (
+          {(imageOnePreview || imageTwoPreview || imageThreePreview) &&
+          !editSaved ? (
             <button
               type="button"
               className="px-4 py-2 text-xs md:text-sm bg-gray-200 text-gray-500 duration-300
@@ -350,8 +320,8 @@ const EditPostImage: FC<TEditPostImageProps> = ({
         {editSaved && (
           <button
             type="button"
-            className="px-5 py-1.5 text-sm bg-green-200 duration-100 text-gray-600
-            rounded-lg mt-2 hover:bg-green-300 hover:text-white"
+            className="px-5 py-1.5 text-sm bg-gray-100 duration-100 text-violet-500 font-medium
+            rounded-lg mt-2 hover:bg-gray-300 hover:text-green-500"
             disabled
           >
             Saved

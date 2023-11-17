@@ -135,7 +135,9 @@ const PostsDetailNavigation: FC<TPostsDetailNavigationProps> = ({
               width={18}
               alt="Delete"
             />
-            <span className="ml-2 text-white text-sm">Delete</span>
+            <span className="ml-2 text-white font-semibold text-xs">
+              Delete
+            </span>
           </button>
 
           <Link href={`/edit/${postId}`}>
@@ -144,7 +146,9 @@ const PostsDetailNavigation: FC<TPostsDetailNavigationProps> = ({
               flex items-center rounded hover:bg-violet-500"
             >
               <img src="/pencil-white.svg" height={18} width={18} alt="Edit" />
-              <span className="ml-2 text-white text-sm">Edit</span>
+              <span className="ml-2 text-white font-semibold text-xs">
+                Edit
+              </span>
             </button>
           </Link>
         </div>

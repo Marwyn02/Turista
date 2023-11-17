@@ -4,7 +4,7 @@ import router from "next/router";
 
 import AmenitiesBox from "./UI/AmenityBox";
 import EditPostImage from "./UI/EditPostImage";
-import Mapbox from "./UI/MapBox";
+import FormMap from "./UI/FormMap";
 
 type TImages = {
   image: string;
@@ -200,7 +200,7 @@ const EditPost: FC<TEditPostDataProps> = (props) => {
               <h2 className="text-sm font-medium leading-6 text-gray-600">
                 Map
               </h2>
-              <Mapbox
+              <FormMap
                 checkLat={coordinate.lat}
                 checkLng={coordinate.lng}
                 onMarkerClick={editCoordinates}

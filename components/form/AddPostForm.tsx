@@ -4,7 +4,7 @@ import router from "next/router";
 import { useSession } from "next-auth/react";
 
 import AmenityBox from "./UI/AmenityBox";
-import Mapbox from "./UI/MapBox";
+import FormMap from "./UI/FormMap";
 
 type TAmenities = {
   name: string;
@@ -192,7 +192,7 @@ export default function AddPost() {
         <div className="mt-10 grid grid-cols-1 gap-x-6 gap-y-8 px-5 sm:grid-cols-6">
           {/* Map Input  */}
           <div className="sm:col-span-6">
-            <Mapbox onMarkerClick={coordinates} />
+            <FormMap onMarkerClick={coordinates} />
           </div>
 
           {/* Location Input  */}

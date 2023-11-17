@@ -12,20 +12,8 @@ interface MapProps {
 
 const PostsMap: FC<MapProps> = (props) => {
   const mapContainerRef = useRef<HTMLDivElement | null>(null);
-  const [lng] = useState<number>(() => {
-    if (props.checkLng) {
-      return props.checkLng;
-    } else {
-      return 120.979;
-    }
-  });
-  const [lat] = useState<number>(() => {
-    if (props.checkLat) {
-      return props.checkLat;
-    } else {
-      return 14.5828;
-    }
-  });
+  const [lng] = useState<number>(props.checkLng || 120.979);
+  const [lat] = useState<number>(props.checkLat || 14.5828);
   const [zoom] = useState<number>(8);
 
   useEffect(() => {
@@ -54,11 +42,7 @@ const PostsMap: FC<MapProps> = (props) => {
       };
     }
   }, []);
-  return (
-    <>
-      <div ref={mapContainerRef} className="map-container" />
-    </>
-  );
+  return <div ref={mapContainerRef} className="map-container" />;
 };
 
 export default PostsMap;
