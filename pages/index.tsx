@@ -38,6 +38,15 @@ export async function getStaticProps() {
       .find()
       .sort({ createdAt: -1 })
       .toArray();
+
+    const userPostImages = await Promise.all(
+      posts.map(async (post) => ({
+        id: post._id.toString(),
+      }))
+    );
+
+    console.log("Users: ", userPostImages);
+
     return {
       props: {
         posts: posts.map((post) => ({
