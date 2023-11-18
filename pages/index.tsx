@@ -6,12 +6,17 @@ import mongoose from "mongoose";
 // import CategoryNavigation from "@/components/navigation/CategoryNavigation";
 import MainPageLayout from "../components/layout/MainPageLayout";
 import PostsList from "@/components/turistaPosts/PostsList";
+import Find from "./api/user/find";
+import User from "@/models/User";
 
 interface IndexProps {
   posts: {
     id: string;
     location: string;
     image: string;
+    userId: string;
+    userName: string;
+    userImage: string;
   }[];
 }
 
@@ -22,7 +27,11 @@ const index: FC<IndexProps> = (props) => {
         <title>Turista</title>
         <meta property="og:title" content="Turista Home Page" key="homeTitle" />
       </Head>
-      <Suspense fallback={<p className="text-center">Loading posts...</p>}>
+      <Suspense
+        fallback={
+          <p className="text-center pt-32 text-4xl">Loading posts...</p>
+        }
+      >
         {/* <CategoryNavigation /> */}
         <PostsList posts={props.posts} />
       </Suspense>
@@ -39,21 +48,31 @@ export async function getStaticProps() {
       .sort({ createdAt: -1 })
       .toArray();
 
-    const userPostImages = await Promise.all(
+    const users: { userId: string }[] = await Promise.all(
       posts.map(async (post) => ({
-        id: post._id.toString(),
+        userId: post.user.toString(),
       }))
     );
+    const userIds: string[] = users.map((user) => user.userId);
 
-    console.log("Users: ", userPostImages);
+    const userDetails = await User.find({ _id: userIds });
+
+    const postsData = posts.map((post) => ({
+      id: post._id.toString(),
+      location: post.location,
+      image: post.image[0].image,
+      userId: post.user.toString(),
+      userName:
+        userDetails.find((user) => user._id.toString() === post.user.toString())
+          ?.name || "",
+      userImage:
+        userDetails.find((user) => user._id.toString() === post.user.toString())
+          ?.image || "",
+    }));
 
     return {
       props: {
-        posts: posts.map((post) => ({
-          id: post._id.toString(),
-          location: post.location,
-          image: post.image[0].image,
-        })),
+        posts: postsData,
       },
       revalidate: 1,
     };
