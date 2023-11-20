@@ -45,7 +45,7 @@ export default function Component() {
           width={50}
           ref={userImageRef}
           onClick={() => setDropdown(!dropdown)}
-          className="rounded-full h-8 w-8 md:h-10 md:w-10 mr-5 md:mr-0 border-2 hover:opacity-90 duration-150 cursor-pointer"
+          className="rounded-full h-[40px] w-[40px] mr-3 md:mr-0 border-[1.5px] border-y-violet-500 border-x-pink-300 hover:opacity-90 duration-150 cursor-pointer"
         />
 
         {/* Show sign out button if user's logged in */}
