@@ -17,6 +17,7 @@ export default function Component() {
   const dropdownRef = useRef<HTMLDivElement>(null);
   const [dropdown, setDropdown] = useState<boolean>(false);
 
+  // Toggle functions
   useEffect(() => {
     function handleClickOutside(event: MouseEvent) {
       if (
