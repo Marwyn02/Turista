@@ -6,7 +6,6 @@ import mongoose from "mongoose";
 // import CategoryNavigation from "@/components/navigation/CategoryNavigation";
 import MainPageLayout from "../components/layout/MainPageLayout";
 import PostsList from "@/components/turistaPosts/PostsList";
-import Find from "./api/user/find";
 import User from "@/models/User";
 
 interface IndexProps {
