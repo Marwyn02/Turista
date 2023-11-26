@@ -3,6 +3,8 @@ import Link from "next/link";
 import router from "next/router";
 import { useSession } from "next-auth/react";
 
+import DeleteModal from "../../UI/Modal";
+
 type TPostsDetailNavigationProps = {
   userId: string;
   postId: string;
@@ -81,26 +83,6 @@ const PostsDetailNavigation: FC<TPostsDetailNavigationProps> = ({
       setPostLove(true);
     }
   }, [session, userId, user_in_session]);
-
-  // Deletes the post in the database
-  const deleteHandler = async (e: { preventDefault: () => void }) => {
-    e.preventDefault();
-
-    try {
-      const response = await fetch(`/api/post/delete`, {
-        method: "DELETE",
-        headers: {
-          "Content-type": "application/json",
-        },
-        body: JSON.stringify({ postId }),
-      }).then((r) => r.json());
-
-      console.log(response.message);
-      router.push(response.redirect);
-    } catch (error: any) {
-      console.error(error);
-    }
-  };
   return (
     <section className="flex justify-between items-center pb-2 md:pb-2 px-1">
       <div className="flex items-center">
@@ -124,22 +106,10 @@ const PostsDetailNavigation: FC<TPostsDetailNavigationProps> = ({
 
       {activeSession && (
         <div className="flex gap-x-1 md:gap-x-2">
-          <button
-            onClick={deleteHandler}
-            className="px-2 py-2 md:px-2.5 bg-red-400 duration-300 
-              flex items-center rounded hover:bg-red-500"
-          >
-            <img
-              src="/trash-bin-white.svg"
-              height={18}
-              width={18}
-              alt="Delete"
-            />
-            <span className="ml-2 text-white font-semibold text-xs">
-              Delete
-            </span>
-          </button>
+          {/* Delete Action  */}
+          <DeleteModal postId={postId} />
 
+          {/* Edit Action  */}
           <Link href={`/edit/${postId}`}>
             <button
               className="px-2 py-2 md:px-2.5 bg-violet-400 duration-300 
