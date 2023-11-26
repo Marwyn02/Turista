@@ -50,8 +50,9 @@ type TPostsDetailProps = {
 
 const PostsDetail: FC<TPostsDetailProps> = (props) => {
   return (
-    <section key={props.id} className="md:px-32 pt-5 md:pt-20">
+    <section key={props.id} className="md:px-32 pt-10 md:pt-20">
       <main>
+        {/* Post navigations, Love, Delete, and Edit */}
         <PostsDetailNavigation
           userId={props.userId}
           postId={props.id}
@@ -92,22 +93,27 @@ const PostsDetail: FC<TPostsDetailProps> = (props) => {
             {/* Amenities */}
             <div className="py-6">
               <h3 className="font-medium text-lg">This place has</h3>
-              <ul className="mt-2">
+              <div className="mt-2">
                 {props.amenities.length > 0 ? (
                   props.amenities
                     .filter((item) => item.checked)
                     .map((item) => (
-                      <li
-                        key={item.id}
-                        className="text-black/80 font-light text-base py-1"
-                      >
-                        - {item.name}
-                      </li>
+                      <div key={item.id} className="flex items-center py-1">
+                        <img
+                          src={`/${item.name}.svg`}
+                          height={18}
+                          width={18}
+                          alt="Liked"
+                        />{" "}
+                        <p className="text-black/90 font-light ml-2">
+                          {item.name}
+                        </p>
+                      </div>
                     ))
                 ) : (
                   <p className="text-sm text-gray-400">No amenities to offer</p>
                 )}
-              </ul>
+              </div>
             </div>
 
             {/* Description */}

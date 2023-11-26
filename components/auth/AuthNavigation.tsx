@@ -1,7 +1,8 @@
-import React, { useState, useEffect, useRef } from "react";
+import React, { Fragment } from "react";
 import { signOut, useSession } from "next-auth/react";
 import { usePathname } from "next/navigation";
 import Link from "next/link";
+import { Popover, Transition } from "@headlessui/react";
 
 //
 //
@@ -13,79 +14,107 @@ import Link from "next/link";
 export default function Component() {
   const { data: session } = useSession();
   const pathname = usePathname();
-  const userImageRef = useRef<HTMLImageElement>(null);
-  const dropdownRef = useRef<HTMLDivElement>(null);
-  const [dropdown, setDropdown] = useState<boolean>(false);
 
-  // Toggle functions
-  useEffect(() => {
-    function handleClickOutside(event: MouseEvent) {
-      if (
-        dropdownRef.current &&
-        !dropdownRef.current.contains(event.target as Node) &&
-        userImageRef.current &&
-        !userImageRef.current.contains(event.target as Node)
-      ) {
-        setDropdown(false);
-      }
-    }
-    document.addEventListener("mousedown", handleClickOutside);
-    return () => {
-      document.removeEventListener("mousedown", handleClickOutside);
-    };
-  }, []);
+  const solutions = [
+    {
+      image: `${session?.user?.image || ""}`,
+      name: `${session?.user?.name}`,
+      description: "Account Profile",
+      href: `/user/${(session?.user as { _id: string })?._id as string}`,
+    },
+    {
+      image: "",
+      name: "Settings",
+      description: "Create your own targeted content",
+      href: "##",
+    },
+    // {
+    //   name: "Reports",
+    //   description: "Keep track of your growth",
+    //   href: "##",
+    // },
+  ];
 
   if (session) {
     return (
-      <div className="flex relative">
-        {/* User's image */}
-        <img
-          src={session.user?.image || ""}
-          alt="Profile Image"
-          height={50}
-          width={50}
-          ref={userImageRef}
-          onClick={() => setDropdown(!dropdown)}
-          className="rounded-full h-[40px] w-[40px] mr-3 md:mr-0 border-[1.5px] border-y-violet-500 border-x-pink-300 hover:opacity-90 duration-150 cursor-pointer"
-        />
-
-        {/* Show sign out button if user's logged in */}
-        {dropdown && (
-          <div
-            ref={dropdownRef}
-            className="absolute right-2 top-10 lg:top-12 bg-white rounded-lg
-                       border p-1.5 w-max z-[9999]"
-          >
-            {session && (
-              <div>
-                <Link href={`/user/${(session.user as { _id: string })._id}`}>
-                  <button
-                    className="flex py-2 px-4 font-semibold text-xs text-start
-                               lg:text-sm text-indigo-400 hover:text-indigo-600 
-                             hover:bg-gray-100 w-full duration-100 rounded-lg"
-                  >
-                    {session.user?.name}
-                  </button>
-                </Link>
-                <button
-                  onClick={() => signOut()}
-                  className="flex py-2 px-4 font-semibold text-xs text-start lg:text-sm
-                           text-indigo-400 hover:text-indigo-600 rounded-lg
-                           hover:bg-gray-100 w-full duration-100"
-                >
-                  <img
-                    src="/logout.svg"
-                    alt="lel"
-                    height={18}
-                    width={18}
-                    className="mr-2"
-                  />
-                  Sign out
-                </button>
-              </div>
-            )}
-          </div>
-        )}
+      <div>
+        <Popover className="relative">
+          {({ open }) => (
+            <>
+              <Popover.Button
+                className={`
+                ${open ? "text-white" : "text-white/90"}
+                group flex items-center focus:ring-0 focus:outline-none`}
+              >
+                <img
+                  src={session.user?.image || ""}
+                  alt="Profile Image"
+                  height={50}
+                  width={50}
+                  className="rounded-full h-[40px] w-[40px] border-[1.5px] border-y-violet-500
+                  border-x-pink-300 hover:opacity-90 duration-150 cursor-pointer"
+                />
+              </Popover.Button>
+              <Transition
+                as={Fragment}
+                enter="transition ease-out duration-200"
+                enterFrom="opacity-0 translate-y-1"
+                enterTo="opacity-100 translate-y-0"
+                leave="transition ease-in duration-150"
+                leaveFrom="opacity-100 translate-y-0"
+                leaveTo="opacity-0 translate-y-1"
+              >
+                <Popover.Panel className="absolute left-1/2 z-10 mt-3 w-screen max-w-sm -translate-x-[90%] transform px-4 sm:px-0 lg:max-w-sm">
+                  <div className="overflow-hidden rounded-lg shadow-lg ring-1 ring-black/5">
+                    <div className="relative grid gap-8 bg-white p-7 lg:grid-cols-1">
+                      {solutions.map((item) => (
+                        <a
+                          key={item.name}
+                          href={item.href}
+                          className="-m-3 flex items-center rounded-lg p-2 transition duration-150 ease-in-out hover:bg-gray-50 focus:outline-none focus-visible:ring focus-visible:ring-orange-500/50"
+                        >
+                          <div className="flex h-10 w-10 shrink-0 items-center justify-center text-white sm:h-12 sm:w-12">
+                            <img
+                              src={item.image}
+                              alt="Profile Image"
+                              height={50}
+                              width={50}
+                              className="rounded-full h-full w-full border-[1.5px] border-y-violet-500 border-x-pink-300 hover:opacity-90 duration-150 cursor-pointer"
+                            />
+                          </div>
+                          <div className="ml-4">
+                            <p className="text-sm font-medium text-gray-900">
+                              {item.name}
+                            </p>
+                            <p className="text-sm text-gray-500">
+                              {item.description}
+                            </p>
+                          </div>
+                        </a>
+                      ))}
+                    </div>
+                    <div className="bg-gray-50 p-4">
+                      <button
+                        onClick={() => signOut()}
+                        className="flex py-2 px-4 font-medium text-sm text-start text-gray-900 
+                           hover:text-gray-600 rounded-lg hover:bg-gray-100 w-full duration-100"
+                      >
+                        <img
+                          src="/logout.svg"
+                          alt="lel"
+                          height={18}
+                          width={18}
+                          className="mr-2"
+                        />
+                        Sign out
+                      </button>
+                    </div>
+                  </div>
+                </Popover.Panel>
+              </Transition>
+            </>
+          )}
+        </Popover>
       </div>
     );
   }

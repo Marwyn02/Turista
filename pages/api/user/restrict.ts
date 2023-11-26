@@ -13,10 +13,10 @@ export default async function restrict(
     });
 
     if (userHasCreatedPost < 1) {
-      return res.status(200).json({ userHasNoCreatedPost: true });
+      return res.status(200).json({ userHasCreatedPost: false });
     } else {
       return res.status(200).json({
-        userHasNoCreatedPost: false,
+        userHasCreatedPost: true,
         redirect: "/",
         message: "You're restricted to create another post!",
       });

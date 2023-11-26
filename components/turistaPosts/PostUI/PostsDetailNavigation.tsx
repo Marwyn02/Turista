@@ -102,7 +102,7 @@ const PostsDetailNavigation: FC<TPostsDetailNavigationProps> = ({
     }
   };
   return (
-    <section className="flex justify-between items-center pb-1 md:pb-2 px-1">
+    <section className="flex justify-between items-center pb-2 md:pb-2 px-1">
       <div className="flex items-center">
         <button
           onClick={handleLikesHandler}
