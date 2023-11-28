@@ -15,7 +15,7 @@ export default function Component() {
   const { data: session } = useSession();
   const pathname = usePathname();
 
-  const solutions = [
+  const data = [
     {
       image: `${session?.user?.image || ""}`,
       name: `${session?.user?.name}`,
@@ -67,7 +67,7 @@ export default function Component() {
                 <Popover.Panel className="absolute left-1/2 z-10 mt-3 w-screen max-w-sm -translate-x-[90%] transform px-4 sm:px-0 lg:max-w-sm">
                   <div className="overflow-hidden rounded-lg shadow-lg ring-1 ring-black/5">
                     <div className="relative grid gap-8 bg-white p-7 lg:grid-cols-1">
-                      {solutions.map((item) => (
+                      {data.map((item) => (
                         <a
                           key={item.name}
                           href={item.href}
