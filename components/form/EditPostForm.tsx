@@ -6,6 +6,8 @@ import AmenitiesBox from "./UI/AmenityBox";
 import EditPostImage from "./UI/EditPostImage";
 import FormMap from "./UI/FormMap";
 
+import LoadingPostModal from "../UI/LoadingPostModal";
+
 type TImages = {
   image: string;
   public_id: string;
@@ -167,6 +169,8 @@ const EditPost: FC<TEditPostDataProps> = (props) => {
 
       // console.log(response.message);
       // router.push(response.redirect);
+
+      router.push(`/${props.id}`);
       setLoading(false);
     } catch (error: any) {
       console.error("Error occur in post edit, ", error);
@@ -367,6 +371,7 @@ const EditPost: FC<TEditPostDataProps> = (props) => {
           </div>
         </section>
       </div>
+      {loading && <LoadingPostModal />}
     </form>
   );
 };

@@ -35,7 +35,7 @@ const MainNavigation = () => {
     }
   }, [session]);
   return (
-    <nav className="fixed z-50 w-full bg-white border-b h-[4.5rem]">
+    <nav className="fixed z-40 w-full bg-white border-b h-[4.5rem]">
       <div
         className={`grid grid-cols-2 ${
           !userHasCreatedPost ? "lg:grid-cols-3 pt-5" : "pt-4 lg:pb-3"

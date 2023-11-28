@@ -100,7 +100,7 @@ const PostsDetail: FC<TPostsDetailProps> = (props) => {
                     .map((item) => (
                       <div key={item.id} className="flex items-center py-1">
                         <img
-                          src={`/${item.name}.svg`}
+                          src={`/Amenities/${item.name}.svg`}
                           height={18}
                           width={18}
                           alt="Liked"

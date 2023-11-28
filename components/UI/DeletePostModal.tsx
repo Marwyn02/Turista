@@ -2,9 +2,10 @@ import { Dialog, Transition } from "@headlessui/react";
 import { Fragment, useState } from "react";
 import router from "next/router";
 
-export default function Modal({ postId }: { postId: string }) {
+export default function DeletePostModal({ postId }: { postId: string }) {
   let [isOpen, setIsOpen] = useState(false);
 
+  // Deletes Post
   const deleteHandler = async (e: { preventDefault: () => void }) => {
     e.preventDefault();
     closeModal();
@@ -33,7 +34,6 @@ export default function Modal({ postId }: { postId: string }) {
   function openModal() {
     setIsOpen(true);
   }
-
   return (
     <>
       <div className="flex">
@@ -49,7 +49,7 @@ export default function Modal({ postId }: { postId: string }) {
       </div>
 
       <Transition appear show={isOpen} as={Fragment}>
-        <Dialog as="div" className="relative z-10" onClose={closeModal}>
+        <Dialog as="div" className="relative z-50" onClose={closeModal}>
           <Transition.Child
             as={Fragment}
             enter="ease-out duration-300"

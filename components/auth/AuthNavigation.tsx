@@ -24,15 +24,16 @@ export default function Component() {
     },
     {
       image: "",
-      name: "Settings",
-      description: "Create your own targeted content",
+      name: "Manage Posts",
+      description: "Keep track of your posts",
       href: "##",
     },
-    // {
-    //   name: "Reports",
-    //   description: "Keep track of your growth",
-    //   href: "##",
-    // },
+    {
+      image: "",
+      name: "Settings",
+      description: "",
+      href: "##",
+    },
   ];
 
   if (session) {
@@ -74,13 +75,17 @@ export default function Component() {
                           className="-m-3 flex items-center rounded-lg p-2 transition duration-150 ease-in-out hover:bg-gray-50 focus:outline-none focus-visible:ring focus-visible:ring-orange-500/50"
                         >
                           <div className="flex h-10 w-10 shrink-0 items-center justify-center text-white sm:h-12 sm:w-12">
-                            <img
-                              src={item.image}
-                              alt="Profile Image"
-                              height={50}
-                              width={50}
-                              className="rounded-full h-full w-full border-[1.5px] border-y-violet-500 border-x-pink-300 hover:opacity-90 duration-150 cursor-pointer"
-                            />
+                            {item.image === "" ? (
+                              <div></div>
+                            ) : (
+                              <img
+                                src={item?.image || ""}
+                                alt="Profile Image"
+                                height={50}
+                                width={50}
+                                className="rounded-full h-full w-full"
+                              />
+                            )}
                           </div>
                           <div className="ml-4">
                             <p className="text-sm font-medium text-gray-900">
