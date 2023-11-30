@@ -32,7 +32,7 @@ export default function Component() {
       image: "",
       name: "Settings",
       description: "",
-      href: "##",
+      href: "/user/settings",
     },
   ];
 

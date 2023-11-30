@@ -21,9 +21,6 @@ const PostsList: FC<PostsItemProps> = (props) => {
           id={item.id}
           image={item.image}
           location={item.location}
-          userId={item.userId}
-          userName={item.userName}
-          userImage={item.userImage}
         />
       ))}
     </section>
