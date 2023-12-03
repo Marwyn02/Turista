@@ -28,11 +28,3 @@ const PostsList: FC<PostsItemProps> = (props) => {
 };
 
 export default PostsList;
-
-// const userImage = await Promise.all(
-//   user.map(async (img) => {
-//     return {
-//       image: img.image,
-//     };
-//   })
-// );
