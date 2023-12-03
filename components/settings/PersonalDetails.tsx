@@ -1,5 +1,6 @@
 import { useSession } from "next-auth/react";
 import { useState } from "react";
+import router from "next/router";
 import LoadingPostModal from "../UI/LoadingPostModal";
 
 export default function PersonalDetails({
@@ -11,9 +12,7 @@ export default function PersonalDetails({
   email: string;
   image: string;
 }) {
-  const { data: session } = useSession();
   const [newName, setNewName] = useState<string>(name);
-
   const [isLoading, setIsLoading] = useState<boolean>(false);
 
   const [onEditState, setOnEditState] = useState<{
@@ -31,19 +30,29 @@ export default function PersonalDetails({
     }));
   };
 
+  // Update Users Name
   const submitChangeHandler = async (e: React.FormEvent) => {
     try {
       e.preventDefault();
       setIsLoading(true);
+
       const response = await fetch("/api/setting/edit", {
         method: "DELETE",
         headers: {
           "Content-type": "application/json",
         },
         body: JSON.stringify({}),
-      });
-      console.log(newName);
-    } catch (error) {}
+      }).then((r) => r.json());
+
+      if (response.success) {
+        console.log(response.message);
+        router.push(response.path);
+        setIsLoading(false);
+      }
+    } catch (error) {
+      console.error("Failed to update your account, ", error);
+      setIsLoading(false);
+    }
   };
   return (
     <section className="mt-10 px-3 lg:px-0">
