@@ -83,7 +83,7 @@ export default function DeletePostModal({ postId }: { postId: string }) {
                   <div className="mt-2">
                     <p className="text-sm text-gray-500">
                       This will permanently delete all your information in your
-                      post. You won't be able to revert this!.
+                      post. You won't be able to revert this.
                     </p>
                   </div>
 

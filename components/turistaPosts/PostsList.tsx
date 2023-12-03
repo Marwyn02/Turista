@@ -21,9 +21,6 @@ const PostsList: FC<PostsItemProps> = (props) => {
           id={item.id}
           image={item.image}
           location={item.location}
-          userId={item.userId}
-          userName={item.userName}
-          userImage={item.userImage}
         />
       ))}
     </section>
@@ -31,11 +28,3 @@ const PostsList: FC<PostsItemProps> = (props) => {
 };
 
 export default PostsList;
-
-// const userImage = await Promise.all(
-//   user.map(async (img) => {
-//     return {
-//       image: img.image,
-//     };
-//   })
-// );

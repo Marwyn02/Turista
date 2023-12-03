@@ -26,13 +26,13 @@ export default function Component() {
       image: "",
       name: "Manage Posts",
       description: "Keep track of your posts",
-      href: "##",
+      href: "/manage/posts",
     },
     {
       image: "",
       name: "Settings",
       description: "",
-      href: "##",
+      href: "/user/settings",
     },
   ];
 

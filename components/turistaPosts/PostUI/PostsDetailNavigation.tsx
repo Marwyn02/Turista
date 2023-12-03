@@ -4,7 +4,6 @@ import router from "next/router";
 import { useSession } from "next-auth/react";
 
 import DeletePostModal from "../../UI/DeletePostModal";
-import LoadingPostModal from "@/components/UI/LoadingPostModal";
 
 type TPostsDetailNavigationProps = {
   userId: string;
@@ -107,8 +106,6 @@ const PostsDetailNavigation: FC<TPostsDetailNavigationProps> = ({
 
       {activeSession && (
         <div className="flex gap-x-1 md:gap-x-2">
-          {/* <LoadingPostModal postId={postId} /> */}
-
           {/* Delete Action  */}
           <DeletePostModal postId={postId} />
 
