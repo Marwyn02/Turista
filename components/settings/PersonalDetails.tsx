@@ -1,5 +1,7 @@
 import { useSession } from "next-auth/react";
 import { useState } from "react";
+import router from "next/router";
+import LoadingPostModal from "../UI/LoadingPostModal";
 
 export default function PersonalDetails({
   name,
@@ -10,8 +12,8 @@ export default function PersonalDetails({
   email: string;
   image: string;
 }) {
-  const { data: session } = useSession();
   const [newName, setNewName] = useState<string>(name);
+  const [isLoading, setIsLoading] = useState<boolean>(false);
 
   const [onEditState, setOnEditState] = useState<{
     name: boolean;
@@ -28,9 +30,11 @@ export default function PersonalDetails({
     }));
   };
 
+  // Update Users Name
   const submitChangeHandler = async (e: React.FormEvent) => {
     try {
       e.preventDefault();
+      setIsLoading(true);
 
       const response = await fetch("/api/setting/edit", {
         method: "DELETE",
@@ -38,12 +42,21 @@ export default function PersonalDetails({
           "Content-type": "application/json",
         },
         body: JSON.stringify({}),
-      });
-      console.log(newName);
-    } catch (error) {}
+      }).then((r) => r.json());
+
+      if (response.success) {
+        console.log(response.message);
+        router.push(response.path);
+        setIsLoading(false);
+      }
+    } catch (error) {
+      console.error("Failed to update your account, ", error);
+      setIsLoading(false);
+    }
   };
   return (
     <section className="mt-10 px-3 lg:px-0">
+      {isLoading && <LoadingPostModal />}
       <h4 className="text-sm text-gray-700 pb-1 font-semibold border-b">
         Account Preferences
       </h4>
@@ -72,7 +85,7 @@ export default function PersonalDetails({
               Remember to change your name with your real name, people might not
               recognize you easily.
             </p>
-            <div className="flex justify-between bg-gray-100 rounded-md px-4 py-1 mt-3">
+            <div className="flex justify-between bg-gray-100 rounded-md px-2 py-1 mt-3">
               <p className="font-normal text-gray-700 mt-1">{name}</p>
               <button
                 type="button"
