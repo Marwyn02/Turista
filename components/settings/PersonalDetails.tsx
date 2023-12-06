@@ -17,8 +17,10 @@ export default function PersonalDetails({
 
   const [onEditState, setOnEditState] = useState<{
     name: boolean;
+    image: boolean;
   }>({
     name: false,
+    image: false,
   });
 
   // Handle the toggling function of the post information,
@@ -150,18 +152,82 @@ export default function PersonalDetails({
         Images
       </h4>
       {/* Image  */}
-      <div className="font-bold text-gray-700 my-5">
-        Profile Image
-        <p className="text-xs text-gray-500 font-normal mt-0.5">
-          Display image must be in .png or .jpeg format
-        </p>
-        <img
-          src={image}
-          height={50}
-          width={50}
-          alt="Profile Image"
-          className="h-[100px] w-[100px] rounded-md font-normal mt-3.5"
-        />
+      <div className="my-5">
+        {!onEditState.image ? (
+          <section>
+            <div className="flex justify-between py-1">
+              <p className="font-bold text-gray-700 ">Profile Image</p>
+              <button
+                type="button"
+                className="border border-gray-400 rounded-full px-3 py-1 text-xs font-bold text-gray-700 bg-white hover:text-gray-900 hover:bg-gray-200 duration-300"
+                onClick={() => handleEditToggle("image")}
+              >
+                Change
+              </button>
+            </div>
+            <p className="text-sm text-gray-500 font-normal -mt-1.5">
+              Display image must be in .png or .jpeg format
+            </p>
+            <img
+              src={image}
+              height={50}
+              width={50}
+              alt="Profile Image"
+              className="h-[100px] w-[100px] border-2 border-black rounded-md font-normal mt-3.5"
+            />
+          </section>
+        ) : (
+          <section>
+            <div className="flex justify-between py-1">
+              <p className="font-bold text-gray-700 ">Profile Image</p>
+              <button
+                type="button"
+                className="font-medium text-sm text-gray-800 hover:underline hover:text-black"
+                onClick={() => handleEditToggle("image")}
+              >
+                Cancel
+              </button>
+            </div>
+            <p className="text-sm text-gray-500 font-normal -mt-1.5">
+              Display image must be in .png or .jpeg format
+            </p>
+            <div
+              className="mt-2 flex justify-start rounded-lg border w-fit
+                            border-dashed border-gray-900/25 p-12"
+            >
+              <div className="text-center">
+                <div className="mt-2 flex text-sm leading-6 text-gray-600">
+                  <label
+                    htmlFor="file-upload-1"
+                    className="relative cursor-pointer rounded-md bg-white 
+                               font-semibold text-indigo-600 hover:text-indigo-500"
+                  >
+                    <span>Upload a file</span>
+                    <input
+                      id="file-upload-1"
+                      name="file-upload-1"
+                      type="file"
+                      accept="image/*"
+                      className="sr-only"
+                      // onChange={(e) => handleImageChange(e, setImageOnePreview)}
+                      // ref={imageOneInputRef}
+                    />
+                  </label>
+                  <p className="pl-1">or drag and drop</p>
+                </div>
+                <p className="text-xs leading-5 text-gray-600">
+                  PNG, JPG, GIF up to 10MB
+                </p>
+              </div>
+            </div>
+            <button
+              type="submit"
+              className="mt-3 px-5 py-2 bg-gray-800 text-white rounded-md hover:bg-black font-normal"
+            >
+              Save
+            </button>
+          </section>
+        )}
       </div>
 
       {/* Delete Account  */}
