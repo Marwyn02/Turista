@@ -2,6 +2,7 @@ import { useSession } from "next-auth/react";
 import { useState } from "react";
 import router from "next/router";
 import LoadingPostModal from "../UI/LoadingPostModal";
+import PersonalImage from "./Components/PersonalImage";
 
 export default function PersonalDetails({
   name,
@@ -12,6 +13,7 @@ export default function PersonalDetails({
   email: string;
   image: string;
 }) {
+  const { data: session } = useSession();
   const [newName, setNewName] = useState<string>(name);
   const [isLoading, setIsLoading] = useState<boolean>(false);
 
@@ -39,11 +41,14 @@ export default function PersonalDetails({
       setIsLoading(true);
 
       const response = await fetch("/api/setting/edit", {
-        method: "DELETE",
+        method: "POST",
         headers: {
           "Content-type": "application/json",
         },
-        body: JSON.stringify({}),
+        body: JSON.stringify({
+          name: newName,
+          userId: (session?.user as { _id: string })?._id as string,
+        }),
       }).then((r) => r.json());
 
       if (response.success) {
@@ -52,7 +57,7 @@ export default function PersonalDetails({
         setIsLoading(false);
       }
     } catch (error) {
-      console.error("Failed to update your account, ", error);
+      console.error("Failed to update a your profile, ", error);
       setIsLoading(false);
     }
   };
@@ -177,56 +182,7 @@ export default function PersonalDetails({
             />
           </section>
         ) : (
-          <section>
-            <div className="flex justify-between py-1">
-              <p className="font-bold text-gray-700 ">Profile Image</p>
-              <button
-                type="button"
-                className="font-medium text-sm text-gray-800 hover:underline hover:text-black"
-                onClick={() => handleEditToggle("image")}
-              >
-                Cancel
-              </button>
-            </div>
-            <p className="text-sm text-gray-500 font-normal -mt-1.5">
-              Display image must be in .png or .jpeg format
-            </p>
-            <div
-              className="mt-2 flex justify-start rounded-lg border w-fit
-                            border-dashed border-gray-900/25 p-12"
-            >
-              <div className="text-center">
-                <div className="mt-2 flex text-sm leading-6 text-gray-600">
-                  <label
-                    htmlFor="file-upload-1"
-                    className="relative cursor-pointer rounded-md bg-white 
-                               font-semibold text-indigo-600 hover:text-indigo-500"
-                  >
-                    <span>Upload a file</span>
-                    <input
-                      id="file-upload-1"
-                      name="file-upload-1"
-                      type="file"
-                      accept="image/*"
-                      className="sr-only"
-                      // onChange={(e) => handleImageChange(e, setImageOnePreview)}
-                      // ref={imageOneInputRef}
-                    />
-                  </label>
-                  <p className="pl-1">or drag and drop</p>
-                </div>
-                <p className="text-xs leading-5 text-gray-600">
-                  PNG, JPG, GIF up to 10MB
-                </p>
-              </div>
-            </div>
-            <button
-              type="submit"
-              className="mt-3 px-5 py-2 bg-gray-800 text-white rounded-md hover:bg-black font-normal"
-            >
-              Save
-            </button>
-          </section>
+          <PersonalImage isClicked={() => handleEditToggle("image")} />
         )}
       </div>
 

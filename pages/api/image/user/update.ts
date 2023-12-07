@@ -1,16 +1,19 @@
 import type { NextApiRequest, NextApiResponse } from "next";
 import User from "@/models/User";
 
-export default async function Edit(req: NextApiRequest, res: NextApiResponse) {
-  const { name, userId }: { name: string; userId: string } = req.body;
+export default async function Update(
+  req: NextApiRequest,
+  res: NextApiResponse
+) {
+  const { image, userId }: { image: string; userId: string } = req.body;
   try {
-    // Check if theres a userId and name
-    if (userId && name) {
+    // Check if theres a id and image exists
+    if (image && userId) {
       await User.updateOne(
         {
           _id: userId,
         },
-        { $set: { name: name } },
+        { $set: { image: image } },
         { new: true }
       );
     }
