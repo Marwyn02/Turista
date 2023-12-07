@@ -2,6 +2,7 @@ import { useSession } from "next-auth/react";
 import { useState } from "react";
 import router from "next/router";
 import LoadingPostModal from "../UI/LoadingPostModal";
+import PersonalImage from "./Components/PersonalImage";
 
 export default function PersonalDetails({
   name,
@@ -12,13 +13,16 @@ export default function PersonalDetails({
   email: string;
   image: string;
 }) {
+  const { data: session } = useSession();
   const [newName, setNewName] = useState<string>(name);
   const [isLoading, setIsLoading] = useState<boolean>(false);
 
   const [onEditState, setOnEditState] = useState<{
     name: boolean;
+    image: boolean;
   }>({
     name: false,
+    image: false,
   });
 
   // Handle the toggling function of the post information,
@@ -37,11 +41,14 @@ export default function PersonalDetails({
       setIsLoading(true);
 
       const response = await fetch("/api/setting/edit", {
-        method: "DELETE",
+        method: "POST",
         headers: {
           "Content-type": "application/json",
         },
-        body: JSON.stringify({}),
+        body: JSON.stringify({
+          name: newName,
+          userId: (session?.user as { _id: string })?._id as string,
+        }),
       }).then((r) => r.json());
 
       if (response.success) {
@@ -50,7 +57,7 @@ export default function PersonalDetails({
         setIsLoading(false);
       }
     } catch (error) {
-      console.error("Failed to update your account, ", error);
+      console.error("Failed to update a your profile, ", error);
       setIsLoading(false);
     }
   };
@@ -150,18 +157,33 @@ export default function PersonalDetails({
         Images
       </h4>
       {/* Image  */}
-      <div className="font-bold text-gray-700 my-5">
-        Profile Image
-        <p className="text-xs text-gray-500 font-normal mt-0.5">
-          Display image must be in .png or .jpeg format
-        </p>
-        <img
-          src={image}
-          height={50}
-          width={50}
-          alt="Profile Image"
-          className="h-[100px] w-[100px] rounded-md font-normal mt-3.5"
-        />
+      <div className="my-5">
+        {!onEditState.image ? (
+          <section>
+            <div className="flex justify-between py-1">
+              <p className="font-bold text-gray-700 ">Profile Image</p>
+              <button
+                type="button"
+                className="border border-gray-400 rounded-full px-3 py-1 text-xs font-bold text-gray-700 bg-white hover:text-gray-900 hover:bg-gray-200 duration-300"
+                onClick={() => handleEditToggle("image")}
+              >
+                Change
+              </button>
+            </div>
+            <p className="text-sm text-gray-500 font-normal -mt-1.5">
+              Display image must be in .png or .jpeg format
+            </p>
+            <img
+              src={image}
+              height={50}
+              width={50}
+              alt="Profile Image"
+              className="h-[100px] w-[100px] border-2 border-black rounded-md font-normal mt-3.5"
+            />
+          </section>
+        ) : (
+          <PersonalImage isClicked={() => handleEditToggle("image")} />
+        )}
       </div>
 
       {/* Delete Account  */}
