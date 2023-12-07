@@ -81,8 +81,6 @@ export default function Component() {
                               <img
                                 src={item?.image || ""}
                                 alt="Profile Image"
-                                height={50}
-                                width={50}
                                 className="rounded-full h-full w-full"
                               />
                             )}

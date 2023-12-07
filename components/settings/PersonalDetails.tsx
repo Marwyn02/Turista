@@ -56,7 +56,7 @@ export default function PersonalDetails({
         router.push(response.path);
         setIsLoading(false);
       }
-    } catch (error) {
+    } catch (error: any) {
       console.error("Failed to update a your profile, ", error);
       setIsLoading(false);
     }
