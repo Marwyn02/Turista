@@ -1,4 +1,5 @@
-import React, { FC, useState } from "react";
+import React, { FC, useState, useEffect } from "react";
+import { useSession } from "next-auth/react";
 import Link from "next/link";
 import router from "next/router";
 
@@ -32,11 +33,31 @@ type TEditPostDataProps = {
   image: TImages[];
   description: string;
   amenities: TAmenities[];
+  user: string;
 };
 
 const EditPost: FC<TEditPostDataProps> = (props) => {
-  const { id, title, coordinate, location, image, description, amenities } =
-    props;
+  const {
+    id,
+    title,
+    coordinate,
+    location,
+    image,
+    description,
+    amenities,
+    user,
+  } = props;
+
+  const { data: session } = useSession();
+
+  // Restrict other clients to edit post of other clients
+  useEffect(() => {
+    if (user != ((session?.user as { _id: string })?._id as string)) {
+      setLoading(true);
+      router.push(`/${id}`);
+      return;
+    }
+  }, [session]);
 
   const [newImage, setNewImage] = useState<File[]>([]);
   const [newTitle, setNewTitle] = useState<string>(title);

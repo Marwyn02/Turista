@@ -1,7 +1,7 @@
 import React, { useRef, useState, useEffect } from "react";
+import { useSession } from "next-auth/react";
 import Link from "next/link";
 import router from "next/router";
-import { useSession } from "next-auth/react";
 
 import AmenityBox from "./UI/AmenityBox";
 import FormMap from "./UI/FormMap";
@@ -15,21 +15,54 @@ type TAmenities = {
 };
 
 export default function AddPost() {
-  const { data: session } = useSession();
+  const { data: session, status: loading } = useSession();
 
   // This is the firewall for the not authenticated clients
-  // useEffect(() => {
-  //   if (!session) {
-  //     router.push("/account/login");
-  //     return;
-  //   }
-  // }, [session]);
+  useEffect(() => {
+    if (loading === "loading") {
+      return;
+    }
+
+    if (!session) {
+      console.log("lel");
+      setLoading(true);
+      router.push("/account/login");
+      return;
+    } else {
+      const restrictUser = async () => {
+        try {
+          const response = await fetch("/api/user/restrict", {
+            method: "POST",
+            headers: {
+              "Content-type": "application/json",
+            },
+            body: JSON.stringify({
+              userId: (session?.user as { _id: string })?._id as string,
+            }),
+          }).then((r) => r.json());
+
+          if (response.userHasCreatedPost) {
+            setLoading(true);
+            console.log(response.message);
+            router.push(response.redirect);
+            return;
+          } else {
+            setLoading(false);
+            return;
+          }
+        } catch (error: any) {
+          console.error("Main navigation error:", error);
+        }
+      };
+      restrictUser();
+      setLoading(false);
+    }
+  }, [session]);
 
   // Form data
   const titleInputRef = useRef<HTMLInputElement>(null);
   const locationInputRef = useRef<HTMLInputElement>(null);
   const descriptionInputRef = useRef<HTMLTextAreaElement>(null);
-  // const [imageData, setImageData] = useState<TImage[]>([]);
   const amenitiesRef = useRef<TAmenities[]>([]);
   const coordinatesRef = useRef<{ lng: number; lat: number }>({
     lng: 0,
@@ -51,7 +84,7 @@ export default function AddPost() {
 
   // Loading states
   const [showContinue, setShowContinue] = useState(false);
-  const [loading, setLoading] = useState(false);
+  const [isLoading, setLoading] = useState(false);
 
   // Get coordinates from addmap
   const coordinates = ({ lat, lng }: { lat: number; lng: number }) => {
@@ -463,14 +496,14 @@ export default function AddPost() {
 
           {/* Submit and cancel buttons */}
           <section className="flex gap-x-1.5 pt-5">
-            {!loading && (
+            {!isLoading && (
               <div>
                 <Link href="/">
                   <button
                     type="button"
                     className="bg-gray-200 text-sm py-1.5 px-4 w-max rounded text-gray-900
                   hover:bg-gray-300 duration-300"
-                    disabled={loading}
+                    disabled={isLoading}
                   >
                     Cancel
                   </button>
@@ -483,7 +516,7 @@ export default function AddPost() {
                   type="button"
                   className="bg-indigo-500 text-sm py-1.5 px-4 w-max rounded text-gray-100"
                   onClick={submitHandler}
-                  disabled={loading}
+                  disabled={isLoading}
                 >
                   {!loading ? "Create a post" : "Creating your post..."}
                 </button>
@@ -492,7 +525,7 @@ export default function AddPost() {
           </section>
         </div>
       </div>
-      {loading && <LoadingPostModal />}
+      {isLoading && <LoadingPostModal />}
     </section>
   );
 }
