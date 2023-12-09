@@ -50,8 +50,6 @@ export default function Component() {
                 <img
                   src={session.user?.image || ""}
                   alt="Profile Image"
-                  height={50}
-                  width={50}
                   className="rounded-full h-[40px] w-[40px] border-[1.5px] border-y-violet-500
                   border-x-pink-300 hover:opacity-90 duration-150 cursor-pointer"
                 />
@@ -69,33 +67,32 @@ export default function Component() {
                   <div className="overflow-hidden rounded-lg shadow-lg ring-1 ring-black/5">
                     <div className="relative grid gap-8 bg-white p-7 lg:grid-cols-1">
                       {data.map((item) => (
-                        <a
-                          key={item.name}
-                          href={item.href}
-                          className="-m-3 flex items-center rounded-lg p-2 transition duration-150 ease-in-out hover:bg-gray-50 focus:outline-none focus-visible:ring focus-visible:ring-orange-500/50"
-                        >
-                          <div className="flex h-10 w-10 shrink-0 items-center justify-center text-white sm:h-12 sm:w-12">
-                            {item.image === "" ? (
-                              <div></div>
-                            ) : (
-                              <img
-                                src={item?.image || ""}
-                                alt="Profile Image"
-                                height={50}
-                                width={50}
-                                className="rounded-full h-full w-full"
-                              />
-                            )}
-                          </div>
-                          <div className="ml-4">
-                            <p className="text-sm font-medium text-gray-900">
-                              {item.name}
-                            </p>
-                            <p className="text-sm text-gray-500">
-                              {item.description}
-                            </p>
-                          </div>
-                        </a>
+                        <Popover.Button key={item.name} as={Fragment}>
+                          <Link
+                            href={item.href}
+                            className="-m-3 flex items-center rounded-lg p-2 transition duration-150 ease-in-out hover:bg-gray-50 focus:outline-none focus-visible:ring focus-visible:ring-orange-500/50"
+                          >
+                            <div className="flex h-10 w-10 shrink-0 items-center justify-center text-white sm:h-12 sm:w-12">
+                              {item.image === "" ? (
+                                <div></div>
+                              ) : (
+                                <img
+                                  src={item?.image || ""}
+                                  alt="Profile Image"
+                                  className="rounded-full h-full w-full"
+                                />
+                              )}
+                            </div>
+                            <div className="ml-4">
+                              <p className="text-sm font-medium text-gray-900">
+                                {item.name}
+                              </p>
+                              <p className="text-sm text-gray-500">
+                                {item.description}
+                              </p>
+                            </div>
+                          </Link>
+                        </Popover.Button>
                       ))}
                     </div>
                     <div className="bg-gray-50 p-4">

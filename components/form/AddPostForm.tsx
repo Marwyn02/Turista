@@ -18,12 +18,12 @@ export default function AddPost() {
   const { data: session } = useSession();
 
   // This is the firewall for the not authenticated clients
-  useEffect(() => {
-    if (!session) {
-      router.push("/account/login");
-      return;
-    }
-  }, [session]);
+  // useEffect(() => {
+  //   if (!session) {
+  //     router.push("/account/login");
+  //     return;
+  //   }
+  // }, [session]);
 
   // Form data
   const titleInputRef = useRef<HTMLInputElement>(null);

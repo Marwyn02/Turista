@@ -56,7 +56,7 @@ export default function PersonalDetails({
         router.push(response.path);
         setIsLoading(false);
       }
-    } catch (error) {
+    } catch (error: any) {
       console.error("Failed to update a your profile, ", error);
       setIsLoading(false);
     }
@@ -175,8 +175,6 @@ export default function PersonalDetails({
             </p>
             <img
               src={image}
-              height={50}
-              width={50}
               alt="Profile Image"
               className="h-[100px] w-[100px] border-2 border-black rounded-md font-normal mt-3.5"
             />
