@@ -14,9 +14,8 @@ interface PostsReviewProps {
 
 const PostsReview = (props: PostsReviewProps) => {
   const { data: session } = useSession();
-
   const [inputError, setInputError] = useState<boolean>(false);
-  const [loading, setLoading] = useState<boolean>(false);
+  const [isLoading, setIsLoading] = useState<boolean>(false);
 
   const reviewDescriptionRef = useRef<HTMLTextAreaElement>(null);
 
@@ -24,12 +23,12 @@ const PostsReview = (props: PostsReviewProps) => {
     e: React.FormEvent<HTMLFormElement>
   ): Promise<void> => {
     e.preventDefault();
-    setLoading(true);
+    setIsLoading(true);
 
     // If the client is not authenticated, re-route to sign in page
     if (!session) {
       console.log("Not signed in.");
-      setLoading(false);
+      setIsLoading(false);
       router.push("/account/login");
       return;
     }
@@ -45,14 +44,14 @@ const PostsReview = (props: PostsReviewProps) => {
       setTimeout(() => {
         clearInterval(showError);
         setInputError(false);
-        setLoading(false);
+        setIsLoading(false);
       }, 5000);
     } else {
       const reviewData = {
         post: props.postId,
         description: enteredDescription,
         image: session?.user?.image,
-        user: (session?.user as { _id: string })._id,
+        user: (session?.user as { _id: string })._id as string,
       };
 
       try {
@@ -70,11 +69,10 @@ const PostsReview = (props: PostsReviewProps) => {
         console.error("Failed to create a review in this post, ", error);
       }
 
-      setLoading(false);
+      setIsLoading(false);
       reviewDescriptionRef.current!.value = "";
     }
   };
-
   return (
     <>
       <form
@@ -107,9 +105,9 @@ const PostsReview = (props: PostsReviewProps) => {
           type="submit"
           className="rounded text-sm px-2 py-2.5 w-full my-2 tracking-wide bg-violet-400 
            text-white hover:bg-violet-500 duration-300"
-          disabled={loading}
+          disabled={isLoading}
         >
-          {loading ? "Sending..." : "Send review"}
+          {isLoading ? "Sending..." : "Send review"}
         </button>
       </form>
     </>

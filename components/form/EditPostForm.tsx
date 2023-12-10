@@ -53,7 +53,7 @@ const EditPost: FC<TEditPostDataProps> = (props) => {
   // Restrict other clients to edit post of other clients
   useEffect(() => {
     if (user != ((session?.user as { _id: string })?._id as string)) {
-      setLoading(true);
+      setIsLoading(true);
       router.push(`/${id}`);
       return;
     }
@@ -70,7 +70,7 @@ const EditPost: FC<TEditPostDataProps> = (props) => {
   const [newAmenities, setNewAmenities] = useState<TAmenities[]>(amenities);
 
   // Loading States
-  const [loading, setLoading] = useState<boolean>(false);
+  const [isLoading, setIsLoading] = useState<boolean>(false);
 
   // Post information edit states
   const [editState, setEditState] = useState<{
@@ -111,7 +111,7 @@ const EditPost: FC<TEditPostDataProps> = (props) => {
   // Update the current post data
   const handleEditSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    setLoading(true);
+    setIsLoading(true);
 
     const imageArray = [];
 
@@ -184,7 +184,7 @@ const EditPost: FC<TEditPostDataProps> = (props) => {
       // }).then((r) => r.json());
 
       // if (!response.success) {
-      //   setLoading(false);
+      //   setIsLoading(false);
       //   console.error(response.message);
       // }
 
@@ -192,9 +192,10 @@ const EditPost: FC<TEditPostDataProps> = (props) => {
       // router.push(response.redirect);
 
       router.push(`/${props.id}`);
-      setLoading(false);
+      setIsLoading(false);
     } catch (error: any) {
       console.error("Error occur in post edit, ", error);
+      setIsLoading(false);
     }
   };
   return (
@@ -372,7 +373,7 @@ const EditPost: FC<TEditPostDataProps> = (props) => {
                     className="bg-white text-gray-900 border 
                         border-gray-700 text-sm px-5 py-1.5 w-full rounded hover:bg-gray-800 
                         hover:text-white duration-200"
-                    disabled={loading}
+                    disabled={isLoading}
                   >
                     Cancel
                   </button>
@@ -383,16 +384,16 @@ const EditPost: FC<TEditPostDataProps> = (props) => {
                   type="submit"
                   className="bg-violet-400 text-white text-sm px-5 py-1.5 w-full border 
                       border-transparent rounded hover:bg-violet-500 duration-200"
-                  disabled={loading}
+                  disabled={isLoading}
                 >
-                  {!loading ? "Save" : "Saving..."}
+                  {!isLoading ? "Save" : "Saving..."}
                 </button>
               </div>
             </section>
           </div>
         </section>
       </div>
-      {loading && <LoadingPostModal />}
+      {isLoading && <LoadingPostModal />}
     </form>
   );
 };

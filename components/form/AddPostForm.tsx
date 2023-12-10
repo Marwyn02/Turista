@@ -25,7 +25,7 @@ export default function AddPost() {
 
     if (!session) {
       console.log("lel");
-      setLoading(true);
+      setIsLoading(true);
       router.push("/account/login");
       return;
     } else {
@@ -42,12 +42,12 @@ export default function AddPost() {
           }).then((r) => r.json());
 
           if (response.userHasCreatedPost) {
-            setLoading(true);
+            setIsLoading(true);
             console.log(response.message);
             router.push(response.redirect);
             return;
           } else {
-            setLoading(false);
+            setIsLoading(false);
             return;
           }
         } catch (error: any) {
@@ -55,7 +55,7 @@ export default function AddPost() {
         }
       };
       restrictUser();
-      setLoading(false);
+      setIsLoading(false);
     }
   }, [session]);
 
@@ -84,7 +84,7 @@ export default function AddPost() {
 
   // Loading states
   const [showContinue, setShowContinue] = useState(false);
-  const [isLoading, setLoading] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
 
   // Get coordinates from addmap
   const coordinates = ({ lat, lng }: { lat: number; lng: number }) => {
@@ -129,7 +129,7 @@ export default function AddPost() {
 
   // Submit the inputs of the user to the database
   const submitHandler = async () => {
-    setLoading(true);
+    setIsLoading(true);
     try {
       // Upload images to cloudinary
       const imageArray = [];
@@ -198,7 +198,7 @@ export default function AddPost() {
       // }).then((r) => r.json());
 
       // if (!response.success) {
-      //   setLoading(false);
+      //   setIsLoading(false);
       //   console.error(response.message);
       // }
 
@@ -207,10 +207,10 @@ export default function AddPost() {
       // location.reload();
 
       router.push("/");
-      setLoading(false);
+      setIsLoading(false);
       // Catch Error of the whole function
     } catch (error: any) {
-      setLoading(false);
+      setIsLoading(false);
       console.error("Failed to creating your post, ", error);
     }
   };

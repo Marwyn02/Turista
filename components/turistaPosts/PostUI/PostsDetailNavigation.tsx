@@ -17,11 +17,7 @@ const PostsDetailNavigation: FC<TPostsDetailNavigationProps> = ({
   loves,
 }) => {
   const { data: session } = useSession();
-
-  // Store the session.user._id here to a constant so I can use it globally.
-  const user_in_session = (session?.user as { _id: string })?._id as string;
-
-  const [activeSession, setActiveSession] = useState<boolean>(false);
+  const [inSession, setInSession] = useState<boolean>(false);
   const [postLove, setPostLove] = useState<boolean>(false);
   const [totalPostLove, setTotalPostLove] = useState<number>(0);
 
@@ -41,7 +37,10 @@ const PostsDetailNavigation: FC<TPostsDetailNavigationProps> = ({
       headers: {
         "Content-type": "application/json",
       },
-      body: JSON.stringify({ postId: postId, userId: user_in_session }),
+      body: JSON.stringify({
+        postId: postId,
+        userId: (session?.user as { _id: string })?._id as string,
+      }),
     }).then((r) => r.json());
 
     console.log(response.message);
@@ -58,7 +57,10 @@ const PostsDetailNavigation: FC<TPostsDetailNavigationProps> = ({
           headers: {
             "Content-type": "application/json",
           },
-          body: JSON.stringify({ postId: postId, userId: user_in_session }),
+          body: JSON.stringify({
+            postId: postId,
+            userId: (session?.user as { _id: string })?._id as string,
+          }),
         }).then((r) => r.json());
 
         setPostLove(response.loves);
@@ -69,20 +71,23 @@ const PostsDetailNavigation: FC<TPostsDetailNavigationProps> = ({
     };
 
     checkLikeStatus();
-  }, [postId, user_in_session]);
+  }, [postId, session]);
 
   // This function checks if the user active is same with post creator
   // To show the edit and delete buttons, only for the creator
   useEffect(() => {
-    if (session && user_in_session === userId) {
-      setActiveSession(true);
+    if (
+      session &&
+      ((session?.user as { _id: string })?._id as string) === userId
+    ) {
+      setInSession(true);
     }
 
     // Simple loving checker, if the client loved or unloved the post
-    if (loves.includes(user_in_session)) {
+    if (loves.includes((session?.user as { _id: string })?._id as string)) {
       setPostLove(true);
     }
-  }, [session, userId, user_in_session]);
+  }, [session, userId]);
   return (
     <section className="flex justify-between items-center pb-2 md:pb-2 px-1">
       <div className="flex items-center">
@@ -104,7 +109,7 @@ const PostsDetailNavigation: FC<TPostsDetailNavigationProps> = ({
         </span>
       </div>
 
-      {activeSession && (
+      {inSession && (
         <div className="flex gap-x-1 md:gap-x-2">
           {/* Delete Action  */}
           <DeletePostModal postId={postId} />
