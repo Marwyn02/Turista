@@ -12,9 +12,14 @@ export default async function restrict(
       user: userId,
     });
 
+    // If not created a single post
     if (userHasCreatedPost < 1) {
-      return res.status(200).json({ userHasCreatedPost: false });
+      // This will allow the client to create a post
+      return res.status(200).json({
+        userHasCreatedPost: false,
+      });
     } else {
+      // If yes
       return res.status(200).json({
         userHasCreatedPost: true,
         redirect: "/",

@@ -16,19 +16,20 @@ const PostImages: FC<PostImagesProps> = ({ images }) => {
           <Image
             className="animated-slide md:rounded-lg w-full hover:brightness-90 duration-100"
             src={images[0].image}
-            width={1000}
             height={1000}
+            width={1000}
             alt="Image 1"
           />
         </div>
       )}
       {images[1] && (
         <section className="hidden md:block md:row-span-2 w-full h-full relative">
-          <div className="w-full h-full overflow-hidden">
+          <div className="w-full h-full overflow-hidden relative">
             <Image
               className="animated-slide md:rounded-lg w-full h-full object-cover hover:brightness-90 duration-100"
               src={images[1].image}
               fill={true}
+              sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
               alt="Image 2"
             />
           </div>
@@ -36,11 +37,12 @@ const PostImages: FC<PostImagesProps> = ({ images }) => {
       )}
       {images[2] && (
         <section className="hidden md:block md:row-span-2 w-full h-full relative">
-          <div className="w-full h-full overflow-hidden">
+          <div className="w-full h-full overflow-hidden relative">
             <Image
               className="animated-slide md:rounded-lg w-full h-full object-cover hover:brightness-90 duration-100"
               src={images[2].image}
               fill={true}
+              sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
               alt="Image 3"
             />
           </div>

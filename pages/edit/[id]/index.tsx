@@ -20,6 +20,7 @@ interface PostData {
     image: ImageArray[];
     description: string;
     amenities: IAmenityArray[];
+    user: string;
   };
 }
 
@@ -46,6 +47,7 @@ const index: FC<PostData> = (props) => {
           image={props.post.image}
           description={props.post.description}
           amenities={props.post.amenities}
+          user={props.post.user}
         />
       </FormLayout>
     </Suspense>
@@ -77,6 +79,7 @@ export async function getStaticProps(
     if (!context.params) {
       throw new Error("No params in context ");
     }
+
     const postId: string = context.params.id as string;
 
     const { selectedPost, selectedUser } = await Find(postId);
@@ -106,6 +109,7 @@ export async function getStaticProps(
               checked: item.checked,
             })
           ),
+          user: selectedPost.user.toString(),
         },
       },
       revalidate: 1,
@@ -124,6 +128,7 @@ export async function getStaticProps(
           image: [],
           description: "",
           amenities: [],
+          user: "",
         },
       },
       revalidate: 1,
