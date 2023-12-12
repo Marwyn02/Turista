@@ -33,8 +33,6 @@ const User: FC<IUserProps> = ({
   const [showFollowBtn, setShowFollowBtn] = useState<Boolean>(false);
   const [followed, setFollowed] = useState<Boolean>(false);
 
-  const user_in_session = (session?.user as { _id: string })?._id as string;
-
   // Toggler function of post and review
   const toggleHandler = (show: string): void => {
     setShowPost(show === "post");
@@ -58,7 +56,10 @@ const User: FC<IUserProps> = ({
         headers: {
           "Content-type": "application/json",
         },
-        body: JSON.stringify({ userId: userId, active_user: user_in_session }),
+        body: JSON.stringify({
+          userId: userId,
+          active_user: (session?.user as { _id: string })?._id as string,
+        }),
       }).then((r) => r.json());
 
       console.log(response.message);
@@ -70,15 +71,15 @@ const User: FC<IUserProps> = ({
 
   useEffect(() => {
     // Show the follow button is the user is not on there profile account
-    if (user_in_session !== userId) {
+    if (((session?.user as { _id: string })?._id as string) !== userId) {
       setShowFollowBtn(true);
     }
 
     // Simple following checker, if the client is followed or unfollowed
-    if (followers.includes(user_in_session)) {
+    if (followers.includes((session?.user as { _id: string })?._id as string)) {
       setFollowed(true);
     }
-  }, [userId, user_in_session]);
+  }, [userId, session]);
   return (
     <section className="bg-gray-50">
       <Head>
