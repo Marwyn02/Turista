@@ -32,7 +32,7 @@ const ReviewCard: FC<ReviewCardProps> = ({
   const { data: session } = useSession();
   const dropdownRef = useRef<HTMLDivElement>(null);
   const buttonRef = useRef<HTMLImageElement>(null);
-  const [activeSession, setActiveSession] = useState<boolean>(false);
+  const [inSession, setInSession] = useState<boolean>(false);
   const [dropdown, setDropdown] = useState<boolean>(false);
   const [editReview, setEditReview] = useState<boolean>(false);
 
@@ -113,7 +113,7 @@ const ReviewCard: FC<ReviewCardProps> = ({
   // To show the edit and delete buttons, only for the creator
   useEffect(() => {
     if (session && (session.user as { _id: string })._id === userId) {
-      setActiveSession(true);
+      setInSession(true);
     }
   }, [session, userId]);
 
@@ -230,7 +230,7 @@ const ReviewCard: FC<ReviewCardProps> = ({
           </div>
         </div>
         <div className="flex items-center">
-          {activeSession && (
+          {inSession && (
             <img
               src="/horizontal-dots.svg"
               alt="lel"

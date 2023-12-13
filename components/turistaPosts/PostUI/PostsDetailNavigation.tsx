@@ -22,7 +22,7 @@ const PostsDetailNavigation: FC<TPostsDetailNavigationProps> = ({
   const [totalPostLove, setTotalPostLove] = useState<number>(0);
 
   // Add likes to the post function handler
-  const handleLikesHandler = async (e: { preventDefault: () => void }) => {
+  const submitLoveHandler = async (e: { preventDefault: () => void }) => {
     e.preventDefault();
 
     // If the client is not authenticated, re-route to sign in page
@@ -92,7 +92,7 @@ const PostsDetailNavigation: FC<TPostsDetailNavigationProps> = ({
     <section className="flex justify-between items-center pb-2 md:pb-2 px-1">
       <div className="flex items-center">
         <button
-          onClick={handleLikesHandler}
+          onClick={submitLoveHandler}
           className="px-2 py-2 md:px-2.5 bg-violet-100 duration-300 rounded hover:bg-violet-400"
         >
           {!postLove && (

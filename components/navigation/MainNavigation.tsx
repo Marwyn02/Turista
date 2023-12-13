@@ -11,10 +11,10 @@ const MainNavigation = () => {
 
   const [userHasCreatedPost, setUserHasCreatedPost] = useState<boolean>(false);
 
+  // Restrict the user to show the create post button
+  // if the user has already created a post
   useEffect(() => {
     if (session) {
-      const user_in_session = (session?.user as { _id: string })?._id as string;
-
       const fetchUserPostStatus = async () => {
         try {
           const response = await fetch("/api/user/restrict", {
@@ -22,7 +22,9 @@ const MainNavigation = () => {
             headers: {
               "Content-type": "application/json",
             },
-            body: JSON.stringify({ userId: user_in_session }),
+            body: JSON.stringify({
+              userId: (session?.user as { _id: string })?._id as string,
+            }),
           }).then((r) => r.json());
 
           setUserHasCreatedPost(response.userHasCreatedPost);
