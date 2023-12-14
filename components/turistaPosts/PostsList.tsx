@@ -6,9 +6,6 @@ interface PostsItemProps {
     id: string;
     location: string;
     image: string;
-    userId: string;
-    userName: string;
-    userImage: string;
   }[];
 }
 
