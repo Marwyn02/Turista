@@ -7,6 +7,7 @@ import Find from "@/pages/api/post/find";
 
 import EditPostForm from "@/components/form/EditPostForm";
 import FormLayout from "@/components/layout/FormLayout";
+import Loading from "@/components/fallbacks/Loading";
 
 interface PostData {
   post: {
@@ -37,7 +38,7 @@ interface IAmenityArray {
 
 const index: FC<PostData> = (props) => {
   return (
-    <Suspense fallback={<p>Loading content...</p>}>
+    <Suspense fallback={<Loading />}>
       <FormLayout>
         <EditPostForm
           id={props.post.id}
@@ -87,6 +88,7 @@ export async function getStaticProps(
     if (!selectedPost && !selectedUser) {
       return { notFound: true }; // Return a 404 page
     }
+
     return {
       props: {
         post: {

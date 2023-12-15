@@ -10,6 +10,7 @@ import UserModel from "@/models/User";
 import CountData from "../api/user/count";
 import FindUser from "../api/user/find";
 
+import Loading from "@/components/fallbacks/Loading";
 import User from "../../components/profile/User";
 
 interface UserData {
@@ -51,7 +52,7 @@ interface Count {
 
 const userId: FC<UserData> = (props) => {
   return (
-    <Suspense fallback={<p>Loading content...</p>}>
+    <Suspense fallback={<Loading />}>
       <User
         userId={props.userData.userId}
         name={props.userData.name}
@@ -97,6 +98,12 @@ export async function getStaticProps(
     // Fetching user data
     const { id, name, image, followers }: IUser = await FindUser(userId);
 
+    if (!name && !image) {
+      return {
+        notFound: true, // Return a 404 page
+      };
+    }
+
     // Fetching post annd review count or number
     const PostReviewCount: Count = await CountData(userId);
 
@@ -105,12 +112,6 @@ export async function getStaticProps(
 
     // Fetch user's reviews created
     const userReviews = await Review.find({ user: userId }).sort({ _id: -1 });
-
-    if (!name && !image) {
-      return {
-        notFound: true, // Return a 404 page
-      };
-    }
 
     // Fetch all user's posts
     const posts = await Promise.all(

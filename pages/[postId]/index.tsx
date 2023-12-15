@@ -8,6 +8,7 @@ import User from "@/models/User";
 import Find from "../api/post/find";
 
 import PostsDetail from "@/components/turistaPosts/PostsDetail";
+import Loading from "@/components/fallbacks/Loading";
 
 interface IReview {
   _id: string;
@@ -64,7 +65,7 @@ interface IPostData {
 
 const index: FC<IPostData> = (props) => {
   return (
-    <Suspense fallback={<p>Loading content...</p>}>
+    <Suspense fallback={<Loading />}>
       <PostsDetail
         id={props.post.id}
         loves={props.post.loves}
@@ -112,6 +113,12 @@ export async function getStaticProps(
     // Get the selected post and user's data
     const { selectedPost, selectedUser } = await Find(postId);
 
+    if (!selectedPost && !selectedUser) {
+      return {
+        notFound: true, // Return a 404 page
+      };
+    }
+
     // Fetch post created date
     // Day - Month - Year
     const date: string = new Date(selectedPost.createdAt).toLocaleString(
@@ -122,12 +129,6 @@ export async function getStaticProps(
         year: "numeric",
       }
     );
-
-    if (!selectedPost && !selectedUser) {
-      return {
-        notFound: true, // Return a 404 page
-      };
-    }
 
     // Return a user name of every review in a specific post
     const reviewUser = await Promise.all(
