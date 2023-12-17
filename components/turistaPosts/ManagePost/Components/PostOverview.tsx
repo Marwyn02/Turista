@@ -1,6 +1,7 @@
 import React, { FC } from "react";
+import PostCard from "./PostCard";
 
-type PostsProps = {
+type TPostsProps = {
   posts: {
     id: string;
     title: string;
@@ -9,21 +10,32 @@ type PostsProps = {
   }[];
 };
 
-const PostOverview: FC<PostsProps> = ({ posts }) => {
+const PostOverview: FC<TPostsProps> = ({ posts }) => {
   return (
-    <div>
-      <h1>Post Overview</h1>
-      <div>
-        {posts.map((post) => (
-          <div key={post.id}>
-            <p>{post.id}</p>
-            <p>{post.title}</p>
-            <p>{post.location}</p>
-            <img src={post.image} alt={post.title} />
-          </div>
-        ))}
+    <>
+      <div className="mt-10 mb-5 flex justify-between items-center">
+        <h1 className="text-2xl text-gray-800 font-medium tracking-wider">
+          Your posts
+        </h1>
+        <button
+          className="border border-black px-4 py-1 rounded-md tracking-wide
+          text-sm font-medium hover:border-gray-300 hover:text-gray-600 duration-300"
+        >
+          Create post
+        </button>
       </div>
-    </div>
+      <section className="grid grid-cols-2 gap-x-4">
+        {posts.map((post) => (
+          <PostCard
+            key={post.id}
+            id={post.id}
+            title={post.title}
+            location={post.location}
+            image={post.image}
+          />
+        ))}
+      </section>
+    </>
   );
 };
 
