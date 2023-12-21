@@ -16,7 +16,7 @@ const OverviewPage: FC<PostsProps> = ({ posts }) => {
   const { data: session } = useSession();
   return (
     <>
-      <section className="p-32">
+      <section className="p-28">
         <h1 className="text-3xl font-semibold text-gray-800">
           Welcome, {session?.user?.name}!
         </h1>
