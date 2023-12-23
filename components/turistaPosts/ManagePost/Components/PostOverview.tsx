@@ -18,6 +18,13 @@ const PostOverview: FC<TPostsProps> = ({ posts }) => {
 
   // Restrict the user to show the create post button
   // if the user has already created a post
+
+  if (posts.length === 0) {
+    console.log("no post");
+  } else {
+    console.log("has post");
+  }
+
   useEffect(() => {
     if (session) {
       const fetchUserPostStatus = async () => {
@@ -44,17 +51,17 @@ const PostOverview: FC<TPostsProps> = ({ posts }) => {
   return (
     <>
       <div className="mt-10 mb-5 flex justify-between items-center">
-        <h1 className="text-2xl text-gray-800 font-medium tracking-wider">
-          Your posts
-        </h1>
+        <h1 className="text-2xl text-gray-800 font-medium">Your posts</h1>
         <div className="flex items-center">
-          <img
-            src="/Warnings/exclamation-mark.svg"
-            height={18}
-            width={18}
-            alt=""
-            className="mr-2"
-          />
+          {userHasCreatedPost && (
+            <img
+              src="/Warnings/exclamation-mark.svg"
+              height={18}
+              width={18}
+              alt=""
+              className="mr-2"
+            />
+          )}
           <Link href={"/create"} className="group">
             <button
               className={`border border-black px-4 py-1 rounded-md 
@@ -70,17 +77,23 @@ const PostOverview: FC<TPostsProps> = ({ posts }) => {
           </Link>
         </div>
       </div>
-      <section className="grid grid-cols-2 gap-x-4">
-        {posts.map((post) => (
-          <PostCard
-            key={post.id}
-            id={post.id}
-            title={post.title}
-            location={post.location}
-            image={post.image}
-          />
-        ))}
-      </section>
+      {posts.length !== 0 ? (
+        <section className="grid grid-cols-2 gap-x-4">
+          {posts.map((post) => (
+            <PostCard
+              key={post.id}
+              id={post.id}
+              title={post.title}
+              location={post.location}
+              image={post.image}
+            />
+          ))}
+        </section>
+      ) : (
+        <p className="text-gray-400 text-center text-sm mt-20">
+          You haven't posted anything...
+        </p>
+      )}
     </>
   );
 };

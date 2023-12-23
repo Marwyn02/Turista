@@ -38,11 +38,7 @@ export default function LoadingPostModal({ message }: { message: string }) {
                   className="animate-spin h-[30px] w-[30px] mx-auto my-4"
                 ></Dialog.Title>
                 <div className="mt-8 mb-5">
-                  <p className="text-sm text-gray-500 text-center">
-                    {/* Please wait for a moment. We're trying to make it as the
-                    best of the best! */}
-                    {message}
-                  </p>
+                  <p className="text-sm text-gray-500 text-center">{message}</p>
                 </div>
               </Dialog.Panel>
             </Transition.Child>
