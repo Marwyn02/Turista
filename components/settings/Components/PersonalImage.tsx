@@ -38,7 +38,6 @@ export default function PersonalImage(props: any) {
         const form = new FormData();
         form.append("file", selectedImages[0]);
         form.append("upload_preset", "Turista-Uploads");
-        form.append("folder", "Profile-Pictures");
 
         const response = await fetch(
           process.env.NEXT_PUBLIC_CLOUDINARY_URL as string,

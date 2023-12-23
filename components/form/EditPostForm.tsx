@@ -47,14 +47,17 @@ const EditPost: FC<TEditPostDataProps> = (props) => {
     amenities,
     user,
   } = props;
-
   const { data: session } = useSession();
+  const [message, setMessage] = useState<string>("");
 
   // Restrict other clients to edit post of other clients
   useEffect(() => {
     if (user != ((session?.user as { _id: string })?._id as string)) {
-      setIsLoading(true);
-      router.push(`/${id}`);
+      setMessage("You're not authorized here!");
+      setTimeout(() => {
+        router.push(`/${id}`);
+        setIsLoading(true);
+      }, 3000);
       return;
     }
   }, [session]);
@@ -112,6 +115,9 @@ const EditPost: FC<TEditPostDataProps> = (props) => {
   const handleEditSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setIsLoading(true);
+    setMessage(
+      "Please wait for a moment. We're trying to make it as the best of the best!"
+    );
 
     const imageArray = [];
 
@@ -139,6 +145,7 @@ const EditPost: FC<TEditPostDataProps> = (props) => {
     }
 
     let updatedPost;
+    setMessage("Almost done!");
 
     // Check if the new image array is not empty
     // If empty, this will use the prev image data so it will not update the image
@@ -191,8 +198,11 @@ const EditPost: FC<TEditPostDataProps> = (props) => {
       // console.log(response.message);
       // router.push(response.redirect);
 
-      router.push(`/${props.id}`);
-      setIsLoading(false);
+      setMessage("Done!");
+      setTimeout(() => {
+        router.push(`/${props.id}`);
+        setIsLoading(false);
+      }, 3000);
     } catch (error: any) {
       console.error("Error occur in post edit, ", error);
       setIsLoading(false);
@@ -393,7 +403,7 @@ const EditPost: FC<TEditPostDataProps> = (props) => {
           </div>
         </section>
       </div>
-      {isLoading && <LoadingPostModal />}
+      {isLoading && <LoadingPostModal message={message} />}
     </form>
   );
 };

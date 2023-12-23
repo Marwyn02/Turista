@@ -16,6 +16,7 @@ type TAmenities = {
 
 export default function AddPost() {
   const { data: session, status: loading } = useSession();
+  const [message, setMessage] = useState<string>("");
 
   // This is the firewall for the not authenticated clients
   useEffect(() => {
@@ -24,9 +25,14 @@ export default function AddPost() {
     }
 
     if (!session) {
-      console.log("lel");
       setIsLoading(true);
-      router.push("/account/login");
+      setMessage(
+        "You are not authenticated to enter this page! Go to login page."
+      );
+
+      // Timed the return to login page if not authenticated,
+      // to make it more interactive
+      setTimeout(() => router.push("/account/login"), 3000);
       return;
     } else {
       const restrictUser = async () => {
@@ -43,8 +49,8 @@ export default function AddPost() {
 
           if (response.userHasCreatedPost) {
             setIsLoading(true);
-            console.log(response.message);
-            router.push(response.redirect);
+            setMessage(response.message);
+            setTimeout(() => router.push(response.redirect), 3000);
             return;
           } else {
             setIsLoading(false);
@@ -130,6 +136,9 @@ export default function AddPost() {
   // Submit the inputs of the user to the database
   const submitHandler = async () => {
     setIsLoading(true);
+    setMessage(
+      "Please wait for a moment. We're trying to make it as the best of the best!"
+    );
     try {
       // Upload images to cloudinary
       const imageArray = [];
@@ -187,6 +196,7 @@ export default function AddPost() {
       };
 
       // Log the response
+      setMessage("Almost there!");
       console.log("Response: ", post);
 
       // const response = await fetch("/api/post/create", {
@@ -206,8 +216,11 @@ export default function AddPost() {
       // router.push(response.redirect);
       // location.reload();
 
-      router.push("/");
-      setIsLoading(false);
+      setMessage("Done!");
+      setTimeout(() => {
+        router.push("/");
+        setIsLoading(false);
+      }, 3000);
       // Catch Error of the whole function
     } catch (error: any) {
       setIsLoading(false);
@@ -518,14 +531,14 @@ export default function AddPost() {
                   onClick={submitHandler}
                   disabled={isLoading}
                 >
-                  {!loading ? "Create a post" : "Creating your post..."}
+                  {!isLoading ? "Create a post" : "Creating your post..."}
                 </button>
               </div>
             )}
           </section>
         </div>
       </div>
-      {isLoading && <LoadingPostModal />}
+      {isLoading && <LoadingPostModal message={message} />}
     </section>
   );
 }

@@ -1,7 +1,7 @@
 import { Dialog, Transition } from "@headlessui/react";
 import { Fragment, useState } from "react";
 
-export default function LoadingPostModal() {
+export default function LoadingPostModal({ message }: { message: string }) {
   let [isOpen] = useState(true);
   return (
     <Transition appear show={isOpen} as={Fragment}>
@@ -38,9 +38,10 @@ export default function LoadingPostModal() {
                   className="animate-spin h-[30px] w-[30px] mx-auto my-4"
                 ></Dialog.Title>
                 <div className="mt-8 mb-5">
-                  <p className="text-sm text-gray-500">
-                    Please wait for a moment. We're trying to make it as the
-                    best of the best!
+                  <p className="text-sm text-gray-500 text-center">
+                    {/* Please wait for a moment. We're trying to make it as the
+                    best of the best! */}
+                    {message}
                   </p>
                 </div>
               </Dialog.Panel>
