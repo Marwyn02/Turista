@@ -7,6 +7,7 @@ import AmenityBox from "./UI/AmenityBox";
 import FormMap from "./UI/FormMap";
 
 import LoadingPostModal from "../UI/LoadingPostModal";
+import { CancelButton } from "../UI/Buttons/Button";
 
 type TAmenities = {
   name: string;
@@ -510,18 +511,9 @@ export default function AddPost() {
           {/* Submit and cancel buttons */}
           <section className="flex gap-x-1.5 pt-5">
             {!isLoading && (
-              <div>
-                <Link href="/">
-                  <button
-                    type="button"
-                    className="bg-gray-200 text-sm py-1.5 px-4 w-max rounded text-gray-900
-                  hover:bg-gray-300 duration-300"
-                    disabled={isLoading}
-                  >
-                    Cancel
-                  </button>
-                </Link>
-              </div>
+              <Link href="/">
+                <CancelButton disabled={isLoading}>Cancel</CancelButton>
+              </Link>
             )}
             {showContinue && (
               <div>
