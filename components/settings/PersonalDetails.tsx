@@ -17,6 +17,7 @@ export default function PersonalDetails({
   const { data: session } = useSession();
   const [newName, setNewName] = useState<string>(name);
   const [isLoading, setIsLoading] = useState<boolean>(false);
+  const [message, setMessage] = useState<string>("");
 
   const [onEditState, setOnEditState] = useState<{
     name: boolean;
@@ -40,6 +41,7 @@ export default function PersonalDetails({
     try {
       e.preventDefault();
       setIsLoading(true);
+      setMessage("Please wait for a moment.");
 
       const response = await fetch("/api/setting/edit", {
         method: "POST",
@@ -53,9 +55,11 @@ export default function PersonalDetails({
       }).then((r) => r.json());
 
       if (response.success) {
-        console.log(response.message);
-        router.push(response.path);
-        setIsLoading(false);
+        setMessage(response.message);
+        setTimeout(() => {
+          router.push(response.path);
+          setIsLoading(false);
+        }, 3000);
       }
     } catch (error: any) {
       console.error("Failed to update a your profile, ", error);
@@ -64,7 +68,7 @@ export default function PersonalDetails({
   };
   return (
     <section className="mt-10 px-3 lg:px-0">
-      {isLoading && <LoadingPostModal />}
+      {isLoading && <LoadingPostModal message={message} />}
       <h4 className="text-sm text-gray-700 pb-1 font-semibold border-b">
         Account Preferences
       </h4>

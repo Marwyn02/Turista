@@ -1,6 +1,7 @@
 import { Dialog, Transition } from "@headlessui/react";
 import { Fragment, useState } from "react";
 import router from "next/router";
+import { ConfirmModalButton } from "./Buttons/Button";
 
 export default function DeletePostModal({ postId }: { postId: string }) {
   let [isOpen, setIsOpen] = useState(false);
@@ -88,20 +89,20 @@ export default function DeletePostModal({ postId }: { postId: string }) {
                   </div>
 
                   <div className="mt-4 flex gap-x-4 justify-center">
-                    <button
+                    <ConfirmModalButton
                       type="button"
                       className="inline-flex justify-center rounded-md border border-transparent bg-gray-50 px-4 py-2 text-sm font-medium text-blue-900 hover:bg-blue-200 focus:outline-none duration-300"
                       onClick={closeModal}
                     >
                       Cancel
-                    </button>
-                    <button
+                    </ConfirmModalButton>
+                    <ConfirmModalButton
                       type="button"
                       className="inline-flex justify-center rounded-md border border-transparent bg-red-500 px-4 py-2 text-sm font-medium text-white hover:bg-red-600 hover:text-white focus:outline-none duration-300"
                       onClick={deleteHandler}
                     >
                       Yes, delete it
-                    </button>
+                    </ConfirmModalButton>
                   </div>
                 </Dialog.Panel>
               </Transition.Child>
