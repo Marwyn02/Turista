@@ -2,6 +2,8 @@ import React, { useRef, useState } from "react";
 import { useSession } from "next-auth/react";
 import router from "next/router";
 
+import { SubmitButton } from "../UI/Buttons/Button";
+
 interface PostsReviewProps {
   postId: string;
 }
@@ -38,13 +40,13 @@ const PostsReview = (props: PostsReviewProps) => {
     if (reviewDescriptionRef.current?.value.trim() === "") {
       let showError = setInterval(() => {
         setInputError(true);
+        setIsLoading(false);
       });
 
       // Timing the review validation
       setTimeout(() => {
         clearInterval(showError);
         setInputError(false);
-        setIsLoading(false);
       }, 5000);
     } else {
       const reviewData = {
@@ -74,43 +76,37 @@ const PostsReview = (props: PostsReviewProps) => {
     }
   };
   return (
-    <>
-      <form
-        onSubmit={submitReviewHandler}
-        className="lg:border-none rounded-lg lg:rounded-none px-1 md:px-2 mt-6 lg:my-8 lg:mb-2"
-      >
-        <h2 className="font-semibold text-gray-700">Write your review</h2>
-        <textarea
-          rows={4}
-          cols={30}
-          name="description"
-          className={
-            !inputError
-              ? `resize-none border border-gray-300 p-2 text-sm w-full mt-1 rounded-xl 
+    <form
+      onSubmit={submitReviewHandler}
+      className="lg:border-none rounded-lg lg:rounded-none px-1 md:px-2 mt-6 lg:my-8 lg:mb-2"
+    >
+      <h2 className="font-semibold text-gray-700">Write your review</h2>
+      <textarea
+        rows={4}
+        cols={30}
+        name="description"
+        className={
+          !inputError
+            ? `resize-none border border-gray-300 p-2 text-sm w-full mt-1 rounded-xl 
               focus:ring-1 focus:ring-violet-500 focus:border-violet-500 focus:outline-none`
-              : `resize-none border border-red-500 p-2 text-sm w-full mt-1 rounded-xl`
-          }
-          placeholder="Is it fun right?"
-          ref={reviewDescriptionRef}
-        ></textarea>
-        {inputError && (
-          <span
-            id="reviewError"
-            className="text-xs text-white bg-red-600/70 rounded-lg px-1.5 py-0.5 mb-0.5"
-          >
-            I think you forgot to enter a review.
-          </span>
-        )}
-        <button
-          type="submit"
-          className="rounded text-sm px-2 py-2.5 w-full my-2 tracking-wide bg-violet-400 
-           text-white hover:bg-violet-500 duration-300"
-          disabled={isLoading}
+            : `resize-none border border-red-500 p-2 text-sm w-full mt-1 rounded-xl`
+        }
+        placeholder="Is it fun right?"
+        ref={reviewDescriptionRef}
+      ></textarea>
+      {/* Input error warning */}
+      {inputError && (
+        <span
+          id="reviewError"
+          className="text-xs text-white bg-red-600/70 rounded-lg px-1.5 py-0.5"
         >
-          {isLoading ? "Sending..." : "Send review"}
-        </button>
-      </form>
-    </>
+          I think you forgot to enter a review.
+        </span>
+      )}
+      <SubmitButton disabled={isLoading}>
+        {isLoading ? "Sending..." : "Send review"}
+      </SubmitButton>
+    </form>
   );
 };
 

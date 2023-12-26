@@ -7,7 +7,7 @@ import AmenityBox from "./UI/AmenityBox";
 import FormMap from "./UI/FormMap";
 
 import LoadingPostModal from "../UI/LoadingPostModal";
-import { CancelButton } from "../UI/Buttons/Button";
+import { CancelButton, SubmitButton } from "../UI/Buttons/Button";
 
 type TAmenities = {
   name: string;
@@ -229,7 +229,7 @@ export default function AddPost() {
     }
   };
   return (
-    <section className="bg-white sm:my-4">
+    <form onSubmit={submitHandler} className="bg-white sm:my-4">
       <div className="space-y-10 md:px-2">
         <div className="px-5">
           <h2 className="text-xl">Create your own post.</h2>
@@ -516,21 +516,14 @@ export default function AddPost() {
               </Link>
             )}
             {showContinue && (
-              <div>
-                <button
-                  type="button"
-                  className="bg-indigo-500 text-sm py-1.5 px-4 w-max rounded text-gray-100"
-                  onClick={submitHandler}
-                  disabled={isLoading}
-                >
-                  {!isLoading ? "Create a post" : "Creating your post..."}
-                </button>
-              </div>
+              <SubmitButton disabled={isLoading}>
+                {!isLoading ? "Create a post" : "Creating your post..."}
+              </SubmitButton>
             )}
           </section>
         </div>
       </div>
       {isLoading && <LoadingPostModal message={message} />}
-    </section>
+    </form>
   );
 }

@@ -16,8 +16,8 @@ const PostCard: FC<TPostCardProps> = ({ id, title, location, image }) => {
           <Link href={`/edit/${id}`}>
             <button
               className="absolute opacity-0 top-2.5 right-2.5 
-                bg-gray-700 p-2 hover:bg-black
-                rounded-lg group-hover:opacity-100 duration-300"
+                bg-violet-500 p-2 hover:bg-violet-600
+                rounded-lg group-hover:opacity-100 duration-300 focus:outline-none "
             >
               <img
                 src="/pencil-white.svg"

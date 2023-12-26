@@ -4,6 +4,7 @@ import router from "next/router";
 import { useSession } from "next-auth/react";
 
 import DeletePostModal from "../../UI/DeletePostModal";
+import { ConfirmButton } from "@/components/UI/Buttons/Button";
 
 type TPostsDetailNavigationProps = {
   userId: string;
@@ -116,15 +117,12 @@ const PostsDetailNavigation: FC<TPostsDetailNavigationProps> = ({
 
           {/* Edit Action  */}
           <Link href={`/edit/${postId}`}>
-            <button
-              className="px-2 py-2 md:px-2.5 bg-violet-400 duration-300 
-              flex items-center rounded hover:bg-violet-500"
-            >
-              <img src="/pencil-white.svg" height={18} width={18} alt="Edit" />
+            <ConfirmButton>
+              <img src="/pencil-white.svg" height={15} width={15} alt="Edit" />
               <span className="ml-2 text-white font-semibold text-xs">
                 Edit
               </span>
-            </button>
+            </ConfirmButton>
           </Link>
         </div>
       )}

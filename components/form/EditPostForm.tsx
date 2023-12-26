@@ -8,7 +8,7 @@ import EditPostImage from "./UI/EditPostImage";
 import FormMap from "./UI/FormMap";
 
 import LoadingPostModal from "../UI/LoadingPostModal";
-import { CancelButton } from "../UI/Buttons/Button";
+import { CancelButton, SubmitButton } from "../UI/Buttons/Button";
 
 type TImages = {
   image: string;
@@ -381,16 +381,9 @@ const EditPost: FC<TEditPostDataProps> = (props) => {
                 <CancelButton disabled={isLoading}>Cancel</CancelButton>
               </Link>
 
-              <div>
-                <button
-                  type="submit"
-                  className="bg-violet-400 text-white text-sm px-5 py-1.5 w-full border 
-                      border-transparent rounded hover:bg-violet-500 duration-200"
-                  disabled={isLoading}
-                >
-                  {!isLoading ? "Save" : "Saving..."}
-                </button>
-              </div>
+              <SubmitButton disabled={isLoading}>
+                {!isLoading ? "Save" : "Saving..."}
+              </SubmitButton>
             </section>
           </div>
         </section>

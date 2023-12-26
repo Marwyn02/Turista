@@ -12,17 +12,18 @@ type PostsProps = {
   }[];
 };
 
+// Implement more reusable buttons
+// Manage post grid columns
+
 const OverviewPage: FC<PostsProps> = ({ posts }) => {
   const { data: session } = useSession();
   return (
-    <>
-      <section className="p-32">
-        <h1 className="text-3xl font-semibold text-gray-800">
-          Welcome, {session?.user?.name}!
-        </h1>
-        <PostOverview posts={posts} />
-      </section>
-    </>
+    <section className="pt-24 pb-12 px-8 lg:pt-32 lg:px-32">
+      <h1 className="text-3xl font-semibold text-gray-800">
+        Welcome, {session?.user?.name}!
+      </h1>
+      <PostOverview posts={posts} />
+    </section>
   );
 };
 

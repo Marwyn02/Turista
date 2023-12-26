@@ -1,7 +1,7 @@
 import { Dialog, Transition } from "@headlessui/react";
 import { Fragment, useState } from "react";
 import router from "next/router";
-import { CancelButton } from "./Buttons/Button";
+import { CancelButton, DeleteButton } from "./Buttons/Button";
 
 export default function DeletePostModal({ postId }: { postId: string }) {
   let [isOpen, setIsOpen] = useState(false);
@@ -39,15 +39,10 @@ export default function DeletePostModal({ postId }: { postId: string }) {
     <>
       <div className="flex">
         {/* Delete button */}
-        <button
-          type="button"
-          className="px-2 py-2 md:px-2.5 bg-red-400 duration-300 
-          flex items-center rounded hover:bg-red-500"
-          onClick={openModal}
-        >
-          <img src="/trash-bin-white.svg" height={18} width={18} alt="Delete" />
+        <DeleteButton onClick={openModal}>
+          <img src="/trash-bin-white.svg" height={15} width={15} alt="Delete" />
           <span className="ml-2 text-white font-semibold text-xs">Delete</span>
-        </button>
+        </DeleteButton>
       </div>
 
       <Transition appear show={isOpen} as={Fragment}>
@@ -93,13 +88,9 @@ export default function DeletePostModal({ postId }: { postId: string }) {
                     <CancelButton onClick={closeModal}>Cancel</CancelButton>
 
                     {/* In modal Delete Button  */}
-                    <button
-                      type="button"
-                      className="inline-flex justify-center rounded-md border border-transparent bg-red-500 px-4 py-2 text-sm font-medium text-white hover:bg-red-600 hover:text-white focus:outline-none duration-300"
-                      onClick={deleteHandler}
-                    >
+                    <DeleteButton onClick={deleteHandler}>
                       Yes, delete it
-                    </button>
+                    </DeleteButton>
                   </section>
                 </Dialog.Panel>
               </Transition.Child>
