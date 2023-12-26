@@ -16,6 +16,9 @@ const PostOverview: FC<TPostsProps> = ({ posts }) => {
   const { data: session } = useSession();
   const [userHasCreatedPost, setUserHasCreatedPost] = useState<boolean>(false);
 
+  // Fetched the user's data if the user has already created
+  // one or more post
+  // If YES, then user cannot allow to use the create button
   useEffect(() => {
     if (session) {
       const fetchUserPostStatus = async () => {

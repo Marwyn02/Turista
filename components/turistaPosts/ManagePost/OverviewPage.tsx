@@ -12,9 +12,6 @@ type PostsProps = {
   }[];
 };
 
-// Implement more reusable buttons
-// Manage post grid columns
-
 const OverviewPage: FC<PostsProps> = ({ posts }) => {
   const { data: session } = useSession();
   return (

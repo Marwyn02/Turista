@@ -124,16 +124,14 @@ export default function Component() {
   // Show sign in button only if the user is not in the /account/login page
   if (pathname !== "/account/login") {
     return (
-      <>
-        <Link
-          href="/account/login"
-          className="self-center py-1.5 px-4 font-semibold text-xs 
+      <Link
+        href="/account/login"
+        className="self-center py-1.5 px-4 font-semibold text-xs 
                      lg:text-sm text-violet-400 rounded
                     hover:bg-violet-400 hover:text-white duration-300"
-        >
-          Sign in
-        </Link>
-      </>
+      >
+        Sign in
+      </Link>
     );
   }
 }
