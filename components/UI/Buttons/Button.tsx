@@ -1,12 +1,11 @@
 import React from "react";
-
-interface IProps {
+type TProps = {
   children: React.ReactNode;
   onClick?: React.MouseEventHandler<HTMLButtonElement>;
   disabled?: boolean;
-}
+};
 
-export const CancelButton = ({ children, onClick, disabled }: IProps) => {
+export const CancelButton = ({ children, onClick, disabled }: TProps) => {
   return (
     <button
       type="button"
@@ -21,7 +20,7 @@ export const CancelButton = ({ children, onClick, disabled }: IProps) => {
   );
 };
 
-export const SubmitButton = ({ children, disabled }: IProps) => {
+export const SubmitButton = ({ children, disabled }: TProps) => {
   return (
     <button
       type="submit"
@@ -34,7 +33,7 @@ export const SubmitButton = ({ children, disabled }: IProps) => {
   );
 };
 
-export const ConfirmButton = ({ children, disabled }: IProps) => {
+export const ConfirmButton = ({ children, disabled }: TProps) => {
   return (
     <button
       type="button"
@@ -47,7 +46,7 @@ export const ConfirmButton = ({ children, disabled }: IProps) => {
   );
 };
 
-export const DeleteButton = ({ children, onClick }: IProps) => {
+export const DeleteButton = ({ children, onClick }: TProps) => {
   return (
     <button
       type="button"
