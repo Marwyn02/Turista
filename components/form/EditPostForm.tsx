@@ -8,6 +8,7 @@ import EditPostImage from "./UI/EditPostImage";
 import FormMap from "./UI/FormMap";
 
 import LoadingPostModal from "../UI/LoadingPostModal";
+import { CancelButton, SubmitButton } from "../UI/Buttons/Button";
 
 type TImages = {
   image: string;
@@ -376,29 +377,13 @@ const EditPost: FC<TEditPostDataProps> = (props) => {
 
             {/* Cancel and update buttons */}
             <section className="flex justify-between md:justify-normal items-center gap-x-1.5 py-3">
-              <div>
-                <Link href={`/${id}`}>
-                  <button
-                    type="button"
-                    className="bg-white text-gray-900 border 
-                        border-gray-700 text-sm px-5 py-1.5 w-full rounded hover:bg-gray-800 
-                        hover:text-white duration-200"
-                    disabled={isLoading}
-                  >
-                    Cancel
-                  </button>
-                </Link>
-              </div>
-              <div>
-                <button
-                  type="submit"
-                  className="bg-violet-400 text-white text-sm px-5 py-1.5 w-full border 
-                      border-transparent rounded hover:bg-violet-500 duration-200"
-                  disabled={isLoading}
-                >
-                  {!isLoading ? "Save" : "Saving..."}
-                </button>
-              </div>
+              <Link href={`/${id}`}>
+                <CancelButton disabled={isLoading}>Cancel</CancelButton>
+              </Link>
+
+              <SubmitButton disabled={isLoading}>
+                {!isLoading ? "Save" : "Saving..."}
+              </SubmitButton>
             </section>
           </div>
         </section>

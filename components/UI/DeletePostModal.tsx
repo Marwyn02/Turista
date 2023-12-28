@@ -1,7 +1,7 @@
 import { Dialog, Transition } from "@headlessui/react";
 import { Fragment, useState } from "react";
 import router from "next/router";
-import { ConfirmModalButton } from "./Buttons/Button";
+import { CancelButton, DeleteButton } from "./Buttons/Button";
 
 export default function DeletePostModal({ postId }: { postId: string }) {
   let [isOpen, setIsOpen] = useState(false);
@@ -38,15 +38,11 @@ export default function DeletePostModal({ postId }: { postId: string }) {
   return (
     <>
       <div className="flex">
-        <button
-          type="button"
-          onClick={openModal}
-          className="px-2 py-2 md:px-2.5 bg-red-400 duration-300 
-          flex items-center rounded hover:bg-red-500"
-        >
-          <img src="/trash-bin-white.svg" height={18} width={18} alt="Delete" />
+        {/* Delete button */}
+        <DeleteButton onClick={openModal}>
+          <img src="/trash-bin-white.svg" height={15} width={15} alt="Delete" />
           <span className="ml-2 text-white font-semibold text-xs">Delete</span>
-        </button>
+        </DeleteButton>
       </div>
 
       <Transition appear show={isOpen} as={Fragment}>
@@ -81,29 +77,21 @@ export default function DeletePostModal({ postId }: { postId: string }) {
                   >
                     Are you sure?
                   </Dialog.Title>
-                  <div className="mt-2">
-                    <p className="text-sm text-gray-500">
-                      This will permanently delete all your information in your
-                      post. You won't be able to revert this.
-                    </p>
-                  </div>
 
-                  <div className="mt-4 flex gap-x-4 justify-center">
-                    <ConfirmModalButton
-                      type="button"
-                      className="inline-flex justify-center rounded-md border border-transparent bg-gray-50 px-4 py-2 text-sm font-medium text-blue-900 hover:bg-blue-200 focus:outline-none duration-300"
-                      onClick={closeModal}
-                    >
-                      Cancel
-                    </ConfirmModalButton>
-                    <ConfirmModalButton
-                      type="button"
-                      className="inline-flex justify-center rounded-md border border-transparent bg-red-500 px-4 py-2 text-sm font-medium text-white hover:bg-red-600 hover:text-white focus:outline-none duration-300"
-                      onClick={deleteHandler}
-                    >
+                  <p className="text-sm text-gray-500 mt-2">
+                    This will permanently delete all your information in your
+                    post. You won't be able to revert this.
+                  </p>
+
+                  <section className="mt-4 flex gap-x-4 justify-center">
+                    {/* Cancel Button  */}
+                    <CancelButton onClick={closeModal}>Cancel</CancelButton>
+
+                    {/* In modal Delete Button  */}
+                    <DeleteButton onClick={deleteHandler}>
                       Yes, delete it
-                    </ConfirmModalButton>
-                  </div>
+                    </DeleteButton>
+                  </section>
                 </Dialog.Panel>
               </Transition.Child>
             </div>

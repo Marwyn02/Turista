@@ -16,15 +16,9 @@ const PostOverview: FC<TPostsProps> = ({ posts }) => {
   const { data: session } = useSession();
   const [userHasCreatedPost, setUserHasCreatedPost] = useState<boolean>(false);
 
-  // Restrict the user to show the create post button
-  // if the user has already created a post
-
-  if (posts.length === 0) {
-    console.log("no post");
-  } else {
-    console.log("has post");
-  }
-
+  // Fetched the user's data if the user has already created
+  // one or more post
+  // If YES, then user cannot allow to use the create button
   useEffect(() => {
     if (session) {
       const fetchUserPostStatus = async () => {
@@ -62,23 +56,24 @@ const PostOverview: FC<TPostsProps> = ({ posts }) => {
               className="mr-2"
             />
           )}
-          <Link href={"/create"} className="group">
+          <Link href={"/create"}>
             <button
-              className={`border border-black px-4 py-1 rounded-md 
-              tracking-wide text-sm font-medium duration-300 ${
+              type="button"
+              className={`border-2 px-4 py-1.5 rounded-md 
+              tracking-wide text-sm font-medium duration-300 focus:outline-none ${
                 userHasCreatedPost
-                  ? "text-gray-300 border-gray-300"
-                  : "group-hover:border-gray-300 group-hover:text-gray-600"
+                  ? "text-violet-100 border-violet-200"
+                  : "border-violet-500 text-violet-500 hover:border-transparent hover:text-white hover:bg-violet-500"
               }`}
               disabled={userHasCreatedPost}
             >
-              Create post
+              Create your new post
             </button>
           </Link>
         </div>
       </div>
       {posts.length !== 0 ? (
-        <section className="grid grid-cols-2 gap-x-4">
+        <section className="grid grid-cols-1 md:grid-cols-2 md:gap-x-4 gap-y-4">
           {posts.map((post) => (
             <PostCard
               key={post.id}
@@ -90,8 +85,15 @@ const PostOverview: FC<TPostsProps> = ({ posts }) => {
           ))}
         </section>
       ) : (
-        <p className="text-gray-400 text-center text-sm mt-20">
+        <p className="text-gray-400 text-center text-sm mt-32">
           You haven't posted anything...
+          <br />
+          <Link
+            href={"/create"}
+            className="text-violet-400 underline hover:text-violet-600 pt-2 font-semibold"
+          >
+            Create post here.
+          </Link>
         </p>
       )}
     </>

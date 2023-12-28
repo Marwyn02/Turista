@@ -7,6 +7,7 @@ import AmenityBox from "./UI/AmenityBox";
 import FormMap from "./UI/FormMap";
 
 import LoadingPostModal from "../UI/LoadingPostModal";
+import { CancelButton, SubmitButton } from "../UI/Buttons/Button";
 
 type TAmenities = {
   name: string;
@@ -228,7 +229,7 @@ export default function AddPost() {
     }
   };
   return (
-    <section className="bg-white sm:my-4">
+    <form onSubmit={submitHandler} className="bg-white sm:my-4">
       <div className="space-y-10 md:px-2">
         <div className="px-5">
           <h2 className="text-xl">Create your own post.</h2>
@@ -510,35 +511,19 @@ export default function AddPost() {
           {/* Submit and cancel buttons */}
           <section className="flex gap-x-1.5 pt-5">
             {!isLoading && (
-              <div>
-                <Link href="/">
-                  <button
-                    type="button"
-                    className="bg-gray-200 text-sm py-1.5 px-4 w-max rounded text-gray-900
-                  hover:bg-gray-300 duration-300"
-                    disabled={isLoading}
-                  >
-                    Cancel
-                  </button>
-                </Link>
-              </div>
+              <Link href="/">
+                <CancelButton disabled={isLoading}>Cancel</CancelButton>
+              </Link>
             )}
             {showContinue && (
-              <div>
-                <button
-                  type="button"
-                  className="bg-indigo-500 text-sm py-1.5 px-4 w-max rounded text-gray-100"
-                  onClick={submitHandler}
-                  disabled={isLoading}
-                >
-                  {!isLoading ? "Create a post" : "Creating your post..."}
-                </button>
-              </div>
+              <SubmitButton disabled={isLoading}>
+                {!isLoading ? "Create a post" : "Creating your post..."}
+              </SubmitButton>
             )}
           </section>
         </div>
       </div>
       {isLoading && <LoadingPostModal message={message} />}
-    </section>
+    </form>
   );
 }
