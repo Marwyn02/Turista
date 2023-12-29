@@ -309,7 +309,7 @@ export default function AddPost() {
             )}
 
             {imageOnePreview && (
-              <ImagePreview source={imageOnePreview} alt="Image Preview 1" />
+              <ImagePreview src={imageOnePreview} alt="Image Preview 1" />
             )}
 
             {/* Secondary images  */}
@@ -331,7 +331,7 @@ export default function AddPost() {
               )}
 
               {imageTwoPreview && (
-                <ImagePreview source={imageTwoPreview} alt="Image Preview 2" />
+                <ImagePreview src={imageTwoPreview} alt="Image Preview 2" />
               )}
 
               {/* Image three  */}
@@ -344,10 +344,7 @@ export default function AddPost() {
               )}
 
               {imageThreePreview && (
-                <ImagePreview
-                  source={imageThreePreview}
-                  alt="Image Preview 3"
-                />
+                <ImagePreview src={imageThreePreview} alt="Image Preview 3" />
               )}
             </div>
 
