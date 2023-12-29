@@ -7,7 +7,7 @@ import AmenitiesBox from "./UI/AmenityBox";
 import EditPostImage from "./UI/EditPostImage";
 import FormMap from "./UI/FormMap";
 
-import LoadingPostModal from "../UI/LoadingPostModal";
+import { LoadingModal } from "../UI/Modals/Modal";
 import { CancelButton, SubmitButton } from "../UI/Buttons/Button";
 
 type TImages = {
@@ -388,7 +388,7 @@ const EditPost: FC<TEditPostDataProps> = (props) => {
           </div>
         </section>
       </div>
-      {isLoading && <LoadingPostModal message={message} />}
+      {isLoading && <LoadingModal message={message} />}
     </form>
   );
 };

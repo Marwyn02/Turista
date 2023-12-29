@@ -6,7 +6,7 @@ import router from "next/router";
 import AmenityBox from "./UI/AmenityBox";
 import FormMap from "./UI/FormMap";
 
-import LoadingPostModal from "../UI/LoadingPostModal";
+import { LoadingModal } from "../UI/Modals/Modal";
 import { CancelButton, SubmitButton } from "../UI/Buttons/Button";
 
 type TAmenities = {
@@ -523,7 +523,7 @@ export default function AddPost() {
           </section>
         </div>
       </div>
-      {isLoading && <LoadingPostModal message={message} />}
+      {isLoading && <LoadingModal message={message} />}
     </form>
   );
 }
