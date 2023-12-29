@@ -436,10 +436,10 @@ export default function AddPost() {
             </div>
 
             {/* Images Buttons  */}
-            <div className="flex gap-x-2 md:mt-2">
-              {/* Will clear all preview images and the array state for the cloudinary */}
-              {imageOnePreview && !loading && (
-                <button
+            <section className="flex gap-x-2 md:mt-2">
+              {/* Will clear all preview images and the array for the cloudinary */}
+              {imageOnePreview && !isLoading && (
+                <CancelButton
                   onClick={(e) => {
                     setSelectedImages([]);
                     setImageOnePreview(null);
@@ -447,14 +447,12 @@ export default function AddPost() {
                     setImageThreePreview(null);
                     e.preventDefault();
                   }}
-                  className="px-4 py-2 text-xs md:text-sm bg-gray-200 text-gray-500 duration-300 
-                          rounded mt-2 hover:bg-gray-300 hover:text-gray-600"
-                  disabled={loading}
+                  disabled={isLoading}
                 >
-                  Clear image(s)
-                </button>
+                  Clear images
+                </CancelButton>
               )}
-            </div>
+            </section>
           </div>
 
           {/* Title Input  */}
@@ -507,21 +505,20 @@ export default function AddPost() {
               </div>
             </div>
           )}
-
-          {/* Submit and cancel buttons */}
-          <section className="flex gap-x-1.5 pt-5">
-            {!isLoading && (
-              <Link href="/">
-                <CancelButton disabled={isLoading}>Cancel</CancelButton>
-              </Link>
-            )}
-            {showContinue && (
-              <SubmitButton disabled={isLoading}>
-                {!isLoading ? "Create a post" : "Creating your post..."}
-              </SubmitButton>
-            )}
-          </section>
         </div>
+        {/* Submit and cancel buttons */}
+        <section className="flex gap-x-1.5 pt-5 px-5">
+          {!isLoading && (
+            <Link href="/">
+              <CancelButton disabled={isLoading}>Cancel</CancelButton>
+            </Link>
+          )}
+          {showContinue && (
+            <SubmitButton disabled={isLoading}>
+              {!isLoading ? "Create a post" : "Creating your post..."}
+            </SubmitButton>
+          )}
+        </section>
       </div>
       {isLoading && <LoadingModal message={message} />}
     </form>

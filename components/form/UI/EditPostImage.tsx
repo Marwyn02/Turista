@@ -1,5 +1,11 @@
 import React, { useState, useRef, FC } from "react";
 
+import {
+  CancelButton,
+  ConfirmButton,
+  DeleteButton,
+} from "@/components/UI/Buttons/Button";
+
 type TEditPostImageProps = {
   id: string;
   image: { image: string; public_id: string }[];
@@ -222,7 +228,7 @@ const EditPostImage: FC<TEditPostImageProps> = ({
             src={image[2].image}
             alt={title}
             id="image"
-            className={`w-full md:rounded-lg duration-100 mt-2 hover:brightness-90
+            className={`w-full md:rounded-lg duration-100 my-2 hover:brightness-90
                       ${
                         selectedImages.includes(image[2])
                           ? "border-4 border-red-400"
@@ -233,15 +239,14 @@ const EditPostImage: FC<TEditPostImageProps> = ({
         )}
         {!imageThreePreview && !image[2] && (
           <div
-            className="mt-2 flex justify-center rounded-lg border
+            className="my-2 flex justify-center rounded-lg border
                       border-dashed border-gray-900/25 px-6 py-10"
           >
             <div className="text-center">
               <div className="mt-4 flex text-sm leading-6 text-gray-600">
                 <label
                   htmlFor="file-upload-2"
-                  className="relative cursor-pointer rounded-md bg-white
-                         font-semibold text-indigo-600 hover:text-indigo-500"
+                  className="relative cursor-pointer rounded-md bg-white font-semibold text-indigo-600 hover:text-indigo-500"
                 >
                   <span>Upload a file</span>
                   <input
@@ -266,34 +271,27 @@ const EditPostImage: FC<TEditPostImageProps> = ({
           <img
             src={imageThreePreview}
             alt="Preview 3"
-            className="md:rounded-lg mt-0.5 md:mt-3 hover:brightness-90"
+            className="md:rounded-lg mt-0.5 mb-2 md:mt-3 hover:brightness-90"
           />
         )}
       </div>
 
-      {/* Button navigations  */}
+      {/* Image Buttons  */}
       <div className="flex justify-between items-center px-2 lg:px-0">
         <div className="flex gap-x-1">
-          {selectedImages.length >= 1 && !editSaved ? (
-            <button
-              type="button"
-              className="px-8 py-2 text-xs md:text-sm bg-red-400 text-white duration-300
-                       rounded mt-2 hover:bg-red-500"
-              onClick={deleteSelectedImages}
-              disabled={editLoading}
-            >
-              {editLoading ? "Removing..." : "Remove"}
-            </button>
-          ) : (
-            <div></div>
+          {/* If the selected images array is more than 1 element */}
+          {selectedImages.length >= 1 && !editSaved && (
+            // This removes the selected images in the post
+            // that the user selected
+            <DeleteButton onClick={deleteSelectedImages} disabled={editLoading}>
+              {editLoading ? "Removing..." : "Remove it"}
+            </DeleteButton>
           )}
 
           {(imageOnePreview || imageTwoPreview || imageThreePreview) &&
           !editSaved ? (
-            <button
-              type="button"
-              className="px-4 py-2 text-xs md:text-sm bg-gray-200 text-gray-500 duration-300
-              rounded mt-2 hover:bg-gray-300 hover:text-gray-600"
+            // This removes the all added images in the array
+            <CancelButton
               onClick={() => {
                 setImageOnePreview(null);
                 setImageTwoPreview(null);
@@ -301,20 +299,15 @@ const EditPostImage: FC<TEditPostImageProps> = ({
               }}
             >
               Clear added images
-            </button>
+            </CancelButton>
           ) : null}
         </div>
 
         {imageThreePreview && !editSaved && (
-          <button
-            type="button"
-            className="px-8 py-2 text-xs md:text-sm bg-indigo-500 text-white duration-300
-              rounded mt-2 hover:bg-indigo-600 hover:text-white"
-            disabled={editLoading}
-            onClick={submitImageHandler}
-          >
-            {editLoading ? "Saving..." : "Save Changes"}
-          </button>
+          // This saves the modified array of images
+          <ConfirmButton onClick={submitImageHandler} disabled={editLoading}>
+            {editLoading ? "Saving..." : "Save it"}
+          </ConfirmButton>
         )}
 
         {editSaved && (
