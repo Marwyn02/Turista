@@ -3,7 +3,7 @@ import Link from "next/link";
 import router from "next/router";
 import { useSession } from "next-auth/react";
 
-import DeletePostModal from "../../UI/DeletePostModal";
+import { DeleteModal } from "@/components/UI/Modals/Modal";
 import { ConfirmButton } from "@/components/UI/Buttons/Button";
 
 type TPostsDetailNavigationProps = {
@@ -113,7 +113,7 @@ const PostsDetailNavigation: FC<TPostsDetailNavigationProps> = ({
       {inSession && (
         <div className="flex gap-x-1 md:gap-x-2">
           {/* Delete Action  */}
-          <DeletePostModal postId={postId} />
+          <DeleteModal postId={postId} />
 
           {/* Edit Action  */}
           <Link href={`/edit/${postId}`}>
