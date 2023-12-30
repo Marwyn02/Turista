@@ -20,6 +20,8 @@ type TImg = {
   onClick: any;
 };
 
+// Images UI here are mostly in the forms
+
 export const Img = ({ src, alt, height, width, select, onClick }: TImg) => {
   return (
     <Image
