@@ -3,6 +3,8 @@ import { useSession } from "next-auth/react";
 import Link from "next/link";
 import router from "next/router";
 
+import { Icon } from "../UI/Images/Image";
+
 interface ReviewCardProps {
   id: string;
   date: string;
@@ -229,15 +231,14 @@ const ReviewCard: FC<ReviewCardProps> = ({
             <p className="text-xs text-gray-300">{date}</p>
           </div>
         </div>
-        <div className="flex items-center">
+        <div className="flex items-center hover:bg-gray-200 h-fit">
           {inSession && (
-            <img
+            <Icon
               src="/horizontal-dots.svg"
-              alt="lel"
+              alt="horizontal-dots"
               height={23}
               width={23}
-              className="hover:bg-gray-200"
-              ref={buttonRef}
+              reference={buttonRef}
               onClick={() => setDropdown(!dropdown)}
             />
           )}
@@ -254,27 +255,20 @@ const ReviewCard: FC<ReviewCardProps> = ({
               onClick={showHideDropdown}
               className="cursor-pointer hover:bg-gray-200 hover:text-black py-1.5 pl-2 flex duration-300"
             >
-              <img
-                src="/pen.svg"
-                height={18}
-                width={18}
-                alt="lel"
-                className="mr-1.5"
-              />{" "}
-              Edit
+              <Icon src="/pen.svg" alt="pen" height={18} width={18} />
+              <span className="ml-1.5">Edit</span>
             </li>
             <li
               onClick={deleteReviewHandler}
               className="cursor-pointer hover:bg-gray-200 hover:text-black py-1.5 pl-2 flex duration-300"
             >
-              <img
-                src="/trash.svg"
+              <Icon
+                src="/trash-bin-black.svg"
+                alt="trash-bin"
                 height={18}
                 width={18}
-                alt="lel"
-                className="mr-1.5"
-              />{" "}
-              Delete
+              />
+              <span className="ml-1.5">Delete</span>
             </li>
           </ul>
         </div>

@@ -20,6 +20,15 @@ type TImg = {
   onClick: any;
 };
 
+type TIcon = {
+  src: string;
+  alt: string;
+  height: number;
+  width: number;
+  reference?: React.RefObject<HTMLImageElement>;
+  onClick?: React.MouseEventHandler<HTMLImageElement>;
+};
+
 // Images UI here are mostly in the forms
 
 export const Img = ({ src, alt, height, width, select, onClick }: TImg) => {
@@ -73,6 +82,27 @@ export const ImagePreview = ({ src, alt }: TPreview) => {
       src={src}
       alt={alt}
       className="mt-2 md:mt-4 rounded-lg hover:brightness-90"
+    />
+  );
+};
+
+export const Icon = ({
+  src,
+  alt,
+  height,
+  width,
+  reference,
+  onClick,
+}: TIcon) => {
+  return (
+    <img
+      src={src}
+      alt={alt}
+      height={height}
+      width={width}
+      // className="hover:bg-gray-200"
+      ref={reference}
+      onClick={onClick}
     />
   );
 };
