@@ -1,20 +1,32 @@
 import React from "react";
+import Image from "next/image";
 
 type TInput = {
   onChange: React.ChangeEventHandler<HTMLInputElement>;
-  reference: any;
+  reference: React.RefObject<HTMLInputElement>;
 };
 
 type TPreview = {
-  src: any;
+  src: string;
   alt: string;
 };
 
-export const Image = ({ src, alt, select, onClick }: any) => {
+type TImg = {
+  src: string;
+  alt: string;
+  height?: number;
+  width?: number;
+  select: any;
+  onClick: any;
+};
+
+export const Img = ({ src, alt, height, width, select, onClick }: TImg) => {
   return (
-    <img
+    <Image
       src={src}
       alt={alt}
+      height={height ?? 300}
+      width={width ?? 300}
       className={`w-full md:rounded-lg duration-100 mt-2 hover:brightness-90
           ${select ? "border-4 border-red-400" : ""}`}
       onClick={onClick}
@@ -55,7 +67,7 @@ export const ImageInput = ({ onChange, reference }: TInput) => {
 
 export const ImagePreview = ({ src, alt }: TPreview) => {
   return (
-    <img
+    <Image
       src={src}
       alt={alt}
       className="mt-2 md:mt-4 rounded-lg hover:brightness-90"

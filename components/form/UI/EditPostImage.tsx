@@ -6,7 +6,7 @@ import {
   DeleteButton,
 } from "@/components/UI/Buttons/Button";
 
-import { Image, ImageInput, ImagePreview } from "@/components/UI/Images/Image";
+import { Img, ImageInput, ImagePreview } from "@/components/UI/Images/Image";
 
 type TEditPostImageProps = {
   id: string;
@@ -119,7 +119,7 @@ const EditPostImage: FC<TEditPostImageProps> = ({
         {/* Image one  */}
         {image[0] && (
           // Image one
-          <Image
+          <Img
             src={image[0].image}
             alt={title}
             select={selectedImages.includes(image[0])}
@@ -141,7 +141,7 @@ const EditPostImage: FC<TEditPostImageProps> = ({
         {/* Image two  */}
         {image[1] && (
           // Image two
-          <Image
+          <Img
             src={image[1].image}
             alt={title}
             select={selectedImages.includes(image[1])}
@@ -162,7 +162,7 @@ const EditPostImage: FC<TEditPostImageProps> = ({
 
         {/* Image three  */}
         {image[2] && (
-          <Image
+          <Img
             src={image[2].image}
             alt={title}
             select={selectedImages.includes(image[2])}
