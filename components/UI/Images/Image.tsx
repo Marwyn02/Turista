@@ -16,8 +16,8 @@ type TImg = {
   alt: string;
   height?: number;
   width?: number;
-  select: any;
-  onClick: any;
+  select: boolean;
+  onClick: React.MouseEventHandler<HTMLImageElement>;
 };
 
 type TIcon = {
