@@ -6,8 +6,20 @@ type TInput = {
 };
 
 type TPreview = {
-  source: any;
+  src: any;
   alt: string;
+};
+
+export const Image = ({ src, alt, select, onClick }: any) => {
+  return (
+    <img
+      src={src}
+      alt={alt}
+      className={`w-full md:rounded-lg duration-100 mt-2 hover:brightness-90
+          ${select ? "border-4 border-red-400" : ""}`}
+      onClick={onClick}
+    />
+  );
 };
 
 export const ImageInput = ({ onChange, reference }: TInput) => {
@@ -41,6 +53,12 @@ export const ImageInput = ({ onChange, reference }: TInput) => {
   );
 };
 
-export const ImagePreview = ({ source, alt }: TPreview) => {
-  return <img src={source} alt={alt} className="mt-2 md:mt-4 rounded-lg" />;
+export const ImagePreview = ({ src, alt }: TPreview) => {
+  return (
+    <img
+      src={src}
+      alt={alt}
+      className="mt-2 md:mt-4 rounded-lg hover:brightness-90"
+    />
+  );
 };
