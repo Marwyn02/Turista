@@ -96,12 +96,12 @@ const PostsReview = (props: PostsReviewProps) => {
       ></textarea>
       {/* Input error warning */}
       {inputError && (
-        <span
+        <p
           id="reviewError"
-          className="text-xs text-white bg-red-600/70 rounded-lg px-1.5 py-0.5"
+          className="text-xs text-white bg-red-600/70 rounded-md px-1.5 py-0.5 mb-1.5"
         >
           I think you forgot to enter a review.
-        </span>
+        </p>
       )}
       <SubmitButton disabled={isLoading}>
         {isLoading ? "Sending..." : "Send review"}
