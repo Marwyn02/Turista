@@ -3,8 +3,9 @@ import Link from "next/link";
 import router from "next/router";
 import { useSession } from "next-auth/react";
 
-import DeletePostModal from "../../UI/DeletePostModal";
+import { DeleteModal } from "@/components/UI/Modals/Modal";
 import { ConfirmButton } from "@/components/UI/Buttons/Button";
+import { Icon } from "@/components/UI/Images/Image";
 
 type TPostsDetailNavigationProps = {
   userId: string;
@@ -97,10 +98,10 @@ const PostsDetailNavigation: FC<TPostsDetailNavigationProps> = ({
           className="px-2 py-2 md:px-2.5 bg-violet-100 duration-300 rounded hover:bg-violet-400"
         >
           {!postLove && (
-            <img src="/heart-white.svg" height={18} width={18} alt="No-Like" />
+            <Icon src="/heart-white.svg" alt="heart" height={18} width={18} />
           )}
           {postLove && (
-            <img src="/heart-fill.svg" height={18} width={18} alt="Liked" />
+            <Icon src="/heart-fill.svg" alt="liked" height={18} width={18} />
           )}
         </button>
         <span className="ml-2 text-sm text-gray-600 font-bold">
@@ -113,12 +114,17 @@ const PostsDetailNavigation: FC<TPostsDetailNavigationProps> = ({
       {inSession && (
         <div className="flex gap-x-1 md:gap-x-2">
           {/* Delete Action  */}
-          <DeletePostModal postId={postId} />
+          <DeleteModal postId={postId} />
 
           {/* Edit Action  */}
           <Link href={`/edit/${postId}`}>
             <ConfirmButton>
-              <img src="/pencil-white.svg" height={15} width={15} alt="Edit" />
+              <Icon
+                src="/pencil-white.svg"
+                alt="pencil"
+                height={15}
+                width={15}
+              />
               <span className="ml-2 text-white font-semibold text-xs">
                 Edit
               </span>

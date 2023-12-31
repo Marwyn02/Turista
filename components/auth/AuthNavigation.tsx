@@ -4,6 +4,8 @@ import { usePathname } from "next/navigation";
 import Link from "next/link";
 import { Popover, Transition } from "@headlessui/react";
 
+import { Icon } from "../UI/Images/Image";
+
 //
 //
 // - This component is responsible for displaying the user's profile image
@@ -101,14 +103,13 @@ export default function Component() {
                         className="flex py-2 px-4 font-medium text-sm text-start text-gray-900 
                            hover:text-gray-600 rounded-lg hover:bg-gray-100 w-full duration-100"
                       >
-                        <img
+                        <Icon
                           src="/logout.svg"
-                          alt="lel"
+                          alt="logout"
                           height={18}
                           width={18}
-                          className="mr-2"
                         />
-                        Sign out
+                        <span className="ml-2">Sign out</span>
                       </button>
                     </div>
                   </div>

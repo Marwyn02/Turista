@@ -2,7 +2,7 @@ import { useSession } from "next-auth/react";
 import { useState } from "react";
 import router from "next/router";
 
-import LoadingPostModal from "../UI/LoadingPostModal";
+import { LoadingModal } from "../UI/Modals/Modal";
 import PersonalImage from "./Components/PersonalImage";
 
 export default function PersonalDetails({
@@ -68,7 +68,7 @@ export default function PersonalDetails({
   };
   return (
     <section className="mt-10 px-3 lg:px-0">
-      {isLoading && <LoadingPostModal message={message} />}
+      {isLoading && <LoadingModal message={message} />}
       <h4 className="text-sm text-gray-700 pb-1 font-semibold border-b">
         Account Preferences
       </h4>

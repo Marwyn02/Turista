@@ -6,8 +6,9 @@ import router from "next/router";
 import AmenityBox from "./UI/AmenityBox";
 import FormMap from "./UI/FormMap";
 
-import LoadingPostModal from "../UI/LoadingPostModal";
+import { LoadingModal } from "../UI/Modals/Modal";
 import { CancelButton, SubmitButton } from "../UI/Buttons/Button";
+import { ImageInput, ImagePreview } from "../UI/Images/Image";
 
 type TAmenities = {
   name: string;
@@ -292,53 +293,23 @@ export default function AddPost() {
 
           {/* Image Input  */}
           <div className="sm:col-span-6 py-10 border-y">
-            <label className="text-sm font-medium leading-6 text-gray-600">
+            <h3 className="text-sm font-medium leading-6 text-gray-600">
               Image
-            </label>
+            </h3>
             <p className="text-xs text-gray-500 mb-3">
               Choose three (3) images to save
             </p>
 
+            {/* Image one  */}
             {!imageOnePreview && (
-              <div
-                className="mt-2 flex justify-center rounded-lg border 
-                            border-dashed border-gray-900/25 px-6 py-10"
-              >
-                <div className="text-center">
-                  <div className="mt-4 flex text-sm leading-6 text-gray-600">
-                    <label
-                      htmlFor="file-upload-1"
-                      className="relative cursor-pointer rounded-md bg-white 
-                               font-semibold text-indigo-600 hover:text-indigo-500"
-                    >
-                      <span>Upload a file</span>
-                      <input
-                        id="file-upload-1"
-                        name="file-upload-1"
-                        type="file"
-                        accept="image/*"
-                        className="sr-only"
-                        onChange={(e) =>
-                          handleImageChange(e, setImageOnePreview)
-                        }
-                        ref={imageOneInputRef}
-                      />
-                    </label>
-                    <p className="pl-1">or drag and drop</p>
-                  </div>
-                  <p className="text-xs leading-5 text-gray-600">
-                    PNG, JPG, GIF up to 10MB
-                  </p>
-                </div>
-              </div>
+              <ImageInput
+                onChange={(e) => handleImageChange(e, setImageOnePreview)}
+                reference={imageOneInputRef}
+              />
             )}
 
             {imageOnePreview && (
-              <img
-                src={imageOnePreview}
-                alt="Preview 1"
-                className="mt-2 md:mt-4 rounded-lg"
-              />
+              <ImagePreview src={imageOnePreview} alt="Image Preview 1" />
             )}
 
             {/* Secondary images  */}
@@ -349,97 +320,39 @@ export default function AddPost() {
                   : "grid-cols-1 md:grid-cols-2 md:gap-x-2"
               }`}
             >
+              {/* Image two */}
+              {/* If there's no image one preview then show this input*/}
+
               {!imageTwoPreview && imageOnePreview && (
-                <div
-                  className="mt-2 flex justify-center rounded-lg border border-dashed 
-                            border-gray-900/25 px-6 py-10"
-                >
-                  <div className="text-center">
-                    <div className="mt-4 flex text-sm leading-6 text-gray-600">
-                      <label
-                        htmlFor="file-upload-2"
-                        className="relative cursor-pointer rounded-md bg-white 
-                                 font-semibold text-indigo-600 hover:text-indigo-500"
-                      >
-                        <span>Upload a file</span>
-                        <input
-                          id="file-upload-2"
-                          name="file-upload-2"
-                          type="file"
-                          accept="image/*"
-                          className="sr-only"
-                          onChange={(e) =>
-                            handleImageChange(e, setImageTwoPreview)
-                          }
-                          ref={imageTwoInputRef}
-                        />
-                      </label>
-                      <p className="pl-1">or drag and drop</p>
-                    </div>
-                    <p className="text-xs leading-5 text-gray-600">
-                      PNG, JPG, GIF up to 10MB
-                    </p>
-                  </div>
-                </div>
+                <ImageInput
+                  onChange={(e) => handleImageChange(e, setImageTwoPreview)}
+                  reference={imageTwoInputRef}
+                />
               )}
 
               {imageTwoPreview && (
-                <img
-                  src={imageTwoPreview}
-                  alt="Preview 2"
-                  className="mt-2 md:mt-4 rounded-lg"
-                />
+                <ImagePreview src={imageTwoPreview} alt="Image Preview 2" />
               )}
 
-              {/* If there's no image two preview then show the input file */}
+              {/* Image three  */}
+              {/* If there's no image two preview then show this input */}
               {!imageThreePreview && imageTwoPreview && (
-                <div
-                  className="mt-2 flex justify-center rounded-lg border border-dashed
-                            border-gray-900/25 px-6 py-10"
-                >
-                  <div className="text-center">
-                    <div className="mt-4 flex text-sm leading-6 text-gray-600">
-                      <label
-                        htmlFor="file-upload-3"
-                        className="relative cursor-pointer rounded-md bg-white 
-                                 font-semibold text-indigo-600 hover:text-indigo-500"
-                      >
-                        <span>Upload a file</span>
-                        <input
-                          id="file-upload-3"
-                          name="file-upload-3"
-                          type="file"
-                          accept="image/*"
-                          className="sr-only"
-                          onChange={(e) =>
-                            handleImageChange(e, setImageThreePreview)
-                          }
-                          ref={imageThreeInputRef}
-                        />
-                      </label>
-                      <p className="pl-1">or drag and drop</p>
-                    </div>
-                    <p className="text-xs leading-5 text-gray-600">
-                      PNG, JPG, GIF up to 10MB
-                    </p>
-                  </div>
-                </div>
+                <ImageInput
+                  onChange={(e) => handleImageChange(e, setImageThreePreview)}
+                  reference={imageThreeInputRef}
+                />
               )}
 
               {imageThreePreview && (
-                <img
-                  src={imageThreePreview}
-                  alt="Preview 3"
-                  className="mt-2 md:mt-4 rounded-lg"
-                />
+                <ImagePreview src={imageThreePreview} alt="Image Preview 3" />
               )}
             </div>
 
             {/* Images Buttons  */}
-            <div className="flex gap-x-2 md:mt-2">
-              {/* Will clear all preview images and the array state for the cloudinary */}
-              {imageOnePreview && !loading && (
-                <button
+            <section className="flex gap-x-2 md:mt-2">
+              {/* Will clear all preview images and the array for the cloudinary */}
+              {imageOnePreview && !isLoading && (
+                <CancelButton
                   onClick={(e) => {
                     setSelectedImages([]);
                     setImageOnePreview(null);
@@ -447,14 +360,12 @@ export default function AddPost() {
                     setImageThreePreview(null);
                     e.preventDefault();
                   }}
-                  className="px-4 py-2 text-xs md:text-sm bg-gray-200 text-gray-500 duration-300 
-                          rounded mt-2 hover:bg-gray-300 hover:text-gray-600"
-                  disabled={loading}
+                  disabled={isLoading}
                 >
-                  Clear image(s)
-                </button>
+                  Clear images
+                </CancelButton>
               )}
-            </div>
+            </section>
           </div>
 
           {/* Title Input  */}
@@ -507,23 +418,22 @@ export default function AddPost() {
               </div>
             </div>
           )}
-
-          {/* Submit and cancel buttons */}
-          <section className="flex gap-x-1.5 pt-5">
-            {!isLoading && (
-              <Link href="/">
-                <CancelButton disabled={isLoading}>Cancel</CancelButton>
-              </Link>
-            )}
-            {showContinue && (
-              <SubmitButton disabled={isLoading}>
-                {!isLoading ? "Create a post" : "Creating your post..."}
-              </SubmitButton>
-            )}
-          </section>
         </div>
+        {/* Submit and cancel buttons */}
+        <section className="flex gap-x-1.5 pt-5 px-5">
+          {!isLoading && (
+            <Link href="/">
+              <CancelButton disabled={isLoading}>Cancel</CancelButton>
+            </Link>
+          )}
+          {showContinue && (
+            <SubmitButton disabled={isLoading}>
+              {!isLoading ? "Create a post" : "Creating your post..."}
+            </SubmitButton>
+          )}
+        </section>
       </div>
-      {isLoading && <LoadingPostModal message={message} />}
+      {isLoading && <LoadingModal message={message} />}
     </form>
   );
 }

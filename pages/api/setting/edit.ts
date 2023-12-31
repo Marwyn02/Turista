@@ -17,7 +17,7 @@ export default async function Edit(req: NextApiRequest, res: NextApiResponse) {
 
     return res.status(200).json({
       success: true,
-      message: `Your name successfully changed to ${name}!`,
+      message: `Your name successfully changed to ${name}! Btw, nice name`,
       path: `/user/settings`,
     });
   } catch (error: any) {

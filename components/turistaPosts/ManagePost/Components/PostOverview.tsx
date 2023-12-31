@@ -2,6 +2,7 @@ import React, { FC, useState, useEffect } from "react";
 import Link from "next/link";
 import PostCard from "./PostCard";
 import { useSession } from "next-auth/react";
+import { Icon } from "@/components/UI/Images/Image";
 
 type TPostsProps = {
   posts: {
@@ -48,18 +49,17 @@ const PostOverview: FC<TPostsProps> = ({ posts }) => {
         <h1 className="text-2xl text-gray-800 font-medium">Your posts</h1>
         <div className="flex items-center">
           {userHasCreatedPost && (
-            <img
+            <Icon
               src="/Warnings/exclamation-mark.svg"
               height={18}
               width={18}
-              alt=""
-              className="mr-2"
+              alt="exclamation-mark"
             />
           )}
           <Link href={"/create"}>
             <button
               type="button"
-              className={`border-2 px-4 py-1.5 rounded-md 
+              className={`border-2 px-4 py-1.5 ml-2 rounded-md 
               tracking-wide text-sm font-medium duration-300 focus:outline-none ${
                 userHasCreatedPost
                   ? "text-violet-100 border-violet-200"

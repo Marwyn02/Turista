@@ -1,5 +1,13 @@
 import React, { useState, useRef, FC } from "react";
 
+import {
+  CancelButton,
+  ConfirmButton,
+  DeleteButton,
+} from "@/components/UI/Buttons/Button";
+
+import { Img, ImageInput, ImagePreview } from "@/components/UI/Images/Image";
+
 type TEditPostImageProps = {
   id: string;
   image: { image: string; public_id: string }[];
@@ -110,190 +118,84 @@ const EditPostImage: FC<TEditPostImageProps> = ({
       <div>
         {/* Image one  */}
         {image[0] && (
-          <img
+          // Image one
+          <Img
             src={image[0].image}
             alt={title}
-            id="image"
-            className={`w-full md:rounded-lg duration-100 mt-2 hover:brightness-90
-                  ${
-                    selectedImages.includes(image[0])
-                      ? "border-4 border-red-400"
-                      : ""
-                  }`}
+            select={selectedImages.includes(image[0])}
             onClick={() => toggleImageSelection(0)}
           />
         )}
+        {/* Image one input  */}
         {!imageOnePreview && !image[0] && (
-          <div
-            className="mt-2 flex justify-center rounded-lg border
-                  border-dashed border-gray-900/25 px-6 py-10"
-          >
-            <div className="text-center">
-              <div className="mt-4 flex text-sm leading-6 text-gray-600">
-                <label
-                  htmlFor="file-upload-0"
-                  className="relative cursor-pointer rounded-md bg-white
-                     font-semibold text-indigo-600 hover:text-indigo-500"
-                >
-                  <span>Upload a file</span>
-                  <input
-                    id="file-upload-0"
-                    name="file-upload-0"
-                    type="file"
-                    accept="image/*"
-                    className="sr-only"
-                    onChange={(e) => handleImageChange(e, setImageOnePreview)}
-                    ref={imageOneInputRef}
-                  />
-                </label>
-                <p className="pl-1">or drag and drop</p>
-              </div>
-              <p className="text-xs leading-5 text-gray-600">
-                PNG, JPG, GIF up to 10MB
-              </p>
-            </div>
-          </div>
-        )}
-        {imageOnePreview && (
-          <img
-            src={imageOnePreview}
-            alt="Preview 1"
-            className="md:rounded-lg hover:brightness-90"
+          <ImageInput
+            onChange={(e) => handleImageChange(e, setImageOnePreview)}
+            reference={imageOneInputRef}
           />
+        )}
+        {/* Image one preview  */}
+        {imageOnePreview && (
+          <ImagePreview src={imageOnePreview} alt="Image Preview 1" />
         )}
 
         {/* Image two  */}
         {image[1] && (
-          <img
+          // Image two
+          <Img
             src={image[1].image}
             alt={title}
-            id="image"
-            className={`w-full md:rounded-lg duration-100 mt-2 hover:brightness-90
-                      ${
-                        selectedImages.includes(image[1])
-                          ? "border-4 border-red-400"
-                          : ""
-                      }`}
+            select={selectedImages.includes(image[1])}
             onClick={() => toggleImageSelection(1)}
           />
         )}
+        {/* Image two input  */}
         {!imageTwoPreview && !image[1] && (
-          <div
-            className="mt-2 flex justify-center rounded-lg border
-                        border-dashed border-gray-900/25 px-6 py-10"
-          >
-            <div className="text-center">
-              <div className="mt-4 flex text-sm leading-6 text-gray-600">
-                <label
-                  htmlFor="file-upload-1"
-                  className="relative cursor-pointer rounded-md bg-white
-                           font-semibold text-indigo-600 hover:text-indigo-500"
-                >
-                  <span>Upload a file</span>
-                  <input
-                    id="file-upload-1"
-                    name="file-upload-1"
-                    type="file"
-                    accept="image/*"
-                    className="sr-only"
-                    onChange={(e) => handleImageChange(e, setImageTwoPreview)}
-                    ref={imageTwoInputRef}
-                  />
-                </label>
-                <p className="pl-1">or drag and drop</p>
-              </div>
-              <p className="text-xs leading-5 text-gray-600">
-                PNG, JPG, GIF up to 10MB
-              </p>
-            </div>
-          </div>
-        )}
-        {imageTwoPreview && (
-          <img
-            src={imageTwoPreview}
-            alt="Preview 2"
-            className="md:rounded-lg mt-0.5 md:mt-3 hover:brightness-90"
+          <ImageInput
+            onChange={(e) => handleImageChange(e, setImageTwoPreview)}
+            reference={imageTwoInputRef}
           />
+        )}
+        {/* Image two preview  */}
+        {imageTwoPreview && (
+          <ImagePreview src={imageTwoPreview} alt="Image Preview 2" />
         )}
 
         {/* Image three  */}
         {image[2] && (
-          <img
+          <Img
             src={image[2].image}
             alt={title}
-            id="image"
-            className={`w-full md:rounded-lg duration-100 mt-2 hover:brightness-90
-                      ${
-                        selectedImages.includes(image[2])
-                          ? "border-4 border-red-400"
-                          : ""
-                      }`}
+            select={selectedImages.includes(image[2])}
             onClick={() => toggleImageSelection(2)}
           />
         )}
         {!imageThreePreview && !image[2] && (
-          <div
-            className="mt-2 flex justify-center rounded-lg border
-                      border-dashed border-gray-900/25 px-6 py-10"
-          >
-            <div className="text-center">
-              <div className="mt-4 flex text-sm leading-6 text-gray-600">
-                <label
-                  htmlFor="file-upload-2"
-                  className="relative cursor-pointer rounded-md bg-white
-                         font-semibold text-indigo-600 hover:text-indigo-500"
-                >
-                  <span>Upload a file</span>
-                  <input
-                    id="file-upload-2"
-                    name="file-upload-2"
-                    type="file"
-                    accept="image/*"
-                    className="sr-only"
-                    onChange={(e) => handleImageChange(e, setImageThreePreview)}
-                    ref={imageThreeInputRef}
-                  />
-                </label>
-                <p className="pl-1">or drag and drop</p>
-              </div>
-              <p className="text-xs leading-5 text-gray-600">
-                PNG, JPG, GIF up to 10MB
-              </p>
-            </div>
-          </div>
+          <ImageInput
+            onChange={(e) => handleImageChange(e, setImageThreePreview)}
+            reference={imageThreeInputRef}
+          />
         )}
         {imageThreePreview && (
-          <img
-            src={imageThreePreview}
-            alt="Preview 3"
-            className="md:rounded-lg mt-0.5 md:mt-3 hover:brightness-90"
-          />
+          <ImagePreview src={imageThreePreview} alt="Image Preview 3" />
         )}
       </div>
 
-      {/* Button navigations  */}
-      <div className="flex justify-between items-center px-2 lg:px-0">
+      {/* Image Buttons  */}
+      <div className="flex justify-between items-center mt-4 px-2 lg:px-0">
         <div className="flex gap-x-1">
-          {selectedImages.length >= 1 && !editSaved ? (
-            <button
-              type="button"
-              className="px-8 py-2 text-xs md:text-sm bg-red-400 text-white duration-300
-                       rounded mt-2 hover:bg-red-500"
-              onClick={deleteSelectedImages}
-              disabled={editLoading}
-            >
-              {editLoading ? "Removing..." : "Remove"}
-            </button>
-          ) : (
-            <div></div>
+          {/* If the selected images array is more than 1 element */}
+          {selectedImages.length >= 1 && !editSaved && (
+            // This removes the selected images in the post
+            // that the user selected
+            <DeleteButton onClick={deleteSelectedImages} disabled={editLoading}>
+              {editLoading ? "Removing..." : "Remove it"}
+            </DeleteButton>
           )}
 
           {(imageOnePreview || imageTwoPreview || imageThreePreview) &&
           !editSaved ? (
-            <button
-              type="button"
-              className="px-4 py-2 text-xs md:text-sm bg-gray-200 text-gray-500 duration-300
-              rounded mt-2 hover:bg-gray-300 hover:text-gray-600"
+            // This removes the all added images in the array
+            <CancelButton
               onClick={() => {
                 setImageOnePreview(null);
                 setImageTwoPreview(null);
@@ -301,20 +203,15 @@ const EditPostImage: FC<TEditPostImageProps> = ({
               }}
             >
               Clear added images
-            </button>
+            </CancelButton>
           ) : null}
         </div>
 
         {imageThreePreview && !editSaved && (
-          <button
-            type="button"
-            className="px-8 py-2 text-xs md:text-sm bg-indigo-500 text-white duration-300
-              rounded mt-2 hover:bg-indigo-600 hover:text-white"
-            disabled={editLoading}
-            onClick={submitImageHandler}
-          >
-            {editLoading ? "Saving..." : "Save Changes"}
-          </button>
+          // This saves the modified array of images
+          <ConfirmButton onClick={submitImageHandler} disabled={editLoading}>
+            {editLoading ? "Saving..." : "Save it"}
+          </ConfirmButton>
         )}
 
         {editSaved && (
