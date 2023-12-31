@@ -2,19 +2,29 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 
 import AuthNavigation from "../auth/AuthNavigation";
+// import { useState } from "react";
 
 const MainNavigation = () => {
+  // const [inLoginPage, setInLoginPage] = useState<boolean>(false);
   const pathname = usePathname();
+
+  // if (pathname === "/account/login") {
+  //   return setInLoginPage(true);
+  // }
   return (
-    <nav className="fixed z-40 w-full bg-white border-b h-[4.5rem]">
+    <nav className="fixed z-40 w-full bg-white border-b py-4">
       <div
-        className={`grid grid-cols-2 lg:grid-cols-3 pt-4 lg:pb-3 items-center w-full px-3 lg:px-32 `}
+        className={`grid grid-cols-2 lg:grid-cols-3 items-center w-full px-3 lg:px-32`}
       >
         {/* This block is the first block in the grid of threes */}
         {pathname.length > 1 ? (
           // If the pathname.length is greater than 1
           // If yes, the client is not the home page
-          <h1 className="text-xs lg:text-sm text-gray-500 font-semibold ml-5 lg:ml-0 flex items-center hover:text-black w-fit">
+          <h1
+            className={`${
+              pathname === "/account/login" ? "py-1.5" : ""
+            } text-xs lg:text-sm text-gray-500 font-semibold ml-5 lg:ml-0 flex items-center hover:text-black w-fit`}
+          >
             <Link href="/">Back to home</Link>
           </h1>
         ) : (

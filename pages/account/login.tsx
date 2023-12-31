@@ -16,7 +16,7 @@ const login: FC<LoginProps> = ({ provider, session }) => {
     router.push("/");
   }
   return (
-    <section className="pt-8 lg:mx-24 grid grid-cols-1 lg:grid-cols-5">
+    <section className="pt-10 lg:mx-24 grid grid-cols-1 lg:grid-cols-5">
       {/* Login title and subtitle */}
       <div className="lg:col-span-3 lg:grid lg:place-content-center lg:h-screen">
         <h1 className="text-2xl text-center lg:text-start lg:text-6xl font-semibold lg:font-thin leading-9 lg:text-black tracking-wider lg:tracking-wide">
@@ -42,6 +42,7 @@ const login: FC<LoginProps> = ({ provider, session }) => {
               Continue with Instagram
             </button>
           </div>
+
           <div className="flex justify-center -mt-2">
             <button
               className="bg-gray-300 w-full border border-gray-300 rounded-lg py-3 text-sm mt-5 font-bold tracking-wide text-white"
@@ -51,15 +52,11 @@ const login: FC<LoginProps> = ({ provider, session }) => {
             </button>
           </div>
 
-          <p className="text-center underline text-indigo-500 mt-3">
-            Coming soon
-          </p>
-
-          <p className="text-sm text-center text-gray-400 my-6">or</p>
+          <p className="text-sm text-center text-gray-400 my-3">or</p>
 
           {/* Disabled login form  */}
-          <div>
-            <div className="mt-5 mb-8">
+          <section>
+            <div>
               <label htmlFor="email" className="text-sm text-gray-300">
                 Email or Username
               </label>
@@ -70,7 +67,7 @@ const login: FC<LoginProps> = ({ provider, session }) => {
                 disabled
               />
             </div>
-            <div className="my-5">
+            <div className="my-3">
               <label htmlFor="password" className="text-sm text-gray-300">
                 Password
               </label>
@@ -82,12 +79,12 @@ const login: FC<LoginProps> = ({ provider, session }) => {
               />
             </div>
             <button
-              className="w-full rounded-lg bg-[#ff5964] py-4 text-center text-gray-200 opacity-80 mt-1"
+              className="w-full rounded-lg bg-[#ff5964] py-3.5 text-center text-gray-200 opacity-80 mt-3"
               disabled
             >
               Sign in
             </button>
-          </div>
+          </section>
         </div>
 
         {/* Disabled sign in button */}
