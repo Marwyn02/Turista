@@ -100,7 +100,6 @@ export const Icon = ({
       alt={alt}
       height={height}
       width={width}
-      // className="hover:bg-gray-200"
       ref={reference}
       onClick={onClick}
     />
