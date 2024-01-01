@@ -4,7 +4,7 @@ import router from "next/router";
 import { useSession } from "next-auth/react";
 
 import { DeleteModal } from "@/components/UI/Modals/Modal";
-import { ConfirmButton } from "@/components/UI/Buttons/Button";
+import { ConfirmButton, DeleteButton } from "@/components/UI/Buttons/Button";
 import { Icon } from "@/components/UI/Images/Image";
 
 type TPostsDetailNavigationProps = {
@@ -22,6 +22,8 @@ const PostsDetailNavigation: FC<TPostsDetailNavigationProps> = ({
   const [inSession, setInSession] = useState<boolean>(false);
   const [postLove, setPostLove] = useState<boolean>(false);
   const [totalPostLove, setTotalPostLove] = useState<number>(0);
+
+  const [isOpen, setIsOpen] = useState(false);
 
   // Add likes to the post function handler
   const submitLoveHandler = async (e: { preventDefault: () => void }) => {
@@ -113,8 +115,20 @@ const PostsDetailNavigation: FC<TPostsDetailNavigationProps> = ({
 
       {inSession && (
         <div className="flex gap-x-1 md:gap-x-2">
-          {/* Delete Action  */}
-          <DeleteModal postId={postId} />
+          {/* Delete button */}
+          <div className="flex">
+            <DeleteButton onClick={() => setIsOpen(!isOpen)}>
+              <img
+                src="/trash-bin-white.svg"
+                height={15}
+                width={15}
+                alt="Delete"
+              />
+              <span className="ml-2 text-white font-semibold text-xs">
+                Delete
+              </span>
+            </DeleteButton>
+          </div>
 
           {/* Edit Action  */}
           <Link href={`/edit/${postId}`}>
@@ -132,6 +146,16 @@ const PostsDetailNavigation: FC<TPostsDetailNavigationProps> = ({
           </Link>
         </div>
       )}
+      {/* Delete Modal  */}
+      <DeleteModal
+        message={
+          "This will permanently delete all your information in your post. You won't be able to revert this."
+        }
+        postId={postId}
+        isOpen={isOpen}
+        deleteType="post"
+        onClose={() => setIsOpen(false)}
+      />
     </section>
   );
 };

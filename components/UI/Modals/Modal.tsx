@@ -8,6 +8,15 @@ type TProps = {
   message: string;
 };
 
+type TDeleteModal = {
+  message: string;
+  postId?: string;
+  reviewId?: string;
+  isOpen: boolean;
+  deleteType: "post" | "review";
+  onClose?: () => void;
+};
+
 export const LoadingModal = ({ message }: TProps) => {
   let [isOpen] = useState(true);
   return (
@@ -56,25 +65,46 @@ export const LoadingModal = ({ message }: TProps) => {
   );
 };
 
-export const DeleteModal = ({ postId }: { postId: string }) => {
-  let [isOpen, setIsOpen] = useState(false);
-
+export const DeleteModal = ({
+  message,
+  postId,
+  reviewId,
+  isOpen,
+  deleteType,
+  onClose,
+}: TDeleteModal) => {
   // Deletes Post
   const deleteHandler = async (e: { preventDefault: () => void }) => {
     e.preventDefault();
     closeModal();
 
     try {
-      const response = await fetch(`/api/post/delete`, {
-        method: "DELETE",
-        headers: {
-          "Content-type": "application/json",
-        },
-        body: JSON.stringify({ postId }),
-      }).then((r) => r.json());
+      // DELETE Post
+      if (deleteType === "post") {
+        const response = await fetch(`/api/post/delete`, {
+          method: "DELETE",
+          headers: {
+            "Content-type": "application/json",
+          },
+          body: JSON.stringify({ postId }),
+        }).then((r) => r.json());
 
-      console.log(response.message);
-      router.push(response.redirect);
+        console.log(response.message);
+        router.push(response.redirect);
+      }
+      // DELETE Review
+      else if (deleteType === "review") {
+        const response = await fetch(`/api/review/delete`, {
+          method: "DELETE",
+          headers: {
+            "Content-type": "application/json",
+          },
+          body: JSON.stringify({ reviewId, postId }),
+        }).then((r) => r.json());
+
+        console.log(response.message);
+        router.push(response.path);
+      }
     } catch (error: any) {
       console.error(error);
       closeModal();
@@ -82,22 +112,10 @@ export const DeleteModal = ({ postId }: { postId: string }) => {
   };
 
   function closeModal() {
-    setIsOpen(false);
-  }
-
-  function openModal() {
-    setIsOpen(true);
+    onClose?.();
   }
   return (
     <>
-      <div className="flex">
-        {/* Delete button */}
-        <DeleteButton onClick={openModal}>
-          <img src="/trash-bin-white.svg" height={15} width={15} alt="Delete" />
-          <span className="ml-2 text-white font-semibold text-xs">Delete</span>
-        </DeleteButton>
-      </div>
-
       <Transition appear show={isOpen} as={Fragment}>
         <Dialog as="div" className="relative z-50" onClose={closeModal}>
           <Transition.Child
@@ -131,10 +149,7 @@ export const DeleteModal = ({ postId }: { postId: string }) => {
                     Are you sure?
                   </Dialog.Title>
 
-                  <p className="text-sm text-gray-500 mt-2">
-                    This will permanently delete all your information in your
-                    post. You won't be able to revert this.
-                  </p>
+                  <p className="text-sm text-gray-500 mt-2">{message}</p>
 
                   <section className="mt-4 flex gap-x-4 justify-center">
                     {/* Cancel Button  */}
