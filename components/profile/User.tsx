@@ -86,31 +86,43 @@ const User: FC<IUserProps> = ({
         <title>{name}</title>
         <meta property="og:title" content="Turista user" key="userTitle" />
       </Head>
-      <div className="py-12 md:py-32 px-3 lg:px-32">
+
+      <div className="py-4 md:pt-10 md:pb-20 md:px-3 lg:px-32">
+        <div className="md:mt-10" />
+        <img
+          src="https://res.cloudinary.com/dgzsmdvo4/image/upload/v1697977832/Turista-Uploads/rkfc41dbapg8gbaggfnz.jpg"
+          alt="Cover Photo"
+          className="w-full h-[200px] md:h-[350px] md:rounded-lg object-cover"
+        />
+
         {/* User's profile image and name */}
-        <div className="-mt-5 md:px-10 md:flex md:justify-between grid grid-cols-3">
-          <section className="flex items-center md:justify-start md:items-start col-span-1 md:col-span-0">
+        <div className="md:-mt-20 md:px-16 md:flex items-center md:justify-between md:items-end grid grid-cols-1 md:grid-cols-2">
+          <section className="-mt-20 md:mt-2.5 flex justify-center items-center md:justify-start md:items-end col-span-1 md:col-span-3">
             <img
               src={image}
               alt={name}
-              className="h-[77px] w-[77px] md:h-20 rounded-full mx-auto md:mx-0"
+              className="h-40 w-40 rounded-full mx-auto md:mx-0 border-4 border-white"
             />
             {/* Name in desktop device  */}
-            <p className="hidden md:block text-lg md:text-xl text-center ml-4 mt-0.5 md:mt-2 text-gray-700 font-semibold tracking-wide">
+            <p className="hidden md:block text-3xl text-center ml-4 mt-0.5 md:mt-2 md:mb-5 text-gray-900 font-semibold tracking-wide">
               {name}
             </p>
           </section>
           {showFollowBtn && (
-            <section className="py-3 grid col-span-2 md:block md:col-span-0">
+            <section className="py-3 grid col-span-2 md:col-span-1">
               {/* Name for mobile devices */}
-              <p className="md:hidden text-lg mb-5 text-gray-700 font-semibold">
+              <p className="md:hidden text-2xl text-center -mt-0.5 mb-4 text-gray-900 font-semibold">
                 {name}
               </p>
 
               <button
                 type="button"
                 onClick={followingHandler}
-                className="px-2.5 md:px-4 py-1.5 md:py-2 text-sm text-white bg-violet-400 hover:bg-violet-500 rounded-lg"
+                className={`px-5 md:px-4 py-1.5 md:py-2 md:mb-2.5 w-fit mx-auto text-sm text-white ${
+                  !followed
+                    ? "bg-violet-400 hover:bg-violet-500"
+                    : "bg-violet-500 hover:bg-violet-400"
+                } rounded-md font-semibold`}
               >
                 {!followed ? "Follow" : "Followed"}
               </button>
@@ -119,7 +131,7 @@ const User: FC<IUserProps> = ({
         </div>
 
         {/* User's profile datas */}
-        <div className="bg-violet-400 py-3 px-5 my-3 md:my-8 rounded-lg text-white text-xs ">
+        <div className="bg-violet-400 py-3 px-5 my-3 md:my-8 md:rounded-lg text-white text-xs ">
           <div className="grid grid-cols-4 gap-x-2 text-center font-semibold">
             <p>Posts</p>
             <p>Following</p>
@@ -135,13 +147,13 @@ const User: FC<IUserProps> = ({
         </div>
 
         {/* Button group - Post and Review */}
-        <div className="bg-[#1B1D2A] px-5 text-gray-200 rounded-lg text-sm grid grid-cols-5 gap-x-3">
+        <div className="bg-[#1B1D2A] px-5 text-gray-200 md:rounded-lg text-sm grid grid-cols-5 gap-x-3">
           <button
             onClick={() => toggleHandler("post")}
             className={
               showPost
-                ? "border-b-4 border-violet-600 text-white duration-200 py-3"
-                : "border-b-4 border-transparent hover:border-violet-400 hover:text-white duration-200 py-3"
+                ? "border-b-4 border-violet-600 text-white duration-200 py-3 font-semibold"
+                : "border-b-4 border-transparent hover:border-violet-400 hover:text-white duration-200 py-3 font-semibold"
             }
           >
             Posts
@@ -150,8 +162,8 @@ const User: FC<IUserProps> = ({
             onClick={() => toggleHandler("review")}
             className={
               showReview
-                ? "border-b-4 border-violet-600 text-white duration-200 py-3"
-                : "border-b-4 border-transparent hover:border-violet-400 hover:text-white duration-200 py-3"
+                ? "border-b-4 border-violet-600 text-white duration-200 py-3 font-semibold"
+                : "border-b-4 border-transparent hover:border-violet-400 hover:text-white duration-200 py-3 font-semibold"
             }
           >
             Reviews
@@ -161,14 +173,26 @@ const User: FC<IUserProps> = ({
         {/* User's posts section */}
         {showPost && (
           <Suspense fallback={<p>Loading posts...</p>}>
-            <UserPostList posts={posts} />
+            {posts.length > 0 ? (
+              <UserPostList posts={posts} />
+            ) : (
+              <div className="text-center font-medium my-20 text-gray-400">
+                No posts yet.
+              </div>
+            )}
           </Suspense>
         )}
 
         {/* User's reviews section */}
         {showReview && (
           <Suspense fallback={<p>Loading reviews...</p>}>
-            <UserReviewList reviews={reviews} />
+            {reviews.length > 0 ? (
+              <UserReviewList reviews={reviews} />
+            ) : (
+              <div className="text-center font-medium my-20 text-gray-400">
+                No reviews yet.
+              </div>
+            )}
           </Suspense>
         )}
       </div>
