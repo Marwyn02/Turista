@@ -89,22 +89,26 @@ const User: FC<IUserProps> = ({
 
       <div className="py-4 md:pt-10 md:pb-20 md:px-3 lg:px-32">
         <div className="md:mt-10" />
-        <img
-          src="https://res.cloudinary.com/dgzsmdvo4/image/upload/v1697977832/Turista-Uploads/rkfc41dbapg8gbaggfnz.jpg"
-          alt="Cover Photo"
-          className="w-full h-[200px] md:h-[350px] md:rounded-lg object-cover"
-        />
+        <div className="relative">
+          <img
+            src="https://res.cloudinary.com/dgzsmdvo4/image/upload/v1697977832/Turista-Uploads/rkfc41dbapg8gbaggfnz.jpg"
+            alt="Cover Photo"
+            className="w-full h-[200px] md:h-[350px] md:rounded-lg object-cover z-10 opacity-90"
+          />
+          <div className="absolute bottom-0 left-0 bg-gradient-to-t from-black from-25% to-transparent w-full h-[50px] md:h-[100px] opacity-40 md:opacity-60 rounded-b-lg"></div>
+        </div>
 
         {/* User's profile image and name */}
-        <div className="md:-mt-20 md:px-16 md:flex items-center md:justify-between md:items-end grid grid-cols-1 md:grid-cols-2">
-          <section className="-mt-20 md:mt-2.5 flex justify-center items-center md:justify-start md:items-end col-span-1 md:col-span-3">
+        <div className="md:-mt-20 md:px-16 md:flex items-center md:justify-between md:items-start grid grid-cols-1 md:grid-cols-2">
+          <section className="-mt-20 md:mt-2.5 z-20 flex justify-center items-center md:justify-start md:items-start col-span-1 md:col-span-3">
             <img
               src={image}
               alt={name}
-              className="h-40 w-40 rounded-full mx-auto md:mx-0 border-4 border-white"
+              className="h-40 w-40 rounded-full mx-auto md:mx-0 border-4 border-white z-10"
             />
+
             {/* Name in desktop device  */}
-            <p className="hidden md:block text-3xl text-center ml-4 mt-0.5 md:mt-2 md:mb-5 text-gray-900 font-semibold tracking-wide">
+            <p className="hidden md:block text-3xl text-center ml-4 mt-0.5 md:mb-2 md:mt-6 text-gray-50 font-semibold md:font-medium tracking-wide md:tracking-normal">
               {name}
             </p>
           </section>
@@ -118,11 +122,11 @@ const User: FC<IUserProps> = ({
               <button
                 type="button"
                 onClick={followingHandler}
-                className={`px-5 md:px-4 py-1.5 md:py-2 md:mb-2.5 w-fit mx-auto text-sm text-white ${
+                className={`px-5 py-1.5 md:py-2 md:mt-[22px] w-fit mx-auto text-sm text-white z-20 ${
                   !followed
                     ? "bg-violet-400 hover:bg-violet-500"
                     : "bg-violet-500 hover:bg-violet-400"
-                } rounded-md font-semibold`}
+                } rounded-full font-semibold`}
               >
                 {!followed ? "Follow" : "Followed"}
               </button>
