@@ -85,6 +85,7 @@ async function signInWithOAuth({ account, profile }) {
       name: profile.name,
       email: profile.email,
       image: profile.picture.data.url,
+      cover_photo: "",
       provider: account.provider,
     });
 
@@ -96,6 +97,7 @@ async function signInWithOAuth({ account, profile }) {
       name: profile.name,
       email: profile.email,
       image: profile.picture,
+      cover_photo: "",
       provider: account.provider,
     });
     const saveUser = await newUser.save();
