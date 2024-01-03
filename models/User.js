@@ -14,6 +14,10 @@ const UserSchema = new mongoose.Schema(
       type: String,
       trim: true,
     },
+    cover_photo: {
+      type: String,
+      trim: true,
+    },
     provider: {
       type: String,
     },
