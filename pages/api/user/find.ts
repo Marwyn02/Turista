@@ -5,12 +5,13 @@ interface UserFindResponse {
   name: string;
   image: string;
   followers: string[];
+  cover_photo: string;
 }
 
 export default async function Find(userId: string): Promise<UserFindResponse> {
   const user = await User.findById(userId); // Find the user by their userId
 
-  const { id, name, image, followers }: UserFindResponse = user; // Returns a user name from user.name
+  const { id, name, image, followers, cover_photo }: UserFindResponse = user; // Returns a user name from user.name
 
-  return { id, name, image, followers };
+  return { id, name, image, followers, cover_photo };
 }

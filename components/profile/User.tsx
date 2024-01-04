@@ -1,15 +1,18 @@
 import React, { FC, Suspense, useEffect, useState } from "react";
 import Head from "next/head";
+import Link from "next/link";
 import router from "next/router";
 import { useSession } from "next-auth/react";
 
 import UserPostList from "./UI/UserPostList";
 import UserReviewList from "./UI/UserReviewList";
+import { Icon } from "../UI/Images/Image";
 
 interface IUserProps {
   userId: string;
   name: string;
   image: string;
+  cover_photo: string;
   postCount: number;
   reviewCount: number;
   posts: any[];
@@ -21,6 +24,7 @@ const User: FC<IUserProps> = ({
   userId,
   name,
   image,
+  cover_photo,
   postCount,
   reviewCount,
   posts,
@@ -90,12 +94,18 @@ const User: FC<IUserProps> = ({
       <div className="py-4 md:pt-10 md:pb-20 md:px-3 lg:px-32">
         <div className="md:mt-10" />
         <div className="relative">
-          <img
-            src="https://res.cloudinary.com/dgzsmdvo4/image/upload/v1697977832/Turista-Uploads/rkfc41dbapg8gbaggfnz.jpg"
-            alt="Cover Photo"
-            className="w-full h-[200px] md:h-[350px] md:rounded-lg object-cover z-10 opacity-90"
-          />
-          <div className="absolute bottom-0 left-0 bg-gradient-to-t from-black from-25% to-transparent w-full h-[50px] md:h-[100px] opacity-40 md:opacity-60 rounded-b-lg"></div>
+          {cover_photo !== "" ? (
+            <img
+              src={cover_photo}
+              alt="Cover Photo"
+              className="w-full h-[200px] md:h-[350px] md:rounded-lg object-cover z-10 opacity-90"
+            />
+          ) : (
+            <div className="bg-gradient-to-t from-pink-400 from-25% to-violet-600 w-full h-[200px] md:h-[350px] md:rounded-lg object-cover z-10 opacity-70"></div>
+          )}
+          {cover_photo !== "" && (
+            <div className="absolute bottom-0 left-0 bg-gradient-to-t from-black from-25% to-transparent w-full h-[50px] md:h-[100px] opacity-40 md:opacity-60 rounded-b-lg"></div>
+          )}
         </div>
 
         {/* User's profile image and name */}
@@ -112,26 +122,46 @@ const User: FC<IUserProps> = ({
               {name}
             </p>
           </section>
-          {showFollowBtn && (
-            <section className="py-3 grid col-span-2 md:col-span-1">
-              {/* Name for mobile devices */}
-              <p className="md:hidden text-2xl text-center -mt-0.5 mb-4 text-gray-900 font-semibold">
-                {name}
-              </p>
+          <section className="py-3 grid col-span-2 md:col-span-1">
+            {/* Name for mobile devices */}
+            <p className="md:hidden text-2xl text-center -mt-0.5 mb-4 text-gray-900 font-semibold">
+              {name}
+            </p>
 
-              <button
-                type="button"
-                onClick={followingHandler}
-                className={`px-5 py-1.5 md:py-2 md:mt-[22px] w-fit mx-auto text-sm text-white z-20 ${
-                  !followed
-                    ? "bg-violet-400 hover:bg-violet-500"
-                    : "bg-violet-500 hover:bg-violet-400"
-                } rounded-full font-semibold`}
-              >
-                {!followed ? "Follow" : "Followed"}
-              </button>
-            </section>
-          )}
+            <div className="flex items-center mx-auto text-sm text-white z-20 px-4 md:mt-[22px]">
+              {/* Display the menu button for edit the user profile
+              If the active user is the same with the user profile Id  */}
+              {((session?.user as { _id: string })?._id as string) ===
+                userId && (
+                <Link
+                  href={"/user/settings"}
+                  className="px-1.5 py-1.5 md:p-2 text-black mr-1 md:mr-2 bg-gray-200 rounded-full hover:bg-gray-300"
+                >
+                  <Icon
+                    src="/horizontal-dots.svg"
+                    alt="Menu"
+                    height={20}
+                    width={20}
+                  />
+                </Link>
+              )}
+              {/* Show the follow button if the active user is not the same with the user profile page */}
+              {/* So the active user cannot follow is own account  */}
+              {showFollowBtn && (
+                <button
+                  type="button"
+                  onClick={followingHandler}
+                  className={`px-5 py-1.5 md:py-2 w-fit ${
+                    !followed
+                      ? "bg-violet-400 hover:bg-violet-500"
+                      : "bg-violet-500 hover:bg-violet-400"
+                  } rounded-full font-semibold`}
+                >
+                  {!followed ? "Follow" : "Followed"}
+                </button>
+              )}
+            </div>
+          </section>
         </div>
 
         {/* User's profile datas */}

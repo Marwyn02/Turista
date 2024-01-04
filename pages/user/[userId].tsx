@@ -18,6 +18,7 @@ interface UserData {
     userId: string;
     name: string;
     image: string;
+    cover_photo: string;
     postCount: number;
     reviewCount: number;
     posts: {
@@ -43,6 +44,7 @@ interface IUser {
   name: string;
   image: string;
   followers: string[];
+  cover_photo: string;
 }
 
 interface Count {
@@ -57,6 +59,7 @@ const userId: FC<UserData> = (props) => {
         userId={props.userData.userId}
         name={props.userData.name}
         image={props.userData.image}
+        cover_photo={props.userData.cover_photo}
         postCount={props.userData.postCount}
         reviewCount={props.userData.reviewCount}
         posts={props.userData.posts}
@@ -96,7 +99,9 @@ export async function getStaticProps(
     const userId: string = context.params.userId as string;
 
     // Fetching user data
-    const { id, name, image, followers }: IUser = await FindUser(userId);
+    const { id, name, image, followers, cover_photo }: IUser = await FindUser(
+      userId
+    );
 
     if (!name && !image) {
       return {
@@ -147,6 +152,7 @@ export async function getStaticProps(
           userId: id,
           name: name,
           image: image,
+          cover_photo: cover_photo,
           postCount: PostReviewCount.PostCount,
           reviewCount: PostReviewCount.ReviewCount,
           posts: posts,
@@ -163,6 +169,7 @@ export async function getStaticProps(
           userId: "",
           name: "",
           image: "",
+          cover_photo: "",
           postCount: 0,
           reviewCount: 0,
           posts: [],
