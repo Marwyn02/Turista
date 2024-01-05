@@ -1,7 +1,8 @@
-import { ImageInput, ImagePreview } from "@/components/UI/Images/Image";
+import React, { useRef, useState } from "react";
 import { useSession } from "next-auth/react";
 import router from "next/router";
-import React, { useRef, useState } from "react";
+
+import { ImageInput, ImagePreview } from "@/components/UI/Images/Image";
 
 type TPersonalImageProps = {
   imageType: string;

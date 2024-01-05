@@ -1,4 +1,5 @@
 import { useSession } from "next-auth/react";
+
 import PersonalDetails from "@/components/settings/PersonalDetails";
 import MainPageLayout from "@/components/layout/MainPageLayout";
 

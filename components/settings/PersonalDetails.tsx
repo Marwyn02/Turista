@@ -168,72 +168,93 @@ export default function PersonalDetails({
           <h4 className="text-sm text-gray-700 pb-1 font-semibold border-b mt-16 mb-5">
             Images
           </h4>
+
+          {/* Profile Image preview and input  */}
           <section>
-            <div className="flex justify-between py-1">
-              <p className="font-bold text-gray-700">Profile Image</p>
-
-              {!onEditState.image ? (
-                <button
-                  type="button"
-                  className="border border-gray-400 rounded-full px-3 py-1 text-xs font-bold text-gray-700 bg-white hover:text-gray-900 hover:bg-gray-200 duration-300"
-                  onClick={() => handleEditToggle("image")}
-                >
-                  Change
-                </button>
-              ) : (
-                <button
-                  type="button"
-                  className="font-medium text-sm text-gray-800 hover:underline hover:text-black"
-                  onClick={() => handleEditToggle("image")}
-                >
-                  Cancel
-                </button>
-              )}
+            <div>
+              <div className="flex justify-between py-1">
+                <p className="font-bold text-gray-700">Profile Image</p>
+                {/* Change and cancel buttons */}
+                {!onEditState.image ? (
+                  <button
+                    type="button"
+                    className="border border-gray-400 rounded-full px-3 py-1 text-xs font-bold text-gray-700 bg-white hover:text-gray-900 hover:bg-gray-200 duration-300"
+                    onClick={() => handleEditToggle("image")}
+                  >
+                    Change
+                  </button>
+                ) : (
+                  <button
+                    type="button"
+                    className="font-medium text-sm text-gray-800 hover:underline hover:text-black"
+                    onClick={() => handleEditToggle("image")}
+                  >
+                    Cancel
+                  </button>
+                )}
+              </div>
+              <p className="text-sm text-gray-500 font-normal -mt-1.5">
+                Display image must be in .png or .jpeg format
+              </p>
             </div>
-            <p className="text-sm text-gray-500 font-normal -mt-1.5">
-              Display image must be in .png or .jpeg format
-            </p>
+            {!onEditState.image ? (
+              <img
+                src={image}
+                alt="Profile Image"
+                className="h-[100px] w-[100px] rounded-md mt-3.5"
+              />
+            ) : (
+              // Image change handler
+              <PersonalImage imageType={"profile_image"} />
+            )}
           </section>
-          {!onEditState.image ? (
-            <img
-              src={image}
-              alt="Profile Image"
-              className="h-[100px] w-[100px] border-2 border-black rounded-md font-normal mt-3.5"
-            />
-          ) : (
-            <PersonalImage imageType={"profile_image"} />
-          )}
 
+          {/* Cover Photo preview and input  */}
           <section className="mt-10">
-            <div className="flex justify-between py-1">
-              <p className="font-bold text-gray-700">Cover photo</p>
-              {!onEditState.cover_photo ? (
-                <button
-                  type="button"
-                  onClick={() => handleEditToggle("cover_photo")}
-                  className="border border-gray-400 rounded-full px-3 py-1 text-xs font-bold text-gray-700 bg-white hover:text-gray-900 hover:bg-gray-200 duration-300"
-                >
-                  Change
-                </button>
-              ) : (
-                <button
-                  type="button"
-                  className="font-medium text-sm text-gray-800 hover:underline hover:text-black"
-                  onClick={() => handleEditToggle("cover_photo")}
-                >
-                  Cancel
-                </button>
-              )}
+            <div>
+              <div className="flex justify-between py-1">
+                <p className="font-bold text-gray-700">Cover photo</p>
+                {/* Cover photo change and cancel button  */}
+                {!onEditState.cover_photo ? (
+                  <button
+                    type="button"
+                    onClick={() => handleEditToggle("cover_photo")}
+                    className="border border-gray-400 rounded-full px-3 py-1 text-xs font-bold text-gray-700 bg-white hover:text-gray-900 hover:bg-gray-200 duration-300"
+                  >
+                    Change
+                  </button>
+                ) : (
+                  <button
+                    type="button"
+                    className="font-medium text-sm text-gray-800 hover:underline hover:text-black"
+                    onClick={() => handleEditToggle("cover_photo")}
+                  >
+                    Cancel
+                  </button>
+                )}
+              </div>
+              <p className="text-sm text-gray-500 font-normal -mt-1.5">
+                Display image must be in .png or .jpeg format
+              </p>
             </div>
-            <p className="text-sm text-gray-500 font-normal -mt-1.5">
-              Display image must be in .png or .jpeg format
-            </p>
+            {!onEditState.cover_photo ? (
+              <div>
+                {/* Default cover photo will display if not changed */}
+                {cover_photo === "" ? (
+                  <div className="bg-gradient-to-t from-pink-400 from-25% to-violet-600 w-[600px] h-[300px] md:rounded-lg object-cover z-10 opacity-70 mt-3.5"></div>
+                ) : (
+                  <img
+                    src={cover_photo}
+                    alt="Cover Photo"
+                    className="animated-slide h-[400px] rounded-lg mt-3.5"
+                  />
+                )}
+              </div>
+            ) : (
+              // Image change handler
+              <PersonalImage imageType={"cover_photo"} />
+            )}
           </section>
-          {!onEditState.cover_photo ? (
-            <img src={cover_photo} alt="hello" className="w-full h-[250px]" />
-          ) : (
-            <PersonalImage imageType={"cover_photo"} />
-          )}
         </section>
 
         {/* Delete Account  */}
