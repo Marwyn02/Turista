@@ -16,6 +16,9 @@ export default function settings() {
         name={session?.user?.name as string}
         email={session?.user?.email as string}
         image={session?.user?.image as string}
+        cover_photo={
+          (session?.user as { cover_photo: string })?.cover_photo as string
+        }
       />
     </MainPageLayout>
   );

@@ -1,17 +1,18 @@
+import { ImageInput, ImagePreview } from "@/components/UI/Images/Image";
 import { useSession } from "next-auth/react";
 import router from "next/router";
 import React, { useRef, useState } from "react";
 
-export default function PersonalImage(props: any) {
+type TPersonalImageProps = {
+  imageType: string;
+};
+
+export default function PersonalImage({ imageType }: TPersonalImageProps) {
   const { data: session } = useSession();
   const [imagePreview, setImagePreview] = useState<string | null>(null);
   const [selectedImages, setSelectedImages] = useState<File[]>([]);
 
   const imageInputRef = useRef<HTMLInputElement>(null);
-
-  const handleEditToggle = () => {
-    props.isClicked();
-  };
 
   const handleImageChange = async (
     e: React.ChangeEvent<HTMLInputElement>,
@@ -58,6 +59,7 @@ export default function PersonalImage(props: any) {
             body: JSON.stringify({
               image: response.secure_url,
               userId: (session?.user as { _id: string })?._id as string,
+              imageType: imageType,
             }),
           }).then((r) => r.json());
 
@@ -65,6 +67,7 @@ export default function PersonalImage(props: any) {
             console.log("Response: ", responseAPI);
             router.push(responseAPI.path);
             // setIsLoading(false);
+            return;
           }
         }
       } else {
@@ -78,55 +81,13 @@ export default function PersonalImage(props: any) {
   };
   return (
     <section>
-      <div className="flex justify-between py-1">
-        <p className="font-bold text-gray-700 ">Profile Image</p>
-        <button
-          type="button"
-          className="font-medium text-sm text-gray-800 hover:underline hover:text-black"
-          onClick={() => handleEditToggle()}
-        >
-          Cancel
-        </button>
-      </div>
-      <p className="text-sm text-gray-500 font-normal -mt-1.5">
-        Display image must be in .png or .jpeg format
-      </p>
       {!imagePreview ? (
-        <div
-          className="mt-2 flex justify-start rounded-lg border w-fit
-                            border-dashed border-gray-900/25 p-12"
-        >
-          <div className="text-center">
-            <div className="mt-2 flex text-sm leading-6 text-gray-600">
-              <label
-                htmlFor="file-upload-1"
-                className="relative cursor-pointer rounded-md bg-white 
-                               font-semibold text-indigo-600 hover:text-indigo-500"
-              >
-                <span>Upload a file</span>
-                <input
-                  id="file-upload-1"
-                  name="file-upload-1"
-                  type="file"
-                  accept="image/*"
-                  className="sr-only"
-                  onChange={(e) => handleImageChange(e, setImagePreview)}
-                  ref={imageInputRef}
-                />
-              </label>
-              <p className="pl-1">or drag and drop</p>
-            </div>
-            <p className="text-xs leading-5 text-gray-600">
-              PNG, JPG, GIF up to 10MB
-            </p>
-          </div>
-        </div>
-      ) : (
-        <img
-          src={imagePreview}
-          alt="Preview 1"
-          className="mt-2 md:mt-4 rounded-lg h-[150px] w-[150px]"
+        <ImageInput
+          onChange={(e) => handleImageChange(e, setImagePreview)}
+          reference={imageInputRef}
         />
+      ) : (
+        <ImagePreview src={imagePreview} alt="Image Preview" />
       )}
       <button
         type="submit"

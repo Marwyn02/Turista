@@ -5,18 +5,34 @@ export default async function Update(
   req: NextApiRequest,
   res: NextApiResponse
 ) {
-  const { image, userId }: { image: string; userId: string } = req.body;
+  const {
+    image,
+    userId,
+    imageType,
+  }: { image: string; userId: string; imageType: string } = req.body;
   try {
     // Check if theres a id and image exists
     if (image && userId) {
-      await User.updateOne(
-        {
-          _id: userId,
-        },
-        { $set: { image: image } },
-        { new: true }
-      );
+      if (imageType === "profile_image") {
+        await User.updateOne(
+          {
+            _id: userId,
+          },
+          { $set: { image: image } },
+          { new: true }
+        );
+      } else if (imageType === "cover_photo") {
+        await User.updateOne(
+          {
+            _id: userId,
+          },
+          { $set: { cover_photo: image } },
+          { new: true }
+        );
+      }
     }
+
+    console.log(req.body);
 
     return res.status(200).json({
       success: true,

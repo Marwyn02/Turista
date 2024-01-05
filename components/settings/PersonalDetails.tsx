@@ -9,10 +9,12 @@ export default function PersonalDetails({
   name,
   email,
   image,
+  cover_photo,
 }: {
   name: string;
   email: string;
   image: string;
+  cover_photo: string;
 }) {
   const { data: session } = useSession();
   const [newName, setNewName] = useState<string>(name);
@@ -22,9 +24,11 @@ export default function PersonalDetails({
   const [onEditState, setOnEditState] = useState<{
     name: boolean;
     image: boolean;
+    cover_photo: boolean;
   }>({
     name: false,
     image: false,
+    cover_photo: false,
   });
 
   // Handle the toggling function of the post information,
@@ -164,10 +168,11 @@ export default function PersonalDetails({
           <h4 className="text-sm text-gray-700 pb-1 font-semibold border-b mt-16 mb-5">
             Images
           </h4>
-          {!onEditState.image ? (
-            <section>
-              <div className="flex justify-between py-1">
-                <p className="font-bold text-gray-700 ">Profile Image</p>
+          <section>
+            <div className="flex justify-between py-1">
+              <p className="font-bold text-gray-700">Profile Image</p>
+
+              {!onEditState.image ? (
                 <button
                   type="button"
                   className="border border-gray-400 rounded-full px-3 py-1 text-xs font-bold text-gray-700 bg-white hover:text-gray-900 hover:bg-gray-200 duration-300"
@@ -175,18 +180,59 @@ export default function PersonalDetails({
                 >
                   Change
                 </button>
-              </div>
-              <p className="text-sm text-gray-500 font-normal -mt-1.5">
-                Display image must be in .png or .jpeg format
-              </p>
-              <img
-                src={image}
-                alt="Profile Image"
-                className="h-[100px] w-[100px] border-2 border-black rounded-md font-normal mt-3.5"
-              />
-            </section>
+              ) : (
+                <button
+                  type="button"
+                  className="font-medium text-sm text-gray-800 hover:underline hover:text-black"
+                  onClick={() => handleEditToggle("image")}
+                >
+                  Cancel
+                </button>
+              )}
+            </div>
+            <p className="text-sm text-gray-500 font-normal -mt-1.5">
+              Display image must be in .png or .jpeg format
+            </p>
+          </section>
+          {!onEditState.image ? (
+            <img
+              src={image}
+              alt="Profile Image"
+              className="h-[100px] w-[100px] border-2 border-black rounded-md font-normal mt-3.5"
+            />
           ) : (
-            <PersonalImage isClicked={() => handleEditToggle("image")} />
+            <PersonalImage imageType={"profile_image"} />
+          )}
+
+          <section className="mt-10">
+            <div className="flex justify-between py-1">
+              <p className="font-bold text-gray-700">Cover photo</p>
+              {!onEditState.cover_photo ? (
+                <button
+                  type="button"
+                  onClick={() => handleEditToggle("cover_photo")}
+                  className="border border-gray-400 rounded-full px-3 py-1 text-xs font-bold text-gray-700 bg-white hover:text-gray-900 hover:bg-gray-200 duration-300"
+                >
+                  Change
+                </button>
+              ) : (
+                <button
+                  type="button"
+                  className="font-medium text-sm text-gray-800 hover:underline hover:text-black"
+                  onClick={() => handleEditToggle("cover_photo")}
+                >
+                  Cancel
+                </button>
+              )}
+            </div>
+            <p className="text-sm text-gray-500 font-normal -mt-1.5">
+              Display image must be in .png or .jpeg format
+            </p>
+          </section>
+          {!onEditState.cover_photo ? (
+            <img src={cover_photo} alt="hello" className="w-full h-[250px]" />
+          ) : (
+            <PersonalImage imageType={"cover_photo"} />
           )}
         </section>
 
