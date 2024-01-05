@@ -11,7 +11,7 @@ type TPostCardProps = {
 const PostCard: FC<TPostCardProps> = ({ id, title, location, image }) => {
   return (
     <section>
-      <Link key={id} href={`/${id}`}>
+      <Link key={id} href={`/post/${id}`}>
         <div className="relative group">
           <Link href={`/edit/${id}`}>
             <button

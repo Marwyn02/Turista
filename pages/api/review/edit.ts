@@ -26,7 +26,7 @@ export default async function Edit(req: NextApiRequest, res: NextApiResponse) {
     return res.status(200).json({
       success: true,
       message: `Review ID:${id} has been updated!`,
-      path: `/${postId}`,
+      path: `/post/${postId}`,
     });
   } catch (error: any) {
     return res.status(500).json({

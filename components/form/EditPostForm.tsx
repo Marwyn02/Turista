@@ -56,7 +56,7 @@ const EditPost: FC<TEditPostDataProps> = (props) => {
     if (user != ((session?.user as { _id: string })?._id as string)) {
       setMessage("You're not authorized here!");
       setTimeout(() => {
-        router.push(`/${id}`);
+        router.push(`/post/${id}`);
         setIsLoading(true);
       }, 3000);
       return;
@@ -201,7 +201,7 @@ const EditPost: FC<TEditPostDataProps> = (props) => {
 
       setMessage("Done!");
       setTimeout(() => {
-        router.push(`/${props.id}`);
+        router.push(`/post/${props.id}`);
         setIsLoading(false);
       }, 3000);
     } catch (error: any) {
