@@ -5,17 +5,19 @@ import router from "next/router";
 import { LoadingModal } from "../UI/Modals/Modal";
 import PersonalImage from "./Components/PersonalImage";
 
+type TProps = {
+  name: string;
+  email: string;
+  image: string;
+  cover_photo: string;
+};
+
 export default function PersonalDetails({
   name,
   email,
   image,
   cover_photo,
-}: {
-  name: string;
-  email: string;
-  image: string;
-  cover_photo: string;
-}) {
+}: TProps) {
   const { data: session } = useSession();
   const [newName, setNewName] = useState<string>(name);
   const [isLoading, setIsLoading] = useState<boolean>(false);
@@ -30,6 +32,10 @@ export default function PersonalDetails({
     image: false,
     cover_photo: false,
   });
+
+  const handleImageLoading = (isLoading: boolean) => {
+    setIsLoading(isLoading);
+  };
 
   // Handle the toggling function of the post information,
   // title, location, description
@@ -70,6 +76,7 @@ export default function PersonalDetails({
       setIsLoading(false);
     }
   };
+
   return (
     <section className="mt-10 px-3 lg:px-0">
       {isLoading && <LoadingModal message={message} />}
@@ -205,7 +212,11 @@ export default function PersonalDetails({
               />
             ) : (
               // Image change handler
-              <PersonalImage imageType={"profile_image"} />
+              <PersonalImage
+                imageType={"profile_image"}
+                onMessage={(newMessage) => setMessage(newMessage)}
+                onLoading={handleImageLoading}
+              />
             )}
           </section>
 
@@ -252,7 +263,11 @@ export default function PersonalDetails({
               </div>
             ) : (
               // Image change handler
-              <PersonalImage imageType={"cover_photo"} />
+              <PersonalImage
+                imageType={"cover_photo"}
+                onMessage={(newMessage) => setMessage(newMessage)}
+                onLoading={handleImageLoading}
+              />
             )}
           </section>
         </section>

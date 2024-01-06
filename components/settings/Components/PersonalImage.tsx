@@ -6,9 +6,15 @@ import { ImageInput, ImagePreview } from "@/components/UI/Images/Image";
 
 type TPersonalImageProps = {
   imageType: string;
+  onMessage: (message: string) => void;
+  onLoading: (isLoading: boolean) => void;
 };
 
-export default function PersonalImage({ imageType }: TPersonalImageProps) {
+export default function PersonalImage({
+  imageType,
+  onMessage,
+  onLoading,
+}: TPersonalImageProps) {
   const { data: session } = useSession();
   const [imagePreview, setImagePreview] = useState<string | null>(null);
   const [selectedImages, setSelectedImages] = useState<File[]>([]);
@@ -34,7 +40,10 @@ export default function PersonalImage({ imageType }: TPersonalImageProps) {
   };
 
   const updateImageHandler = async () => {
-    // setLoading(true);
+    onLoading(true);
+    onMessage(
+      "Please wait for a moment. We're trying to make it as the best of the best!"
+    );
     try {
       if (selectedImages) {
         const form = new FormData();
@@ -48,8 +57,6 @@ export default function PersonalImage({ imageType }: TPersonalImageProps) {
             body: form,
           }
         ).then((r) => r.json());
-
-        console.log("Response: ", response);
 
         if (response) {
           const responseAPI = await fetch("/api/image/user/update", {
@@ -65,19 +72,21 @@ export default function PersonalImage({ imageType }: TPersonalImageProps) {
           }).then((r) => r.json());
 
           if (responseAPI.success) {
-            console.log("Response: ", responseAPI);
-            router.push(responseAPI.path);
-            // setIsLoading(false);
+            onMessage(responseAPI.message);
+            setTimeout(() => {
+              router.push(responseAPI.path);
+              onLoading(false);
+            }, 3000);
             return;
           }
         }
       } else {
         console.error("No selected image");
-        // setIsLoading(false);
+        onLoading(false);
       }
     } catch (error) {
       console.error("Failed to update, ", error);
-      //   setIsLoading(false);
+      onLoading(false);
     }
   };
   return (

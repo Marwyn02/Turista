@@ -36,7 +36,7 @@ export default async function Update(
 
     return res.status(200).json({
       success: true,
-      message: `User: ${userId} has been updated!`,
+      message: `Done!`,
       path: `/user/settings`,
     });
   } catch (error: any) {
