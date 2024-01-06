@@ -2,14 +2,18 @@ import { useSession } from "next-auth/react";
 import { useState } from "react";
 import router from "next/router";
 
-import { LoadingModal } from "../UI/Modals/Modal";
 import PersonalImage from "./Components/PersonalImage";
+import { DeleteButton } from "../UI/Buttons/Button";
+import { DeleteModal, LoadingModal } from "../UI/Modals/Modal";
 
 type TProps = {
   name: string;
   email: string;
   image: string;
-  cover_photo: string;
+  cover_photo: {
+    image: string;
+    public_id: string;
+  };
 };
 
 export default function PersonalDetails({
@@ -22,6 +26,8 @@ export default function PersonalDetails({
   const [newName, setNewName] = useState<string>(name);
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [message, setMessage] = useState<string>("");
+
+  const [isOpen, setIsOpen] = useState<boolean>(false);
 
   const [onEditState, setOnEditState] = useState<{
     name: boolean;
@@ -251,11 +257,11 @@ export default function PersonalDetails({
             {!onEditState.cover_photo ? (
               <div>
                 {/* Default cover photo will display if not changed */}
-                {cover_photo === "" ? (
+                {cover_photo.image === "" ? (
                   <div className="bg-gradient-to-t from-pink-400 from-25% to-violet-600 w-[600px] h-[300px] md:rounded-lg object-cover z-10 opacity-70 mt-3.5"></div>
                 ) : (
                   <img
-                    src={cover_photo}
+                    src={cover_photo.image}
                     alt="Cover Photo"
                     className="animated-slide h-[400px] rounded-lg mt-3.5"
                   />
@@ -278,13 +284,25 @@ export default function PersonalDetails({
             Delete Account
           </h4>
           <div className="flex justify-between items-center my-8">
+            {/* This is just a block */}
             <div></div>
-            <button className="text-xs font-bold text-red-500" disabled>
-              DELETE ACCOUNT{" "}
-              <p className="text-xs text-gray-500 font-normal bg-gray-100 py-1 px-3 rounded-md mt-2">
-                Still in progress...
-              </p>
-            </button>
+            {/* Delete button for the modal  */}
+            <DeleteButton onClick={() => setIsOpen(!isOpen)}>
+              <span className="text-white font-semibold text-xs">
+                DELETE ACCOUNT
+              </span>
+            </DeleteButton>
+
+            {/* Delete Modal  */}
+            <DeleteModal
+              message={
+                "Deleting your account will delete all your posts and review all through the platform."
+              }
+              userId={(session?.user as { _id: string })?._id as string}
+              isOpen={isOpen}
+              deleteType="account"
+              onClose={() => setIsOpen(false)}
+            />
           </div>
         </section>
       </section>

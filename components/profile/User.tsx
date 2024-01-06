@@ -12,7 +12,10 @@ interface IUserProps {
   userId: string;
   name: string;
   image: string;
-  cover_photo: string;
+  cover_photo: {
+    image: string;
+    public_id: string;
+  };
   postCount: number;
   reviewCount: number;
   posts: any[];
@@ -94,16 +97,16 @@ const User: FC<IUserProps> = ({
       <div className="py-4 md:pt-10 md:pb-20 md:px-3 lg:px-32">
         <div className="md:mt-10" />
         <div className="relative">
-          {cover_photo !== "" ? (
+          {cover_photo.image !== "" ? (
             <img
-              src={cover_photo}
+              src={cover_photo.image}
               alt="Cover Photo"
               className="w-full h-[200px] md:h-[350px] md:rounded-lg object-cover z-10 opacity-90"
             />
           ) : (
             <div className="bg-gradient-to-t from-pink-400 from-25% to-violet-600 w-full h-[200px] md:h-[350px] md:rounded-lg object-cover z-10 opacity-70"></div>
           )}
-          {cover_photo !== "" && (
+          {cover_photo.image !== "" && (
             <div className="absolute bottom-0 left-0 bg-gradient-to-t from-black from-25% to-transparent w-full h-[50px] md:h-[100px] opacity-40 md:opacity-60 rounded-b-lg"></div>
           )}
         </div>

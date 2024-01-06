@@ -18,7 +18,10 @@ interface UserData {
     userId: string;
     name: string;
     image: string;
-    cover_photo: string;
+    cover_photo: {
+      image: string;
+      public_id: string;
+    };
     postCount: number;
     reviewCount: number;
     posts: {
@@ -44,7 +47,10 @@ interface IUser {
   name: string;
   image: string;
   followers: string[];
-  cover_photo: string;
+  cover_photo: {
+    image: string;
+    public_id: string;
+  };
 }
 
 interface Count {
@@ -152,7 +158,10 @@ export async function getStaticProps(
           userId: id,
           name: name,
           image: image,
-          cover_photo: cover_photo,
+          cover_photo: {
+            image: cover_photo.image,
+            public_id: cover_photo.public_id,
+          },
           postCount: PostReviewCount.PostCount,
           reviewCount: PostReviewCount.ReviewCount,
           posts: posts,
@@ -169,7 +178,10 @@ export async function getStaticProps(
           userId: "",
           name: "",
           image: "",
-          cover_photo: "",
+          cover_photo: {
+            image: "",
+            public_id: "",
+          },
           postCount: 0,
           reviewCount: 0,
           posts: [],

@@ -6,6 +6,12 @@ import MainPageLayout from "@/components/layout/MainPageLayout";
 export default function settings() {
   const { data: session } = useSession();
 
+  const cover_photo = {
+    image: (session?.user as { cover_photo: { image: string } })?.cover_photo
+      .image,
+    public_id: (session?.user as { cover_photo: { public_id: string } })
+      ?.cover_photo.public_id,
+  };
   return (
     <MainPageLayout>
       <div>
@@ -17,9 +23,7 @@ export default function settings() {
         name={session?.user?.name as string}
         email={session?.user?.email as string}
         image={session?.user?.image as string}
-        cover_photo={
-          (session?.user as { cover_photo: string })?.cover_photo as string
-        }
+        cover_photo={cover_photo}
       />
     </MainPageLayout>
   );
