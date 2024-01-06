@@ -12,8 +12,9 @@ type TDeleteModal = {
   message: string;
   postId?: string;
   reviewId?: string;
+  userId?: string;
   isOpen: boolean;
-  deleteType: "post" | "review";
+  deleteType: "post" | "review" | "account";
   onClose?: () => void;
 };
 
@@ -69,6 +70,7 @@ export const DeleteModal = ({
   message,
   postId,
   reviewId,
+  userId,
   isOpen,
   deleteType,
   onClose,
@@ -100,6 +102,17 @@ export const DeleteModal = ({
             "Content-type": "application/json",
           },
           body: JSON.stringify({ reviewId, postId }),
+        }).then((r) => r.json());
+
+        console.log(response.message);
+        router.push(response.path);
+      } else if (deleteType === "account") {
+        const response = await fetch(`/api/user/delete`, {
+          method: "DELETE",
+          headers: {
+            "Content-type": "application/json",
+          },
+          body: JSON.stringify({ userId }),
         }).then((r) => r.json());
 
         console.log(response.message);
