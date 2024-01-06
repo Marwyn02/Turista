@@ -5,7 +5,10 @@ interface UserFindResponse {
   name: string;
   image: string;
   followers: string[];
-  cover_photo: string;
+  cover_photo: {
+    image: string;
+    public_id: string;
+  };
 }
 
 export default async function Find(userId: string): Promise<UserFindResponse> {

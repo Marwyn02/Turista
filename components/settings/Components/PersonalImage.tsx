@@ -66,6 +66,7 @@ export default function PersonalImage({
             },
             body: JSON.stringify({
               image: response.secure_url,
+              public_id: response.public_id,
               userId: (session?.user as { _id: string })?._id as string,
               imageType: imageType,
             }),
