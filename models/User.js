@@ -11,11 +11,11 @@ const UserSchema = new mongoose.Schema(
       trim: true,
     },
     image: {
-      type: String,
+      type: Array,
       trim: true,
     },
     cover_photo: {
-      type: String,
+      type: Array,
       trim: true,
     },
     provider: {
