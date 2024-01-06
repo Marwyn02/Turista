@@ -84,7 +84,10 @@ async function signInWithOAuth({ account, profile }) {
       followers: [],
       name: profile.name,
       email: profile.email,
-      image: profile.picture.data.url,
+      image: {
+        image: profile.picture.data.url,
+        public_id: "",
+      },
       cover_photo: "",
       provider: account.provider,
     });
@@ -96,7 +99,10 @@ async function signInWithOAuth({ account, profile }) {
       followers: [],
       name: profile.name,
       email: profile.email,
-      image: profile.picture,
+      image: {
+        image: profile.picture,
+        public_id: "",
+      },
       cover_photo: "",
       provider: account.provider,
     });

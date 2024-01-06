@@ -3,7 +3,10 @@ import User from "@/models/User";
 type TUserFindResponse = {
   id: string;
   name: string;
-  image: string;
+  image: {
+    image: string;
+    public_id: string;
+  };
   followers: string[];
   cover_photo: {
     image: string;

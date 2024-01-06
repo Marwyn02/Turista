@@ -11,7 +11,10 @@ import { Icon } from "../UI/Images/Image";
 interface IUserProps {
   userId: string;
   name: string;
-  image: string;
+  image: {
+    image: string;
+    public_id: string;
+  };
   cover_photo: {
     image: string;
     public_id: string;
@@ -116,7 +119,7 @@ const User: FC<IUserProps> = ({
         <div className="md:-mt-20 md:px-16 md:flex items-center md:justify-between md:items-start grid grid-cols-1 md:grid-cols-2">
           <section className="-mt-20 md:mt-2.5 z-20 flex justify-center items-center md:justify-start md:items-start col-span-1 md:col-span-3">
             <img
-              src={image}
+              src={image.image}
               alt={name}
               className="h-40 w-40 rounded-full mx-auto md:mx-0 border-4 border-white z-10"
             />

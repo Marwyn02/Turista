@@ -144,7 +144,7 @@ export async function getStaticProps(
           }),
           postId: review.post.toString(),
           description: review.description,
-          image: image,
+          image: image.image,
           name: name,
           userId: review.user.toString(),
         };
@@ -177,7 +177,7 @@ export async function getStaticProps(
           ),
           user: selectedUser.name,
           userId: selectedUser._id.toString(),
-          userImage: selectedUser.image,
+          userImage: selectedUser.image.image,
           reviews: reviewUser ? reviewUser : [], // If there are no reviews then just return empty array
           date: date,
         },

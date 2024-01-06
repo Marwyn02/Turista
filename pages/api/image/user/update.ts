@@ -22,22 +22,31 @@ export default async function Update(
           {
             _id: userId,
           },
-          { $set: { image: image } },
+          {
+            $set: {
+              image: {
+                image: image,
+                public_id: public_id,
+              },
+            },
+          },
           { new: true }
         );
       }
       // Cover photo update
       else if (imageType === "cover_photo") {
-        const coverData = {
-          image: image,
-          public_id: public_id,
-        };
-
         await User.updateOne(
           {
             _id: userId,
           },
-          { $set: { cover_photo: coverData } },
+          {
+            $set: {
+              cover_photo: {
+                image: image,
+                public_id: public_id,
+              },
+            },
+          },
           { new: true }
         );
       }

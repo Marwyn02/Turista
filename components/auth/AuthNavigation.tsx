@@ -19,7 +19,7 @@ export default function Component() {
 
   const data = [
     {
-      image: `${session?.user?.image || ""}`,
+      image: `${(session?.user as { image: { image?: string } })?.image.image}`,
       name: `${session?.user?.name}`,
       description: "Account Profile",
       href: `/user/${(session?.user as { _id: string })?._id as string}`,
@@ -50,7 +50,10 @@ export default function Component() {
                 group flex items-center focus:ring-0 focus:outline-none`}
               >
                 <img
-                  src={session.user?.image || ""}
+                  src={
+                    (session?.user as { image: { image?: string } })?.image
+                      .image
+                  }
                   alt="Profile Image"
                   className="rounded-full h-[40px] w-[40px] border-[1.5px] border-y-violet-500
                   border-x-pink-300 hover:opacity-90 duration-150 cursor-pointer"

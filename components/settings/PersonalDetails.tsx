@@ -6,10 +6,10 @@ import PersonalImage from "./Components/PersonalImage";
 import { DeleteButton } from "../UI/Buttons/Button";
 import { DeleteModal, LoadingModal } from "../UI/Modals/Modal";
 
-type TPersonalDetailProps = {
+type TPersonalDetailsProps = {
   name: string;
   email: string;
-  image: string;
+  image?: string;
   cover_photo: {
     image: string;
     public_id: string;
@@ -21,7 +21,7 @@ export default function PersonalDetails({
   email,
   image,
   cover_photo,
-}: TPersonalDetailProps) {
+}: TPersonalDetailsProps) {
   const { data: session } = useSession();
   const [newName, setNewName] = useState<string>(name);
   const [isLoading, setIsLoading] = useState<boolean>(false);
