@@ -15,8 +15,8 @@ const UserSchema = new mongoose.Schema(
       trim: true,
     },
     cover_photo: {
-      type: Array,
-      trim: true,
+      image: { type: String },
+      public_id: { type: String },
     },
     provider: {
       type: String,
