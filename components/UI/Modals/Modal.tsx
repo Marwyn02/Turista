@@ -75,7 +75,7 @@ export const DeleteModal = ({
   deleteType,
   onClose,
 }: TDeleteModal) => {
-  // Deletes Post
+  // Delete
   const deleteHandler = async (e: { preventDefault: () => void }) => {
     e.preventDefault();
     closeModal();
@@ -106,7 +106,9 @@ export const DeleteModal = ({
 
         console.log(response.message);
         router.push(response.path);
-      } else if (deleteType === "account") {
+      }
+      // DELETE User Account
+      else if (deleteType === "account") {
         const response = await fetch(`/api/user/delete`, {
           method: "DELETE",
           headers: {

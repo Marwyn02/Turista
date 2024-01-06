@@ -16,6 +16,7 @@ export default async function Update(
   try {
     // Check if theres a id and image exists
     if (image && userId) {
+      // Profile image update
       if (imageType === "profile_image") {
         await User.updateOne(
           {
@@ -24,7 +25,9 @@ export default async function Update(
           { $set: { image: image } },
           { new: true }
         );
-      } else if (imageType === "cover_photo") {
+      }
+      // Cover photo update
+      else if (imageType === "cover_photo") {
         const coverData = {
           image: image,
           public_id: public_id,

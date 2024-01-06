@@ -6,6 +6,7 @@ import MainPageLayout from "@/components/layout/MainPageLayout";
 export default function settings() {
   const { data: session } = useSession();
 
+  // Cover photo image and public_id
   const cover_photo = {
     image: (session?.user as { cover_photo: { image: string } })?.cover_photo
       .image,

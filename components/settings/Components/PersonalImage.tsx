@@ -21,6 +21,8 @@ export default function PersonalImage({
 
   const imageInputRef = useRef<HTMLInputElement>(null);
 
+  // Handles the image change
+  // Display the file for image preview
   const handleImageChange = async (
     e: React.ChangeEvent<HTMLInputElement>,
     setImagePreview: React.Dispatch<React.SetStateAction<string | null>>
@@ -39,6 +41,7 @@ export default function PersonalImage({
     }
   };
 
+  // Updates the image
   const updateImageHandler = async () => {
     onLoading(true);
     onMessage(
@@ -50,6 +53,7 @@ export default function PersonalImage({
         form.append("file", selectedImages[0]);
         form.append("upload_preset", "Turista-Uploads");
 
+        // Store the file as image in the cloudinary
         const response = await fetch(
           process.env.NEXT_PUBLIC_CLOUDINARY_URL as string,
           {
@@ -59,6 +63,8 @@ export default function PersonalImage({
         ).then((r) => r.json());
 
         if (response) {
+          // Updates the image of the user
+          // And the cover photo of the user
           const responseAPI = await fetch("/api/image/user/update", {
             method: "POST",
             headers: {
