@@ -1,4 +1,5 @@
 import React from "react";
+
 type TProps = {
   children: React.ReactNode;
   onClick?: React.MouseEventHandler<HTMLButtonElement>;
@@ -24,7 +25,7 @@ export const SubmitButton = ({ children, disabled }: TProps) => {
   return (
     <button
       type="submit"
-      className="bg-violet-400 text-white text-sm px-5 py-1.5 border 
+      className="bg-violet-400 text-white text-sm px-5 py-1.5 border
                   border-transparent rounded-md hover:bg-violet-500 duration-200 focus:outline-none "
       disabled={disabled}
     >

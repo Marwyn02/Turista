@@ -2,30 +2,47 @@ import { useSession } from "next-auth/react";
 import { useState } from "react";
 import router from "next/router";
 
-import { LoadingModal } from "../UI/Modals/Modal";
 import PersonalImage from "./Components/PersonalImage";
+import { DeleteButton } from "../UI/Buttons/Button";
+import { DeleteModal, LoadingModal } from "../UI/Modals/Modal";
+
+type TPersonalDetailsProps = {
+  name: string;
+  email: string;
+  image?: string;
+  cover_photo: {
+    image: string;
+    public_id: string;
+  };
+};
 
 export default function PersonalDetails({
   name,
   email,
   image,
-}: {
-  name: string;
-  email: string;
-  image: string;
-}) {
+  cover_photo,
+}: TPersonalDetailsProps) {
   const { data: session } = useSession();
   const [newName, setNewName] = useState<string>(name);
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [message, setMessage] = useState<string>("");
 
+  const [isOpen, setIsOpen] = useState<boolean>(false);
+
   const [onEditState, setOnEditState] = useState<{
     name: boolean;
     image: boolean;
+    cover_photo: boolean;
   }>({
     name: false,
     image: false,
+    cover_photo: false,
   });
+
+  // Image loading
+  const handleImageLoading = (isLoading: boolean) => {
+    setIsLoading(isLoading);
+  };
 
   // Handle the toggling function of the post information,
   // title, location, description
@@ -66,6 +83,7 @@ export default function PersonalDetails({
       setIsLoading(false);
     }
   };
+
   return (
     <section className="mt-10 px-3 lg:px-0">
       {isLoading && <LoadingModal message={message} />}
@@ -164,30 +182,101 @@ export default function PersonalDetails({
           <h4 className="text-sm text-gray-700 pb-1 font-semibold border-b mt-16 mb-5">
             Images
           </h4>
-          {!onEditState.image ? (
-            <section>
+
+          {/* Profile Image preview and input  */}
+          <section>
+            <div>
               <div className="flex justify-between py-1">
-                <p className="font-bold text-gray-700 ">Profile Image</p>
-                <button
-                  type="button"
-                  className="border border-gray-400 rounded-full px-3 py-1 text-xs font-bold text-gray-700 bg-white hover:text-gray-900 hover:bg-gray-200 duration-300"
-                  onClick={() => handleEditToggle("image")}
-                >
-                  Change
-                </button>
+                <p className="font-bold text-gray-700">Profile Image</p>
+                {/* Change and cancel buttons */}
+                {!onEditState.image ? (
+                  <button
+                    type="button"
+                    className="border border-gray-400 rounded-full px-3 py-1 text-xs font-bold text-gray-700 bg-white hover:text-gray-900 hover:bg-gray-200 duration-300"
+                    onClick={() => handleEditToggle("image")}
+                  >
+                    Change
+                  </button>
+                ) : (
+                  <button
+                    type="button"
+                    className="font-medium text-sm text-gray-800 hover:underline hover:text-black"
+                    onClick={() => handleEditToggle("image")}
+                  >
+                    Cancel
+                  </button>
+                )}
               </div>
               <p className="text-sm text-gray-500 font-normal -mt-1.5">
                 Display image must be in .png or .jpeg format
               </p>
+            </div>
+            {!onEditState.image ? (
               <img
                 src={image}
                 alt="Profile Image"
-                className="h-[100px] w-[100px] border-2 border-black rounded-md font-normal mt-3.5"
+                className="h-[100px] w-[100px] rounded-md mt-3.5"
               />
-            </section>
-          ) : (
-            <PersonalImage isClicked={() => handleEditToggle("image")} />
-          )}
+            ) : (
+              // Image change handler
+              <PersonalImage
+                imageType={"profile_image"}
+                onMessage={(newMessage) => setMessage(newMessage)}
+                onLoading={handleImageLoading}
+              />
+            )}
+          </section>
+
+          {/* Cover Photo preview and input  */}
+          <section className="mt-10">
+            <div>
+              <div className="flex justify-between py-1">
+                <p className="font-bold text-gray-700">Cover photo</p>
+                {/* Cover photo change and cancel button  */}
+                {!onEditState.cover_photo ? (
+                  <button
+                    type="button"
+                    onClick={() => handleEditToggle("cover_photo")}
+                    className="border border-gray-400 rounded-full px-3 py-1 text-xs font-bold text-gray-700 bg-white hover:text-gray-900 hover:bg-gray-200 duration-300"
+                  >
+                    Change
+                  </button>
+                ) : (
+                  <button
+                    type="button"
+                    className="font-medium text-sm text-gray-800 hover:underline hover:text-black"
+                    onClick={() => handleEditToggle("cover_photo")}
+                  >
+                    Cancel
+                  </button>
+                )}
+              </div>
+              <p className="text-sm text-gray-500 font-normal -mt-1.5">
+                Display image must be in .png or .jpeg format
+              </p>
+            </div>
+            {!onEditState.cover_photo ? (
+              <div>
+                {/* Default cover photo will display if not changed */}
+                {cover_photo.image === "" ? (
+                  <div className="bg-gradient-to-t from-pink-400 from-25% to-violet-600 w-[600px] h-[300px] md:rounded-lg object-cover z-10 opacity-70 mt-3.5"></div>
+                ) : (
+                  <img
+                    src={cover_photo.image}
+                    alt="Cover Photo"
+                    className="animated-slide h-[400px] rounded-lg mt-3.5"
+                  />
+                )}
+              </div>
+            ) : (
+              // Image change handler
+              <PersonalImage
+                imageType={"cover_photo"}
+                onMessage={(newMessage) => setMessage(newMessage)}
+                onLoading={handleImageLoading}
+              />
+            )}
+          </section>
         </section>
 
         {/* Delete Account  */}
@@ -196,13 +285,25 @@ export default function PersonalDetails({
             Delete Account
           </h4>
           <div className="flex justify-between items-center my-8">
+            {/* This is just a block */}
             <div></div>
-            <button className="text-xs font-bold text-red-500" disabled>
-              DELETE ACCOUNT{" "}
-              <p className="text-xs text-gray-500 font-normal bg-gray-100 py-1 px-3 rounded-md mt-2">
-                Still in progress...
-              </p>
-            </button>
+            {/* Delete button for the modal  */}
+            <DeleteButton onClick={() => setIsOpen(!isOpen)}>
+              <span className="text-white font-semibold text-xs">
+                DELETE ACCOUNT
+              </span>
+            </DeleteButton>
+
+            {/* Delete Modal  */}
+            <DeleteModal
+              message={
+                "Deleting your account will delete all your posts and review all through the platform."
+              }
+              userId={(session?.user as { _id: string })?._id as string}
+              isOpen={isOpen}
+              deleteType="account"
+              onClose={() => setIsOpen(false)}
+            />
           </div>
         </section>
       </section>

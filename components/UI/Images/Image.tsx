@@ -9,6 +9,8 @@ type TInput = {
 type TPreview = {
   src: string;
   alt: string;
+  height?: number;
+  width?: number;
 };
 
 type TImg = {
@@ -31,7 +33,14 @@ type TIcon = {
 
 // Images UI here are mostly in the forms
 
-export const Img = ({ src, alt, height, width, select, onClick }: TImg) => {
+export const FormImage = ({
+  src,
+  alt,
+  height,
+  width,
+  select,
+  onClick,
+}: TImg) => {
   return (
     <Image
       src={src}
@@ -76,11 +85,13 @@ export const ImageInput = ({ onChange, reference }: TInput) => {
   );
 };
 
-export const ImagePreview = ({ src, alt }: TPreview) => {
+export const ImagePreview = ({ src, alt, height, width }: TPreview) => {
   return (
     <Image
       src={src}
       alt={alt}
+      height={height ?? 300}
+      width={width ?? 300}
       className="mt-2 md:mt-4 rounded-lg hover:brightness-90"
     />
   );

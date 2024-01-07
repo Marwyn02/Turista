@@ -11,7 +11,7 @@ interface PostsItemProps {
 const PostsItem: FC<PostsItemProps> = ({ id, image, location }) => {
   return (
     <section>
-      <Link key={id} href={`/${id}`}>
+      <Link key={id} href={`/post/${id}`}>
         <div className="pt-[100%] relative rounded-lg duration-300 group">
           {/* Main image of the post item  */}
           <Image

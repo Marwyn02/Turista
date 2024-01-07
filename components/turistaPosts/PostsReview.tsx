@@ -52,7 +52,7 @@ const PostsReview = (props: PostsReviewProps) => {
       const reviewData = {
         post: props.postId,
         description: enteredDescription,
-        image: session?.user?.image,
+        image: (session?.user as { image: { image?: string } })?.image.image,
         user: (session?.user as { _id: string })._id as string,
       };
 

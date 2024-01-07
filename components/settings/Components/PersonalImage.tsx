@@ -1,18 +1,28 @@
+import React, { useRef, useState } from "react";
 import { useSession } from "next-auth/react";
 import router from "next/router";
-import React, { useRef, useState } from "react";
 
-export default function PersonalImage(props: any) {
+import { ImageInput, ImagePreview } from "@/components/UI/Images/Image";
+
+type TPersonalImageProps = {
+  imageType: string;
+  onMessage: (message: string) => void;
+  onLoading: (isLoading: boolean) => void;
+};
+
+export default function PersonalImage({
+  imageType,
+  onMessage,
+  onLoading,
+}: TPersonalImageProps) {
   const { data: session } = useSession();
   const [imagePreview, setImagePreview] = useState<string | null>(null);
   const [selectedImages, setSelectedImages] = useState<File[]>([]);
 
   const imageInputRef = useRef<HTMLInputElement>(null);
 
-  const handleEditToggle = () => {
-    props.isClicked();
-  };
-
+  // Handles the image change
+  // Display the file for image preview
   const handleImageChange = async (
     e: React.ChangeEvent<HTMLInputElement>,
     setImagePreview: React.Dispatch<React.SetStateAction<string | null>>
@@ -31,14 +41,19 @@ export default function PersonalImage(props: any) {
     }
   };
 
+  // Updates the image
   const updateImageHandler = async () => {
-    // setLoading(true);
+    onLoading(true);
+    onMessage(
+      "Please wait for a moment. We're trying to make it as the best of the best!"
+    );
     try {
       if (selectedImages) {
         const form = new FormData();
         form.append("file", selectedImages[0]);
         form.append("upload_preset", "Turista-Uploads");
 
+        // Store the file as image in the cloudinary
         const response = await fetch(
           process.env.NEXT_PUBLIC_CLOUDINARY_URL as string,
           {
@@ -47,9 +62,9 @@ export default function PersonalImage(props: any) {
           }
         ).then((r) => r.json());
 
-        console.log("Response: ", response);
-
         if (response) {
+          // Updates the image of the user
+          // And the cover photo of the user
           const responseAPI = await fetch("/api/image/user/update", {
             method: "POST",
             headers: {
@@ -57,76 +72,39 @@ export default function PersonalImage(props: any) {
             },
             body: JSON.stringify({
               image: response.secure_url,
+              public_id: response.public_id,
               userId: (session?.user as { _id: string })?._id as string,
+              imageType: imageType,
             }),
           }).then((r) => r.json());
 
           if (responseAPI.success) {
-            console.log("Response: ", responseAPI);
-            router.push(responseAPI.path);
-            // setIsLoading(false);
+            onMessage(responseAPI.message);
+            setTimeout(() => {
+              router.push(responseAPI.path);
+              onLoading(false);
+            }, 3000);
+            return;
           }
         }
       } else {
         console.error("No selected image");
-        // setIsLoading(false);
+        onLoading(false);
       }
     } catch (error) {
       console.error("Failed to update, ", error);
-      //   setIsLoading(false);
+      onLoading(false);
     }
   };
   return (
     <section>
-      <div className="flex justify-between py-1">
-        <p className="font-bold text-gray-700 ">Profile Image</p>
-        <button
-          type="button"
-          className="font-medium text-sm text-gray-800 hover:underline hover:text-black"
-          onClick={() => handleEditToggle()}
-        >
-          Cancel
-        </button>
-      </div>
-      <p className="text-sm text-gray-500 font-normal -mt-1.5">
-        Display image must be in .png or .jpeg format
-      </p>
       {!imagePreview ? (
-        <div
-          className="mt-2 flex justify-start rounded-lg border w-fit
-                            border-dashed border-gray-900/25 p-12"
-        >
-          <div className="text-center">
-            <div className="mt-2 flex text-sm leading-6 text-gray-600">
-              <label
-                htmlFor="file-upload-1"
-                className="relative cursor-pointer rounded-md bg-white 
-                               font-semibold text-indigo-600 hover:text-indigo-500"
-              >
-                <span>Upload a file</span>
-                <input
-                  id="file-upload-1"
-                  name="file-upload-1"
-                  type="file"
-                  accept="image/*"
-                  className="sr-only"
-                  onChange={(e) => handleImageChange(e, setImagePreview)}
-                  ref={imageInputRef}
-                />
-              </label>
-              <p className="pl-1">or drag and drop</p>
-            </div>
-            <p className="text-xs leading-5 text-gray-600">
-              PNG, JPG, GIF up to 10MB
-            </p>
-          </div>
-        </div>
-      ) : (
-        <img
-          src={imagePreview}
-          alt="Preview 1"
-          className="mt-2 md:mt-4 rounded-lg h-[150px] w-[150px]"
+        <ImageInput
+          onChange={(e) => handleImageChange(e, setImagePreview)}
+          reference={imageInputRef}
         />
+      ) : (
+        <ImagePreview src={imagePreview} alt="Image Preview" />
       )}
       <button
         type="submit"

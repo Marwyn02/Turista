@@ -428,7 +428,7 @@ export default function AddPost() {
           )}
           {showContinue && (
             <SubmitButton disabled={isLoading}>
-              {!isLoading ? "Create a post" : "Creating your post..."}
+              {!isLoading ? "Create your post" : "Creating your post..."}
             </SubmitButton>
           )}
         </section>

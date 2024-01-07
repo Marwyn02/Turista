@@ -56,7 +56,7 @@ const EditPost: FC<TEditPostDataProps> = (props) => {
     if (user != ((session?.user as { _id: string })?._id as string)) {
       setMessage("You're not authorized here!");
       setTimeout(() => {
-        router.push(`/${id}`);
+        router.push(`/post/${id}`);
         setIsLoading(true);
       }, 3000);
       return;
@@ -201,7 +201,7 @@ const EditPost: FC<TEditPostDataProps> = (props) => {
 
       setMessage("Done!");
       setTimeout(() => {
-        router.push(`/${props.id}`);
+        router.push(`/post/${props.id}`);
         setIsLoading(false);
       }, 3000);
     } catch (error: any) {
@@ -374,18 +374,18 @@ const EditPost: FC<TEditPostDataProps> = (props) => {
                 </div>
               </div>
             </section>
-
-            {/* Cancel and update buttons */}
-            <section className="flex justify-between md:justify-normal items-center gap-x-1.5 py-3">
-              <Link href={`/${id}`}>
-                <CancelButton disabled={isLoading}>Cancel</CancelButton>
-              </Link>
-
-              <SubmitButton disabled={isLoading}>
-                {!isLoading ? "Save" : "Saving..."}
-              </SubmitButton>
-            </section>
           </div>
+
+          {/* Cancel and update buttons */}
+          <section className="flex justify-between md:justify-start items-center gap-x-1.5 pt-2 pb-4 px-5">
+            <Link href={`/post/${id}`}>
+              <CancelButton disabled={isLoading}>Cancel</CancelButton>
+            </Link>
+
+            <SubmitButton disabled={isLoading}>
+              {!isLoading ? "Save changes" : "Saving..."}
+            </SubmitButton>
+          </section>
         </section>
       </div>
       {isLoading && <LoadingModal message={message} />}
