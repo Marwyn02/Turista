@@ -81,8 +81,8 @@ export default function PersonalImage({
           if (responseAPI.success) {
             onMessage(responseAPI.message);
             setTimeout(() => {
-              router.push(responseAPI.path);
               onLoading(false);
+              router.push(responseAPI.path);
             }, 3000);
             return;
           }
@@ -104,7 +104,12 @@ export default function PersonalImage({
           reference={imageInputRef}
         />
       ) : (
-        <ImagePreview src={imagePreview} alt="Image Preview" />
+        <ImagePreview
+          src={imagePreview}
+          alt="Image Preview"
+          height={200}
+          width={200}
+        />
       )}
       <button
         type="submit"
