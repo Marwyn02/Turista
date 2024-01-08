@@ -104,12 +104,7 @@ export default function PersonalImage({
           reference={imageInputRef}
         />
       ) : (
-        <ImagePreview
-          src={imagePreview}
-          alt="Image Preview"
-          height={200}
-          width={200}
-        />
+        <ImagePreview src={imagePreview} alt="Image Preview" />
       )}
       <button
         type="submit"

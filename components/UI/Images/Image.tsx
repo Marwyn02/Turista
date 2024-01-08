@@ -9,8 +9,6 @@ type TInput = {
 type TPreview = {
   src: string;
   alt: string;
-  height?: number;
-  width?: number;
 };
 
 type TImg = {
@@ -85,13 +83,11 @@ export const ImageInput = ({ onChange, reference }: TInput) => {
   );
 };
 
-export const ImagePreview = ({ src, alt, height, width }: TPreview) => {
+export const ImagePreview = ({ src, alt }: TPreview) => {
   return (
     <img
       src={src}
       alt={alt}
-      // height={height}
-      // width={width}
       className="mt-2 md:mt-4 rounded-lg hover:brightness-90"
     />
   );
