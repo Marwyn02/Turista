@@ -118,7 +118,7 @@ export const DeleteModal = ({
         }).then((r) => r.json());
 
         console.log(response.message);
-        router.push(response.path);
+        router.push(response.redirect);
       }
     } catch (error: any) {
       console.error(error);
