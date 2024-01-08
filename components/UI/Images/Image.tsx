@@ -87,11 +87,11 @@ export const ImageInput = ({ onChange, reference }: TInput) => {
 
 export const ImagePreview = ({ src, alt, height, width }: TPreview) => {
   return (
-    <Image
+    <img
       src={src}
       alt={alt}
-      height={height ?? 300}
-      width={width ?? 300}
+      // height={height}
+      // width={width}
       className="mt-2 md:mt-4 rounded-lg hover:brightness-90"
     />
   );
