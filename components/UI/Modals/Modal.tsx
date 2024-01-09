@@ -16,6 +16,7 @@ type TDeleteModal = {
   isOpen: boolean;
   deleteType: "post" | "review" | "account";
   onClose?: () => void;
+  onLoading?: () => void;
 };
 
 export const LoadingModal = ({ message }: TProps) => {
@@ -74,12 +75,13 @@ export const DeleteModal = ({
   isOpen,
   deleteType,
   onClose,
+  onLoading,
 }: TDeleteModal) => {
   // Delete
   const deleteHandler = async (e: { preventDefault: () => void }) => {
     e.preventDefault();
     closeModal();
-
+    loadModal();
     try {
       // DELETE Post
       if (deleteType === "post") {
@@ -105,7 +107,11 @@ export const DeleteModal = ({
         }).then((r) => r.json());
 
         console.log(response.message);
-        router.push(response.path);
+
+        setTimeout(() => {
+          loadModal();
+          router.push(response.path);
+        }, 2000);
       }
       // DELETE User Account
       else if (deleteType === "account") {
@@ -126,9 +132,13 @@ export const DeleteModal = ({
     }
   };
 
-  function closeModal() {
+  const closeModal = () => {
     onClose?.();
-  }
+  };
+
+  const loadModal = () => {
+    onLoading?.();
+  };
   return (
     <>
       <Transition appear show={isOpen} as={Fragment}>
