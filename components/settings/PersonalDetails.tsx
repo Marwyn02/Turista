@@ -303,6 +303,7 @@ export default function PersonalDetails({
               isOpen={isOpen}
               deleteType="account"
               onClose={() => setIsOpen(false)}
+              onLoading={() => setIsLoading(!isLoading)}
             />
           </div>
         </section>

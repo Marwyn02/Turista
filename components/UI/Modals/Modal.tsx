@@ -5,7 +5,7 @@ import router from "next/router";
 import { CancelButton, DeleteButton } from "../Buttons/Button";
 
 type TProps = {
-  message: string;
+  message?: string;
 };
 
 type TDeleteModal = {
@@ -124,7 +124,11 @@ export const DeleteModal = ({
         }).then((r) => r.json());
 
         console.log(response.message);
-        router.push(response.redirect);
+
+        setTimeout(() => {
+          loadModal();
+          router.push(response.redirect);
+        }, 3000);
       }
     } catch (error: any) {
       console.error(error);
