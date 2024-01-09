@@ -1,6 +1,7 @@
 import { Dialog, Transition } from "@headlessui/react";
 import { Fragment, useState } from "react";
 import router from "next/router";
+import { signOut } from "next-auth/react";
 
 import { CancelButton, DeleteButton } from "../Buttons/Button";
 
@@ -124,10 +125,11 @@ export const DeleteModal = ({
         }).then((r) => r.json());
 
         console.log(response.message);
+        const data = await signOut({ redirect: false, callbackUrl: "/" });
 
         setTimeout(() => {
           loadModal();
-          router.push(response.redirect);
+          router.push(data.url);
         }, 3000);
       }
     } catch (error: any) {
