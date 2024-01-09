@@ -81,8 +81,8 @@ export default function PersonalImage({
           if (responseAPI.success) {
             onMessage(responseAPI.message);
             setTimeout(() => {
-              router.push(responseAPI.path);
               onLoading(false);
+              router.push(responseAPI.path);
             }, 3000);
             return;
           }
