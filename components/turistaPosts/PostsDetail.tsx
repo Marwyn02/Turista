@@ -7,6 +7,7 @@ import PostsMap from "./PostUI/PostsMap";
 import PostsDetailNavigation from "./PostUI/PostsDetailNavigation";
 import ReviewList from "../review/ReviewList";
 import { Icon } from "../UI/Images/Image";
+import PostRating from "./PostUI/PostRating";
 
 type TImages = {
   image: string;
@@ -119,6 +120,8 @@ const PostsDetail: FC<TPostsDetailProps> = (props) => {
 
             {/* Description */}
             <p className="post_description">{props.description}</p>
+
+            <PostRating />
           </div>
 
           {/* Map and Create Review */}
