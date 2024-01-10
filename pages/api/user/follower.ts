@@ -1,7 +1,7 @@
 import type { NextApiRequest, NextApiResponse } from "next";
 import User from "@/models/User";
 
-export default async function follow(
+export default async function follower(
   req: NextApiRequest,
   res: NextApiResponse
 ) {
