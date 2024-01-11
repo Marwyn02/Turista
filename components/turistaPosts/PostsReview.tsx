@@ -78,7 +78,7 @@ const PostsReview = (props: PostsReviewProps) => {
   return (
     <form
       onSubmit={submitReviewHandler}
-      className="lg:border-none rounded-lg lg:rounded-none px-1 md:px-2 mt-6 lg:my-8 lg:mb-2"
+      className="lg:border-none rounded-lg lg:rounded-none px-5 mt-6 lg:my-8 lg:mb-2"
     >
       <h2 className="font-semibold text-gray-700">Write your review</h2>
       <textarea
