@@ -11,7 +11,7 @@ import {
 const PostRating = ({ title }: { title: string }) => {
   const [value, setValue] = useState(0);
 
-  //   console.log("Value: ", value);
+  console.log("Title: " + title + ", Value: ", value);
 
   const getIconStyle = (color?: string) => ({
     width: rem(32),

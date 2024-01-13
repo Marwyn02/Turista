@@ -121,13 +121,12 @@ const PostsDetail: FC<TPostsDetailProps> = (props) => {
           </div>
 
           {/* Map and Create Review */}
-          <section className="basis-auto lg:basis-5/12">
-            <PostsAside
-              postId={props.id}
-              checkLat={props.coordinate.lat}
-              checkLng={props.coordinate.lng}
-            />
-          </section>
+
+          <PostsAside
+            postId={props.id}
+            checkLat={props.coordinate.lat}
+            checkLng={props.coordinate.lng}
+          />
         </div>
       </main>
 
