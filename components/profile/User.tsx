@@ -61,7 +61,7 @@ const User: FC<IUserProps> = ({
     }
 
     try {
-      const response = await fetch("/api/user/follow", {
+      const response = await fetch("/api/user/follower", {
         method: "POST",
         headers: {
           "Content-type": "application/json",

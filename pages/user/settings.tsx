@@ -8,7 +8,7 @@ export default function settings() {
   return (
     <MainPageLayout>
       <div>
-        <h1 className="text-lg text-gray-700 font-semibold lg:px-0">
+        <h1 className="text-lg text-gray-700 font-semibold px-3 md:px-0">
           User Settings
         </h1>
       </div>

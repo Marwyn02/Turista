@@ -1,11 +1,12 @@
 import { Dialog, Transition } from "@headlessui/react";
 import { Fragment, useState } from "react";
 import router from "next/router";
+import { signOut } from "next-auth/react";
 
 import { CancelButton, DeleteButton } from "../Buttons/Button";
 
 type TProps = {
-  message: string;
+  message?: string;
 };
 
 type TDeleteModal = {
@@ -16,6 +17,7 @@ type TDeleteModal = {
   isOpen: boolean;
   deleteType: "post" | "review" | "account";
   onClose?: () => void;
+  onLoading?: () => void;
 };
 
 export const LoadingModal = ({ message }: TProps) => {
@@ -74,12 +76,13 @@ export const DeleteModal = ({
   isOpen,
   deleteType,
   onClose,
+  onLoading,
 }: TDeleteModal) => {
   // Delete
   const deleteHandler = async (e: { preventDefault: () => void }) => {
     e.preventDefault();
     closeModal();
-
+    loadModal();
     try {
       // DELETE Post
       if (deleteType === "post") {
@@ -105,7 +108,11 @@ export const DeleteModal = ({
         }).then((r) => r.json());
 
         console.log(response.message);
-        router.push(response.path);
+
+        setTimeout(() => {
+          loadModal();
+          router.push(response.path);
+        }, 2000);
       }
       // DELETE User Account
       else if (deleteType === "account") {
@@ -118,7 +125,12 @@ export const DeleteModal = ({
         }).then((r) => r.json());
 
         console.log(response.message);
-        router.push(response.path);
+        const data = await signOut({ redirect: false, callbackUrl: "/" });
+
+        setTimeout(() => {
+          loadModal();
+          router.push(data.url);
+        }, 3000);
       }
     } catch (error: any) {
       console.error(error);
@@ -126,9 +138,13 @@ export const DeleteModal = ({
     }
   };
 
-  function closeModal() {
+  const closeModal = () => {
     onClose?.();
-  }
+  };
+
+  const loadModal = () => {
+    onLoading?.();
+  };
   return (
     <>
       <Transition appear show={isOpen} as={Fragment}>

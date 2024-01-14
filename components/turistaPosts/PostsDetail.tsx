@@ -1,12 +1,11 @@
 import React, { FC, Suspense } from "react";
 import Link from "next/link";
 
-import PostsReview from "./PostsReview";
 import PostImages from "./PostUI/PostImages";
-import PostsMap from "./PostUI/PostsMap";
 import PostsDetailNavigation from "./PostUI/PostsDetailNavigation";
 import ReviewList from "../review/ReviewList";
 import { Icon } from "../UI/Images/Image";
+import PostsAside from "./PostsAside";
 
 type TImages = {
   image: string;
@@ -122,16 +121,12 @@ const PostsDetail: FC<TPostsDetailProps> = (props) => {
           </div>
 
           {/* Map and Create Review */}
-          <section className="basis-auto lg:basis-5/12">
-            {/* Post Map display  */}
-            <PostsMap
-              checkLat={props.coordinate.lat}
-              checkLng={props.coordinate.lng}
-            />
 
-            {/* Post review create  */}
-            <PostsReview postId={props.id} />
-          </section>
+          <PostsAside
+            postId={props.id}
+            checkLat={props.coordinate.lat}
+            checkLng={props.coordinate.lng}
+          />
         </div>
       </main>
 

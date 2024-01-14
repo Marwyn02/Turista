@@ -45,8 +45,10 @@ const PostOverview: FC<TPostsProps> = ({ posts }) => {
   }, [session]);
   return (
     <>
-      <div className="mt-10 mb-5 flex justify-between items-center">
-        <h1 className="text-2xl text-gray-800 font-medium">Your posts</h1>
+      <div className="mt-12 mb-8 md:mb-5 flex justify-between items-center">
+        <h1 className="text-lg md:text-2xl text-gray-800 font-medium">
+          Your posts
+        </h1>
         <div className="flex items-center">
           {userHasCreatedPost && (
             <Icon
@@ -59,8 +61,8 @@ const PostOverview: FC<TPostsProps> = ({ posts }) => {
           <Link href={"/create"}>
             <button
               type="button"
-              className={`border-2 px-4 py-1.5 ml-2 rounded-md 
-              tracking-wide text-sm font-medium duration-300 focus:outline-none ${
+              className={`border-2 px-3 md:px-4 py-1.5 ml-2 rounded-md 
+              tracking-wide text-xs md:text-sm font-medium duration-300 focus:outline-none ${
                 userHasCreatedPost
                   ? "text-violet-100 border-violet-200"
                   : "border-violet-500 text-violet-500 hover:border-transparent hover:text-white hover:bg-violet-500"

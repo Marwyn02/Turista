@@ -6,7 +6,7 @@ export default async function Delete(
   req: NextApiRequest,
   res: NextApiResponse
 ) {
-  const { id: reviewId, postId: postId } = req.body;
+  const { reviewId, postId } = req.body;
   // const reviewId: string = req.body.id;
   // const postId: string = req.body.postId;
   try {

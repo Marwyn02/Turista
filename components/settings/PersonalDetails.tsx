@@ -264,7 +264,7 @@ export default function PersonalDetails({
                   <img
                     src={cover_photo.image}
                     alt="Cover Photo"
-                    className="animated-slide h-[400px] rounded-lg mt-3.5"
+                    className="animated-slide w-full rounded-lg mt-3.5"
                   />
                 )}
               </div>
@@ -303,6 +303,7 @@ export default function PersonalDetails({
               isOpen={isOpen}
               deleteType="account"
               onClose={() => setIsOpen(false)}
+              onLoading={() => setIsLoading(!isLoading)}
             />
           </div>
         </section>

@@ -4,7 +4,7 @@ import Link from "next/link";
 import router from "next/router";
 
 import { Icon } from "../UI/Images/Image";
-import { DeleteModal } from "../UI/Modals/Modal";
+import { DeleteModal, LoadingModal } from "../UI/Modals/Modal";
 
 interface ReviewCardProps {
   id: string;
@@ -37,6 +37,7 @@ const ReviewCard: FC<ReviewCardProps> = ({
   const buttonRef = useRef<HTMLImageElement>(null);
   const [inSession, setInSession] = useState<boolean>(false);
   const [dropdown, setDropdown] = useState<boolean>(false);
+  const [isLoading, setIsLoading] = useState<boolean>(false);
 
   const [editReview, setEditReview] = useState<boolean>(false);
   const [newDescription, setNewDescription] = useState<string>(description);
@@ -234,7 +235,9 @@ const ReviewCard: FC<ReviewCardProps> = ({
         isOpen={isOpen}
         deleteType="review"
         onClose={() => setIsOpen(false)}
+        onLoading={() => setIsLoading(true)}
       />
+      {isLoading && <LoadingModal message={"Deleting your review."} />}
     </section>
   );
 };

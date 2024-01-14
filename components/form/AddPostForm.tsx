@@ -119,7 +119,6 @@ export default function AddPost() {
         setSelectedImages((prevImages: File[]) => [...prevImages, imageFile]);
         setImagePreview(e.target?.result as string);
       };
-
       reader.readAsDataURL(imageFile);
     }
   };
@@ -136,7 +135,8 @@ export default function AddPost() {
   }, [selectedImages]);
 
   // Submit the inputs of the user to the database
-  const submitHandler = async () => {
+  const submitHandler = async (e: React.FormEvent) => {
+    e.preventDefault();
     setIsLoading(true);
     setMessage(
       "Please wait for a moment. We're trying to make it as the best of the best!"
@@ -159,8 +159,6 @@ export default function AddPost() {
             body: form,
           }
         ).then((r) => r.json());
-
-        console.log("Response: ", response);
 
         // Create a variable for the image and public_id of the image,
         // to store in the array of imageArray
@@ -197,36 +195,31 @@ export default function AddPost() {
         user: (session?.user as { _id: string })?._id as string, // id of the active user
       };
 
-      // Log the response
       setMessage("Almost there!");
-      console.log("Response: ", post);
 
-      // const response = await fetch("/api/post/create", {
-      //   method: "POST",
-      //   headers: {
-      //     "Content-type": "application/json",
-      //   },
-      //   body: JSON.stringify(post),
-      // }).then((r) => r.json());
+      const response = await fetch("/api/post/create", {
+        method: "POST",
+        headers: {
+          "Content-type": "application/json",
+        },
+        body: JSON.stringify(post),
+      }).then((r) => r.json());
 
-      // if (!response.success) {
-      //   setIsLoading(false);
-      //   console.error(response.message);
-      // }
-
-      // console.log(response.message);
-      // router.push(response.redirect);
-      // location.reload();
+      if (!response.success) {
+        setIsLoading(false);
+        router.push("/");
+        console.error(response.message);
+      }
 
       setMessage("Done!");
       setTimeout(() => {
-        router.push("/");
+        router.push(response.redirect);
         setIsLoading(false);
       }, 3000);
       // Catch Error of the whole function
     } catch (error: any) {
       setIsLoading(false);
-      console.error("Failed to creating your post, ", error);
+      console.error("Failed to create your post, ", error);
     }
   };
   return (

@@ -88,7 +88,10 @@ async function signInWithOAuth({ account, profile }) {
         image: profile.picture.data.url,
         public_id: "",
       },
-      cover_photo: "",
+      cover_photo: {
+        image: "",
+        public_id: "",
+      },
       provider: account.provider,
     });
 
@@ -103,7 +106,10 @@ async function signInWithOAuth({ account, profile }) {
         image: profile.picture,
         public_id: "",
       },
-      cover_photo: "",
+      cover_photo: {
+        image: "",
+        public_id: "",
+      },
       provider: account.provider,
     });
     const saveUser = await newUser.save();

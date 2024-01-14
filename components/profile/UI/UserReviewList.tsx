@@ -16,7 +16,7 @@ interface UserReviewsListProps {
 const UserReviewList: FC<UserReviewsListProps> = ({ reviews }) => {
   return (
     <>
-      <div className="grid md:grid-cols-2 gap-y-1 lg:gap-y-4 pb-5 md:pb-10 pt-3 lg:pt-6 mt-5">
+      <div className="grid md:grid-cols-2 gap-y-1 lg:gap-y-4 pb-5 md:pb-10 pt-3 lg:pt-6 mt-5 px-5 md:px-0">
         {reviews.map((review) => (
           <div key={review.id} className="relative my-2 md:pl-3 p-1.5 ">
             <div className="flex justify-between">
